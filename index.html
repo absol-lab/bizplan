@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="2.0.0">
+<meta name="app-version" content="2.1.0">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -341,9 +341,32 @@ h1.appname{font-family:var(--headfont); font-weight:700; letter-spacing:.07em;}
    Busilabo app layer — home head + section content classes,
    re-skinned in the zukan palette (wood-wenge tokens above).
    ============================================================ */
-/* the zukan body reserves 108px at the bottom for its pill nav;
-   this app has no pill nav */
-body{padding-bottom:44px;}
+/* v2.1.0: the zukan pill nav is ported in (the block right below,
+   taken verbatim from the zukan app), so the body keeps the zukan
+   app's 108px bottom reserve for it again. */
+/* bottom pill navigation (ported from diary #pillnav: fixed height, glass, sliding indicator) */
+#pillnav{position:fixed; pointer-events:auto; left:0; right:0; margin-left:auto; margin-right:auto; z-index:40; bottom:calc(env(safe-area-inset-bottom, 0px) + 10px); width:calc(100vw - 92px); max-width:430px; height:56px; display:flex; gap:0; padding:3px; box-sizing:border-box; font-family:var(--sans); background:var(--nav); border:1px solid var(--line); border:1px solid color-mix(in srgb, var(--text) 13%, transparent); border-radius:999px; box-shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.10), inset 0 -8px 16px rgba(255,255,255,.03);}
+/* v2.28: the pill is centred WITHOUT a transform (left/right 0 + auto
+   margins). It used to be left:50% + translateX(-50%) — a permanent
+   transform on a position:fixed element keeps it on the composited
+   transform path, which is exactly the layer iOS Safari misplaces
+   during the app's full-screen fixed/transformed view transitions
+   (the recurring "pill floats to mid-screen" bug, 3rd recurrence).
+   The diary's identical pill never shows the bug, but the diary has
+   no vt-fixed transition churn; in this app the fixed element itself
+   now carries no transform at all. */
+
+#pillnav button{position:relative; z-index:1; flex:1; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; padding:0; border-radius:999px; font-size:12px; font-weight:500; color:var(--muted); white-space:nowrap; font-family:inherit; transition:color .3s;}
+#pillnav svg{width:21px; height:21px;}
+/* v16.0 DESIGN CHANGE (pill bug, 4th recurrence): the sliding
+   indicator is abolished. It was the one element inside the
+   pill that was measured, absolutely positioned and animated
+   with transforms — the whole misplacement class lived there
+   (Musilabo abolished it the same way in its v2.3 and the bug
+   never returned). The active button now carries the highlight
+   itself; nothing inside or above the pill ever transforms. */
+#pillnav button.on{color:var(--text); font-weight:600; background:var(--card2); background:linear-gradient(180deg, color-mix(in srgb, var(--text) 21%, transparent), color-mix(in srgb, var(--text) 8%, transparent) 58%, color-mix(in srgb, var(--text) 13%, transparent)); border:1px solid color-mix(in srgb, var(--text) 16%, transparent); box-shadow:inset 0 1px 0 rgba(255,255,255,.25), inset 0 -6px 10px rgba(255,255,255,.05), 0 2px 10px rgba(0,0,0,.25);}
+#pillnav button{border:1px solid transparent;}
 [hidden]{display:none !important;}
 p{margin:0 0 .9em;}
 ul,ol{margin:0 0 .9em; padding-left:1.25em;}
@@ -530,9 +553,19 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
   <article class="detail" id="detailBody"></article>
 </main>
 
+<!-- v2.1.0: the bottom bar is a direct child of body, its own
+     position:fixed layer — the zukan app's #pillnav, ported
+     verbatim (structure, icons for art / other are the zukan
+     app's own 作家 / その他 glyphs). -->
+<nav id="pillnav">
+  <button id="pnArt" class="on" onclick="goTab('art')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9.2" cy="10" r="1.5"/><path d="M4.5 18.5l4.7-4.7 3.3 3 2.9-2.4 4.1 4.1"/></svg><span>アートビジネス</span></button>
+  <button id="pnBusiness" onclick="goTab('business')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v15.5h16"/><rect x="7" y="12.5" width="3.2" height="7"/><rect x="12" y="9.5" width="3.2" height="10"/><path d="M6.5 8.5l4-3 3 2.3 4.7-3.6"/><path d="M15.4 4.2h2.8v2.8"/></svg><span>ビジネス</span></button>
+  <button id="pnOther" onclick="goTab('other')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>その他</span></button>
+</nav>
+
 <script>
 'use strict';
-var APP_VERSION = '2.0.0';
+var APP_VERSION = '2.1.0';
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
@@ -569,6 +602,7 @@ var SEED = {
  "sections": [
   {
    "id": "schedule",
+   "tab": "other",
    "num": "01",
    "char": "時",
    "tag": "3期間",
@@ -582,6 +616,7 @@ var SEED = {
   },
   {
    "id": "business",
+   "tab": "business",
    "num": "02",
    "char": "業",
    "tag": "候補A〜C",
@@ -595,6 +630,7 @@ var SEED = {
   },
   {
    "id": "art",
+   "tab": "art",
    "num": "03",
    "char": "画",
    "tag": "管の6部品",
@@ -608,6 +644,7 @@ var SEED = {
   },
   {
    "id": "zukan",
+   "tab": "art",
    "num": "04",
    "char": "鑑",
    "tag": "受託／横展開",
@@ -621,6 +658,7 @@ var SEED = {
   },
   {
    "id": "ideas",
+   "tab": "other",
    "num": "05",
    "char": "網",
    "tag": "アイデア9件",
@@ -634,6 +672,7 @@ var SEED = {
   },
   {
    "id": "pending",
+   "tab": "other",
    "num": "06",
    "char": "未",
    "tag": "8件",
@@ -647,6 +686,7 @@ var SEED = {
   },
   {
    "id": "rules",
+   "tab": "other",
    "num": "07",
    "char": "律",
    "tag": "禁止8つ",
@@ -707,9 +747,38 @@ function renderHome(){
   (DATA.home.chips || []).forEach(function(chip){ c += '<span class="chip">' + esc(chip) + '</span>'; });
   $('homeChips').innerHTML = c;
   $('homeSources').textContent = DATA.home.sources || '';
-  $('topcount').textContent = '全' + DATA.sections.length + '件';
+  renderCount();
+  renderGrid();
+}
+
+/* ---------- pill nav tabs (the zukan app's #pillnav, ported) ----------
+   Sections carry a tab attribute (art / business / other); a section
+   without one, or with an unknown value, falls into その他. Until a
+   Drive file written before tabs existed grows tab attributes of its
+   own, the founding sections keep their place by id (TAB_BY_ID), so
+   the split is the same on old and new data. */
+var TABS = ['art', 'business', 'other'];
+var TAB_NAMES = { art: 'アートビジネス', business: 'ビジネス', other: 'その他' };
+var TAB_BY_ID = { art: 'art', zukan: 'art', business: 'business' };
+var currentTab = 'art';
+function secTab(sec){
+  if(sec && TABS.indexOf(sec.tab) >= 0) return sec.tab;
+  if(sec && TAB_BY_ID[sec.id]) return TAB_BY_ID[sec.id];
+  return 'other';
+}
+function tabSections(){
+  return DATA.sections.filter(function(s){ return secTab(s) === currentTab; });
+}
+function renderCount(){
+  $('topcount').textContent = '全' + DATA.sections.length + '件 ・ ' + TAB_NAMES[currentTab] + ' ' + tabSections().length + '件';
+}
+function applyPill(){
+  var map = { art: 'pnArt', business: 'pnBusiness', other: 'pnOther' };
+  for(var k in map){ var b = $(map[k]); if(b) b.classList.toggle('on', k === currentTab); }
+}
+function renderGrid(){
   var html = '';
-  DATA.sections.forEach(function(sec){
+  tabSections().forEach(function(sec){
     html += '<figure class="work" data-open="' + esc(sec.id) + '" tabindex="0" role="button" aria-label="' + esc(sec.title) + '">' +
       '<div class="ph ' + esc(sec.themeClass) + '"><div class="imgholder"><span class="secmark">' + esc(sec.char) + '</span></div></div>' +
       '<figcaption><div class="nm">' + esc(sec.title) + '</div>' +
@@ -720,6 +789,83 @@ function renderHome(){
   $('cardGrid').innerHTML = html;
   applyMode();
 }
+function setTab(t){
+  if(TABS.indexOf(t) < 0) t = 'other';
+  currentTab = t;
+  applyPill();
+  renderCount();
+  renderGrid();
+}
+function goTab(t){
+  if(TABS.indexOf(t) < 0) t = 'other';
+  if(detailOpen){
+    if(t !== currentTab){ setTab(t); listScrollY = 0; }
+    showHome(true);
+    return;
+  }
+  if(t !== currentTab) setTab(t);
+  window.scrollTo(0, 0);
+}
+/* pill anchor self-heal (the zukan app's guard, ported): when the
+   compositor misplaces the fixed bar's layer during the app's view
+   transitions, drop and rebuild the layer to re-anchor it. */
+var pillHealBusy = false;
+function pillBarEl(){ return $('pillnav'); }
+function ensurePillAnchor(hard){
+  var bar = pillBarEl(); if(!bar) return;
+  var r = bar.getBoundingClientRect();
+  if(!r.height) return;
+  if(!hard){
+    var gap = window.innerHeight - r.bottom;
+    if(gap >= -1 && gap <= 90) return;
+  }
+  if(pillHealBusy) return;
+  pillHealBusy = true;
+  var prev = bar.style.display;
+  bar.style.display = 'none';
+  void bar.offsetHeight;
+  /* restore on the NEXT frame, not in the same task: a full frame
+     with the bar unrendered guarantees the stale layer is dropped
+     before the rebuilt one is anchored. A timeout runs the same
+     restore as a fallback so a throttled rAF can never leave the
+     bar hidden. */
+  var restored = false;
+  function restore(){ if(restored) return; restored = true; bar.style.display = prev; pillHealBusy = false; }
+  requestAnimationFrame(restore);
+  setTimeout(restore, 80);
+}
+var pillScrollT = null, pillScrollCheckAt = 0;
+window.addEventListener('scroll', function(){
+  /* also re-check DURING a long scroll (at most every 600ms) — the
+     zukan app's recordings showed the pill displaced mid-scroll,
+     and healing only after the scroll fully stops leaves it
+     floating for the whole fling. The settle check still runs. */
+  var now = Date.now();
+  if(now - pillScrollCheckAt > 600){ pillScrollCheckAt = now; ensurePillAnchor(); }
+  if(pillScrollT) clearTimeout(pillScrollT);
+  pillScrollT = setTimeout(function(){ ensurePillAnchor(); }, 180);
+}, { passive: true });
+if(window.visualViewport) visualViewport.addEventListener('resize', function(){ setTimeout(function(){ ensurePillAnchor(); }, 60); });
+document.addEventListener('visibilitychange', function(){ if(!document.hidden) ensurePillAnchor(true); });
+/* pill nav swipe (the zukan app's, ported): a horizontal swipe on
+   the pill itself walks the tabs */
+(function(){
+  var nav = $('pillnav'); if(!nav) return;
+  var order = ['art', 'business', 'other'];
+  var sx = null, sy = null, suppressClick = false;
+  nav.addEventListener('touchstart', function(e){ var t = e.touches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
+  nav.addEventListener('touchend', function(e){
+    if(sx == null) return;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - sx, dy = t.clientY - sy;
+    sx = null; sy = null;
+    if(Math.abs(dx) < 40 || Math.abs(dx) <= Math.abs(dy)) return; /* 横方向が dominant な時だけ */
+    suppressClick = true;
+    var cur = order.indexOf(currentTab);
+    goTab(order[(cur + (dx < 0 ? 1 : order.length - 1)) % order.length]);
+  }, { passive: true });
+  nav.addEventListener('click', function(e){ if(suppressClick){ suppressClick = false; e.preventDefault(); e.stopPropagation(); } }, true);
+})();
 function applyMode(){
   $('cardGrid').className = 'grid ' + settings.mode;
   var btns = document.querySelectorAll('#modeseg button');
@@ -774,6 +920,7 @@ function slideForward(newEl, oldEl){
     oldEl.style.top = ''; oldEl.style.height = ''; oldEl.style.transform = '';
     document.body.classList.remove('vt-run');
     vtBusy = false;
+    ensurePillAnchor(true);
   }
   ain.onfinish = finish;
   setTimeout(finish, 480);
@@ -781,6 +928,8 @@ function slideForward(newEl, oldEl){
 function openDetail(id, push){
   var sec = sectionById(id);
   if(!sec || vtBusy) return;
+  var st = secTab(sec);
+  if(st !== currentTab) setTab(st);
   if(detailOpen && current === id) return;
   current = id;
   detailOpen = true;
@@ -805,6 +954,7 @@ function showHome(push){
   window.scrollTo(0, listScrollY);
   setTimeout(function(){ window.scrollTo(0, listScrollY); }, 60);
   if(push){ try{ history.pushState({ view: 'home' }, '', '#/'); }catch(e){} }
+  ensurePillAnchor(true);
 }
 document.addEventListener('click', function(e){
   var open = e.target.closest ? e.target.closest('[data-open]') : null;
@@ -835,6 +985,7 @@ window.addEventListener('popstate', function(){
   var st = null;
   document.addEventListener('touchstart', function(e){
     if(!detailOpen || vtBusy || st || e.touches.length !== 1) return;
+    if(e.target && e.target.closest && e.target.closest('#pillnav')) return; /* pill drags belong to the pill itself */
     var t = e.touches[0];
     st = { sx: t.clientX, sy: t.clientY, dx: 0, dy: 0, engaged: false, lastX: t.clientX, lastT: Date.now(), vx: 0, y: window.scrollY || 0 };
   }, { passive: true });
@@ -1115,6 +1266,7 @@ renderHome();
 renderSyncStatus();
 var initial = (location.hash || '').match(/^#\/(\w+)$/);
 if(initial && sectionById(initial[1])){
+  setTab(secTab(sectionById(initial[1])));
   $('detailBody').innerHTML = sectionById(initial[1]).html;
   listView.classList.add('hidden');
   detailView.classList.remove('hidden');
