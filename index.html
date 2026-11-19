@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="2.1.2">
+<meta name="app-version" content="3.0.0">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -439,22 +439,24 @@ button.srow:active{opacity:.6;}
    108px reserve alone leaves only a few px on Face ID phones). */
 #viewOther{padding-top:4px; padding-bottom:30px;}
 
-/* card image face: no photos in this app — the section's character
-   sits in the zukan .ph face at the same 4/3 ratio */
-.ph .secmark{font-family:var(--serif); font-weight:700; color:var(--accent); line-height:1; opacity:.94;}
-.grid.wide .secmark{font-size:56px;}
-.grid.def .secmark{font-size:46px;}
-.grid.compact .secmark{font-size:34px;}
-.grid.mini .secmark{font-size:28px;}
-.grid.micro .secmark{font-size:20px;}
-.ph.t-schedule{background:#241c14;}
-.ph.t-business{background:var(--card2);}
-.ph.t-art{background:var(--bg2);}
-.ph.t-zukan{background:#2a2118;}
-.ph.t-ideas{background:#241c14;}
-.ph.t-pending{background:var(--bg2);}
-.ph.t-pending .secmark{color:var(--muted);}
-.ph.t-rules{background:var(--card2);}
+/* v3.0.0: section cards carry NO image face (his call, 2026-11-19:
+   「カードに写真いらない」). The zukan app's own no-photo manner is
+   the collapsed .ph.noplate strip (58px / wide 72px / compact 40px)
+   — when there is no photo the face shrinks away and the figcaption
+   text hierarchy IS the card. Busilabo has no photos at all, so the
+   face goes entirely: the figcaption (title / num・tag / meta /
+   badge) sits directly on the zukan card surface, and each of the
+   5 size stops still earns its place — the column count, the card
+   padding and the title size all move per stop (the zukan caption
+   rules above carry the type sizes). */
+figure.work{padding:11px 13px 10px;}
+figure.work figcaption{padding:0;}
+.grid.wide figure.work{padding:17px 19px 15px;}
+.grid.compact figure.work{padding:8px 10px 7px;}
+.grid.mini figure.work{padding:5px 7px 4px;}
+.grid.mini figure.work figcaption{padding:0;}
+.grid.micro figure.work{padding:4px 6px 3px;}
+.grid.micro figure.work figcaption{padding:0;}
 .badgerow{margin-top:6px;}
 .grid.mini .badgerow,.grid.micro .badgerow{display:none;}
 .cbadge{display:inline-block; font-family:var(--sans); font-size:11px; font-weight:700; border-radius:999px; padding:2px 9px; white-space:nowrap;}
@@ -563,15 +565,69 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 .verline{font-size:12px; color:var(--muted); margin-top:14px;}
 .verline button{background:none; border:0; color:var(--muted); font:inherit; font-size:12px; text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:4px 2px; min-height:0;}
 
+/* ============================================================
+   v3.0.0: the zukan app's mechanism layer, ported — version
+   badge, notification bell + panel, sync result lines, relay
+   form, toast. (Styles are the zukan app's own values; --tag
+   becomes the fixed gold pairing the zukan app uses for NEW.)
+   ============================================================ */
+#verBadge{position:fixed; top:calc(env(safe-area-inset-top, 0px) + 2px); left:0; right:0; text-align:center; z-index:39; font-size:11px; letter-spacing:.03em; color:var(--muted); opacity:.85; pointer-events:none; white-space:nowrap; font-family:var(--sans);}
+/* the bell: a presence dot only (zukan v5.53.0 manner) — the
+   counts live on the panel's tabs, never on the bell itself */
+#bellbtn{position:relative; flex:none; width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; background:none; border:0; color:var(--muted); cursor:pointer; padding:0;}
+#bellbtn svg{width:21px; height:21px;}
+#bellbtn .bdot{position:absolute; top:7px; right:7px; width:9px; height:9px; border-radius:50%; background:#e5484d; border:1.5px solid var(--bg);}
+body.notifopen #pillnav{opacity:0; pointer-events:none;}
+/* notification rows (the zukan app's .uprow family) */
+.uprow{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:13px 14px 12px; margin:0 0 10px;}
+.uprow.tap{cursor:pointer; position:relative; padding-right:24px; touch-action:manipulation; -webkit-tap-highlight-color:transparent;}
+.uprow .nexp{position:absolute; right:2px; top:15px; color:var(--muted); font-size:17px; line-height:1; transition:transform .18s;}
+.uprow .nexp.open{transform:rotate(90deg);}
+#updatelist .nexp{transition:none;}
+.uprow.hasnew{position:relative; padding-right:64px;}
+.uprow.tap.hasnew{padding-right:86px;}
+.newtag{position:absolute; top:13px; right:2px; font-size:11px; font-weight:800; letter-spacing:.1em; color:#191204; background:#e6b93d; border-radius:999px; padding:2px 8px; line-height:1.5;}
+.uprow.tap .newtag{right:24px;}
+.newtag.inl{position:static; flex:none; align-self:center;}
+.belldot{display:inline-block; min-width:17px; height:17px; padding:0 4px; margin-left:6px; border-radius:999px; background:#e6b93d; color:#191204; font-size:10.5px; font-weight:800; line-height:17px; text-align:center; box-sizing:border-box; vertical-align:2px;}
+.uphead{display:flex; align-items:baseline; gap:9px;}
+.upv{font-size:15px; font-weight:800;}
+.upv.now{color:var(--accent);}
+.upat{font-size:12px; color:var(--muted);}
+.upnotes{margin:8px 0 2px;}
+.upnotes li{font-size:13.5px; line-height:1.6; margin-bottom:2px;}
+.nrow{display:flex; align-items:center; gap:8px;}
+.nname{font-size:14.5px; font-weight:700; line-height:1.45;}
+.nkind{flex:none; font-size:11px; letter-spacing:.08em; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:2px 8px; font-family:var(--sans);}
+.nkind.reg{color:var(--accent); border-color:var(--accent);}
+.ndetail{margin-top:9px; background:var(--bg2); border:1px solid var(--line); border-radius:12px; padding:11px 12px;}
+.nmember{display:block; width:100%; text-align:left; min-height:44px; padding:9px 2px; border:0; border-top:1px solid var(--line); background:none; color:var(--text); font-size:14px; font-family:var(--sans); cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent;}
+.nmember:first-child{border-top:0;}
+.seenwrap{margin-left:auto; display:flex; align-self:center;}
+.seenbtn{touch-action:manipulation; border:1px solid var(--accent); color:var(--accent); background:none; border-radius:999px; font-size:12px; font-weight:700; padding:8px 14px; min-height:40px; letter-spacing:.04em; font-family:var(--sans);}
+.seenbtn.done{border-color:var(--line); color:var(--muted); background:var(--bg2); font-weight:400;}
+/* sync result lines + the relay form, inside その他 */
+.syncline{font-size:13px; color:var(--muted); margin-top:8px; line-height:1.5; font-family:var(--sans);}
+.syncline.err{color:var(--danger);}
+.rinput{width:100%; font-size:16px; padding:12px 14px; border-radius:12px; border:1px solid var(--line); background:var(--card); color:var(--text); margin-top:10px; font-family:var(--sans); box-sizing:border-box;}
+.rbtn{margin-top:10px; width:100%; min-height:48px; border-radius:12px; border:1px solid var(--accent); background:none; color:var(--accent); font-size:14px; font-weight:600; font-family:var(--sans); cursor:pointer;}
+.rstat{font-size:13px; color:var(--muted); margin-top:8px; line-height:1.55; font-family:var(--sans);}
+/* toast (the zukan app's) */
+#toast{position:fixed; left:50%; bottom:calc(env(safe-area-inset-bottom, 0px) + 112px); transform:translateX(-50%); background:var(--text); color:var(--bg); border-radius:999px; padding:10px 20px; font-size:13.5px; z-index:200; display:none; max-width:88vw; text-align:center; font-family:var(--sans);}
+#toast.on{display:flex; align-items:center; gap:12px; text-align:left;}
+#toastact{flex:none; min-height:48px; padding:0 18px; border:1px solid var(--bg); border-radius:999px; color:var(--bg); background:transparent; font-size:13.5px; font-weight:600; font-family:var(--sans);}
+
 </style>
 </head>
 <body>
 <div id="veil" aria-hidden="true"></div>
+<div id="verBadge"></div>
 <header class="top">
   <div class="toprow">
     <h1 class="appname" id="appname">Busilabo</h1><span id="syncdot" title="同期状態：緑＝接続OK／赤＝未接続・エラー"></span>
     <span class="topcount" id="topcount"></span>
     <span class="topsp"></span>
+    <button id="bellbtn" type="button" onclick="openNotif()" aria-label="通知"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 9.5a6 6 0 1 0-12 0c0 6-2.5 7-2.5 7h17S18 15.5 18 9.5"/><path d="M10 20a2.2 2.2 0 0 0 4 0"/></svg><span class="bdot" id="belldot" style="display:none"></span></button>
   </div>
   <button id="syncbar" type="button"><span>読み込み中…</span></button>
 </header>
@@ -607,6 +663,20 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
   <div class="bizbackbar"><button type="button" class="backbtn" id="backBtn">‹ 一覧に戻る</button></div>
   <article class="detail" id="detailBody"></article>
 </main>
+<!-- v3.0.0: the notification hub (the zukan app's bell panel,
+     ported) — two tabs: plan-change notifications generated when
+     new data lands, and the app's update history (changelog.json). -->
+<main id="viewNotif" class="hidden">
+  <div class="bizbackbar"><button type="button" class="backbtn" id="notifBackBtn">‹ 戻る</button></div>
+  <div class="setttl">通知</div>
+  <div class="seg mini" style="margin-bottom:14px">
+    <button type="button" id="bellTabNotif" onclick="setBellTab('notif')">通知</button>
+    <button type="button" id="bellTabHist" onclick="setBellTab('history')">更新履歴</button>
+  </div>
+  <div id="notiflist"></div>
+  <div id="updatelist" class="hidden"></div>
+</main>
+<div id="toast" role="status"><span id="toastmsg"></span><button id="toastact" class="hidden" type="button">元に戻す</button></div>
 
 <!-- v2.1.0: the bottom bar is a direct child of body, its own
      position:fixed layer — the zukan app's #pillnav, ported
@@ -620,12 +690,12 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '2.1.2';
+var APP_VERSION = '3.0.0';
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
  "version": 1,
- "updatedAt": "2026-11-19T13:32:00+09:00",
+ "updatedAt": "2026-11-19T18:15:00+09:00",
  "home": {
   "theme": "一文無しから富を築く",
   "themeSubHtml": "最初に築くのは金ではなく、金に変わる資産。順番は固定されている——<strong>労働 → 種銭 → 小さな仕組み → 仕組みの複利<\/strong>。いまは「労働→種銭」の段を登り切り、仕組みの設計図が引けた段階にある。",
@@ -677,11 +747,11 @@ var SEED = {
    "tag": "候補A〜C",
    "themeClass": "t-business",
    "title": "ビジネス計画",
-   "meta": "アプリ候補A・B・C、検証の段0〜段4、市場の現実の数字、テスト枠2件（make.fun／物語のある物）",
+   "meta": "アプリ候補A・B・C、検証の段0〜段4、市場の現実の数字、テスト枠3件（make.fun／物語のある物／海外向けデジタル商品）",
    "badgeClass": "decided",
    "badgeText": "骨格は決定済み",
-   "html": "<div class=\"detail-head\"><h2>ビジネス計画<\/h2><span class=\"badge decided\">骨格は決定済み<\/span><\/div>\n        <p class=\"sec-lead\">柱はアプリ。市場の現実を踏まえ、「小さく複数出し、届いたものだけ伸ばす」が勝ち方として決まっている。<\/p>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">約83<small>%<\/small><\/div><div class=\"k\">新作アプリが2年経っても月$1,000に届かない割合<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">月$72<\/div><div class=\"k\">公開1年後の月収の中央値<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">58<small>日<\/small><\/div><div class=\"k\">月$1,000到達までの中央値。届くものは早く届く<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">5〜9<small>倍<\/small><\/div><div class=\"k\">「痛み止め」が「ビタミン」より転換する倍率<\/div><\/div>\n        <\/div>\n        <h3>候補は3つともやる。順番だけ固定<\/h3>\n        <div class=\"card\">\n          <h3>A. 単語原木（一般公開版） <span class=\"badge now\">自分用に走行中<\/span><\/h3>\n          <p>英語の単語暗記が続かない痛みへの道具。育成×図鑑の形で、「変身の実感」と「卒業した単語の図鑑」というシェアできる成果物を持つ。既にv1が走っているのが強み。弱みは学習アプリ市場の激戦。<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>B. シェアされる結果画面型の小ツール<\/h3>\n          <p>手持ちの記録や写真から「分析／図鑑／年表」のような結果画像を出す道具。結果がそのまま投稿物になる形が集客装置になる（IsTalkの型）。強みは日本事例で最も再現性が高いこと。弱みは題材の当たり外れが全てで、「誰の何の結果が見たいか」の選定が勝負になる。<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>C. 現場の不便解消型（作品台帳が有力）<\/h3>\n          <p>自分の制作・受験生活の現場の道具。調査で「スマホ完結・日本語・私的な作品台帳」は日本語圏に不在の<strong>無人地帯<\/strong>と確認済み。海外製品は高額・英語・PC寄りで、国内は公開ポートフォリオと物理保管に二極化している。<\/p>\n          <ul>\n            <li><strong>価格の隙間<\/strong>：買い切り〜月300〜980円、点数課金・広告なし<\/li>\n            <li><strong>集客になる出力<\/strong>：展示・完成ごとの「作品1点カード（縦型）」、第二弾に年間「制作Wrapped」<\/li>\n            <li><strong>弱み<\/strong>：層が狭く天井は低い。最初の月1万円ライン向き<\/li>\n          <\/ul>\n        <\/div>\n        <h3>検証の階段（段0〜段4）<\/h3>\n        <ol class=\"steps\">\n          <li data-n=\"0\"><span class=\"st\">題材を1つ決める<\/span><span class=\"done-when\">「誰が・いつ・何に困って・今どう凌いでいるか」を一文で言えること<\/span><\/li>\n          <li data-n=\"1\"><span class=\"st\">最小版を公開する<\/span><span class=\"done-when\">実際に他人が触れるURLがあること（決済はまだ付けない）<\/span><\/li>\n          <li data-n=\"2\"><span class=\"st\">集客テスト30日<\/span><span class=\"done-when\">結果画面のシェアか短尺動画経由で、身内以外の利用者が10人。ゼロなら題材を変える<\/span><\/li>\n          <li data-n=\"3\"><span class=\"st\">課金の仮設置<\/span><span class=\"done-when\">最初の1件の支払い（広告削除か年額サブスクの小さい壁で試す）<\/span><\/li>\n          <li data-n=\"4\"><span class=\"st\">判定<\/span><span class=\"done-when\">続ける／題材を変える／量産ラインに移す、を数字で決める<\/span><\/li>\n        <\/ol>\n        <h3>課金と集客の決まり<\/h3>\n        <ul>\n          <li><strong>課金の本命<\/strong>はサブスク（年額主役）＋買い切りの受け皿。広告は単価が低く、柱にしない<\/li>\n          <li><strong>再生数 ≠ ダウンロード<\/strong>。差を分けるのは、シェアされる結果画面／プロフィールからの導線／チャネルと対象の一致<\/li>\n          <li>Xでは告知より「質問投稿」が効く。最初の利用者は手で集め、要望には速く応える<\/li>\n          <li>フォロワーは借り物。<strong>所有できる連絡先（リスト）<\/strong>を別に持つ<\/li>\n        <\/ul>\n        <h3>収益化の実務メモ<\/h3>\n        <ul>\n          <li>Stripeは個人でも使えるが、決済・税務は実名が前提。特商法の「請求があれば開示」は完全な匿名化ではない<\/li>\n          <li>1,000円あたりの手取り：STORES 945円／BOOTH 899円／note 855円<\/li>\n          <li>青色申告の承認申請は「開業後2か月以内」を逃さない<\/li>\n        <\/ul>\n        <div class=\"card\">\n          <h3>AIバウンティ（make.fun） <span class=\"badge pending\">テスト枠・検討中<\/span><\/h3>\n          <p>集客が要らず、AIの労働力そのものが商品になる経路。ただし性質は「仕組み」ではなく「懸賞」で、本命ルートにはならない。位置づけはテスト枠：目的は種銭の獲得と、AIに仕事を取らせて報酬を得る実地ノウハウ。<\/p>\n          <ul>\n            <li><strong>規律<\/strong>：並行は最大3件まで。期間と撤退線を先に決める。外れたら記録して次へ<\/li>\n            <li><strong>選ぶ基準<\/strong>：賞金÷参加者数がましで、締切に余裕があるもの。審査が「質」の案件を優先する<\/li>\n            <li><strong>注意<\/strong>：受け取りはUSDC／Solanaウォレット側で、換金と税務の手間が後で来る<\/li>\n          <\/ul>\n        <\/div>\n        <div class=\"card\">\n          <h3>物語のある物（物販テスト） <span class=\"badge pending\">テスト枠・2026-11-19 合意<\/span><\/h3>\n          <p>売るのは呪物ではない。<strong>「物語と力」<\/strong>——見惚れるような質の高い物に、質の高い物語を付けて売る。make.funと同格のテスト枠として、期間と撤退ラインを先に決めて小さく試す。<\/p>\n          <p><strong>担い手は石に限らない。<\/strong>売るのは物語そのものであり、表面的な物が石である必要はない。担い手は石・ガラス・金属・木などの小物でもよい。見惚れてしまうようなキラキラした石はその一例にすぎない。<\/p>\n          <ul>\n            <li><strong>狙う層<\/strong>：スピ層<\/li>\n            <li><strong>売り場<\/strong>：メルカリ。購入者の能動性が必要な場に置く<\/li>\n            <li><strong>物の土台<\/strong>：素人が適当に拾った石ころや小物に情報を付ける形とは分ける。物自体の質が土台で、マテリアルへの感覚そのものが商品力になる<\/li>\n          <\/ul>\n          <p><strong>合意したルール（3つ）<\/strong>——担い手が石でもガラスでも金属でも木でも、何であれそのまま適用される。<\/p>\n          <ul>\n            <li><strong>効能を断定しない<\/strong>——説明文で断定すると嘘になる。「〜と言われてきた」「〜と云われる」という言い回しが大切で、それこそが物語である<\/li>\n            <li><strong>無理な売りつけはしない<\/strong>——欲しい人が能動的に買う構造に置く。無理やりは悪質<\/li>\n            <li><strong>物の質は本物にする<\/strong>——物語を剥がしても、物そのものに持つ価値があること<\/li>\n          <\/ul>\n          <p><strong>位置づけ——アートビジネスの練習。<\/strong>値付け、物語の付け方、固定価格、記録の練習であり、「意味のないものに付加価値を与える」という、本命の作品販売（作品の値付けと言説化）と同じ力学で動く。<\/p>\n          <p>効果の受け止め方についての考え：実際に作用するかどうかは、買う人がどれほど強く信じているかによる。強く信じれば精神的に作用し、思い込みは現実に影響する。だから無意味ではない、という立場を取る。<\/p>\n        <\/div>",
-   "updated_at": "2026-11-19T13:32:00+09:00"
+   "html": "<div class=\"detail-head\"><h2>ビジネス計画<\/h2><span class=\"badge decided\">骨格は決定済み<\/span><\/div>\n        <p class=\"sec-lead\">柱はアプリ。市場の現実を踏まえ、「小さく複数出し、届いたものだけ伸ばす」が勝ち方として決まっている。<\/p>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">約83<small>%<\/small><\/div><div class=\"k\">新作アプリが2年経っても月$1,000に届かない割合<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">月$72<\/div><div class=\"k\">公開1年後の月収の中央値<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">58<small>日<\/small><\/div><div class=\"k\">月$1,000到達までの中央値。届くものは早く届く<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">5〜9<small>倍<\/small><\/div><div class=\"k\">「痛み止め」が「ビタミン」より転換する倍率<\/div><\/div>\n        <\/div>\n        <h3>候補は3つともやる。順番だけ固定<\/h3>\n        <div class=\"card\">\n          <h3>A. 単語原木（一般公開版） <span class=\"badge now\">自分用に走行中<\/span><\/h3>\n          <p>英語の単語暗記が続かない痛みへの道具。育成×図鑑の形で、「変身の実感」と「卒業した単語の図鑑」というシェアできる成果物を持つ。既にv1が走っているのが強み。弱みは学習アプリ市場の激戦。<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>B. シェアされる結果画面型の小ツール<\/h3>\n          <p>手持ちの記録や写真から「分析／図鑑／年表」のような結果画像を出す道具。結果がそのまま投稿物になる形が集客装置になる（IsTalkの型）。強みは日本事例で最も再現性が高いこと。弱みは題材の当たり外れが全てで、「誰の何の結果が見たいか」の選定が勝負になる。<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>C. 現場の不便解消型（作品台帳が有力）<\/h3>\n          <p>自分の制作・受験生活の現場の道具。調査で「スマホ完結・日本語・私的な作品台帳」は日本語圏に不在の<strong>無人地帯<\/strong>と確認済み。海外製品は高額・英語・PC寄りで、国内は公開ポートフォリオと物理保管に二極化している。<\/p>\n          <ul>\n            <li><strong>価格の隙間<\/strong>：買い切り〜月300〜980円、点数課金・広告なし<\/li>\n            <li><strong>集客になる出力<\/strong>：展示・完成ごとの「作品1点カード（縦型）」、第二弾に年間「制作Wrapped」<\/li>\n            <li><strong>弱み<\/strong>：層が狭く天井は低い。最初の月1万円ライン向き<\/li>\n          <\/ul>\n        <\/div>\n        <h3>検証の階段（段0〜段4）<\/h3>\n        <ol class=\"steps\">\n          <li data-n=\"0\"><span class=\"st\">題材を1つ決める<\/span><span class=\"done-when\">「誰が・いつ・何に困って・今どう凌いでいるか」を一文で言えること<\/span><\/li>\n          <li data-n=\"1\"><span class=\"st\">最小版を公開する<\/span><span class=\"done-when\">実際に他人が触れるURLがあること（決済はまだ付けない）<\/span><\/li>\n          <li data-n=\"2\"><span class=\"st\">集客テスト30日<\/span><span class=\"done-when\">結果画面のシェアか短尺動画経由で、身内以外の利用者が10人。ゼロなら題材を変える<\/span><\/li>\n          <li data-n=\"3\"><span class=\"st\">課金の仮設置<\/span><span class=\"done-when\">最初の1件の支払い（広告削除か年額サブスクの小さい壁で試す）<\/span><\/li>\n          <li data-n=\"4\"><span class=\"st\">判定<\/span><span class=\"done-when\">続ける／題材を変える／量産ラインに移す、を数字で決める<\/span><\/li>\n        <\/ol>\n        <h3>課金と集客の決まり<\/h3>\n        <ul>\n          <li><strong>課金の本命<\/strong>はサブスク（年額主役）＋買い切りの受け皿。広告は単価が低く、柱にしない<\/li>\n          <li><strong>再生数 ≠ ダウンロード<\/strong>。差を分けるのは、シェアされる結果画面／プロフィールからの導線／チャネルと対象の一致<\/li>\n          <li>Xでは告知より「質問投稿」が効く。最初の利用者は手で集め、要望には速く応える<\/li>\n          <li>フォロワーは借り物。<strong>所有できる連絡先（リスト）<\/strong>を別に持つ<\/li>\n        <\/ul>\n        <h3>収益化の実務メモ<\/h3>\n        <ul>\n          <li>Stripeは個人でも使えるが、決済・税務は実名が前提。特商法の「請求があれば開示」は完全な匿名化ではない<\/li>\n          <li>1,000円あたりの手取り：STORES 945円／BOOTH 899円／note 855円<\/li>\n          <li>青色申告の承認申請は「開業後2か月以内」を逃さない<\/li>\n        <\/ul>\n        <div class=\"card\">\n          <h3>AIバウンティ（make.fun） <span class=\"badge pending\">テスト枠・検討中<\/span><\/h3>\n          <p>集客が要らず、AIの労働力そのものが商品になる経路。ただし性質は「仕組み」ではなく「懸賞」で、本命ルートにはならない。位置づけはテスト枠：目的は種銭の獲得と、AIに仕事を取らせて報酬を得る実地ノウハウ。<\/p>\n          <ul>\n            <li><strong>規律<\/strong>：並行は最大3件まで。期間と撤退線を先に決める。外れたら記録して次へ<\/li>\n            <li><strong>選ぶ基準<\/strong>：賞金÷参加者数がましで、締切に余裕があるもの。審査が「質」の案件を優先する<\/li>\n            <li><strong>注意<\/strong>：受け取りはUSDC／Solanaウォレット側で、換金と税務の手間が後で来る<\/li>\n          <\/ul>\n        <\/div>\n        <div class=\"card\">\n          <h3>物語のある物（物販テスト） <span class=\"badge pending\">テスト枠・2026-11-19 合意<\/span><\/h3>\n          <p>売るのは呪物ではない。<strong>「物語と力」<\/strong>——見惚れるような質の高い物に、質の高い物語を付けて売る。make.funと同格のテスト枠として、期間と撤退ラインを先に決めて小さく試す。<\/p>\n          <p><strong>担い手は石に限らない。<\/strong>売るのは物語そのものであり、表面的な物が石である必要はない。担い手は石・ガラス・金属・木などの小物でもよい。見惚れてしまうようなキラキラした石はその一例にすぎない。<\/p>\n          <ul>\n            <li><strong>狙う層<\/strong>：スピ層<\/li>\n            <li><strong>売り場<\/strong>：メルカリ。購入者の能動性が必要な場に置く<\/li>\n            <li><strong>物の土台<\/strong>：素人が適当に拾った石ころや小物に情報を付ける形とは分ける。物自体の質が土台で、マテリアルへの感覚そのものが商品力になる<\/li>\n          <\/ul>\n          <p><strong>合意したルール（3つ）<\/strong>——担い手が石でもガラスでも金属でも木でも、何であれそのまま適用される。<\/p>\n          <ul>\n            <li><strong>効能を断定しない<\/strong>——説明文で断定すると嘘になる。「〜と言われてきた」「〜と云われる」という言い回しが大切で、それこそが物語である<\/li>\n            <li><strong>無理な売りつけはしない<\/strong>——欲しい人が能動的に買う構造に置く。無理やりは悪質<\/li>\n            <li><strong>物の質は本物にする<\/strong>——物語を剥がしても、物そのものに持つ価値があること<\/li>\n          <\/ul>\n          <p><strong>位置づけ——アートビジネスの練習。<\/strong>値付け、物語の付け方、固定価格、記録の練習であり、「意味のないものに付加価値を与える」という、本命の作品販売（作品の値付けと言説化）と同じ力学で動く。<\/p>\n          <p>効果の受け止め方についての考え：実際に作用するかどうかは、買う人がどれほど強く信じているかによる。強く信じれば精神的に作用し、思い込みは現実に影響する。だから無意味ではない、という立場を取る。<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>海外向けデジタル商品（言語市場の裁定） <span class=\"badge pending\">テスト枠・候補<\/span><\/h3>\n          <p>きっかけはXで見かけた「海外note」系の投稿。収益の自己申告（初月の金額など）は裏付けがないので採らない。残すのは仕組みの部分だけ。<\/p>\n          <ul>\n            <li><strong>仕組み<\/strong>：言語の市場の間で情報の値段が違う。日本語圏では当たり前で飽和している情報が、英語圏では薄くて売れることがある（言語市場の裁定取引）<\/li>\n            <li><strong>追い風<\/strong>：AIで翻訳と制作のコストが落ち、この裁定の敷居が下がった<\/li>\n            <li><strong>売り場<\/strong>：Gumroadなど海外のデジタル商品の販売プラットフォーム（実在する経路）<\/li>\n            <li><strong>資産性<\/strong>：売れた商品のバックリストは在庫として残る。懸賞型と違い、ゼロにはならない<\/li>\n            <li><strong>重い部分<\/strong>：勝ち筋は英語圏での集客をゼロから作る力で、そこが最も重い。受験期にやる作業ではない<\/li>\n            <li><strong>置き場所<\/strong>：テスト枠の候補（決定ではない）。やるなら受験後。題材は「日本人にしか書けない日本の何か」を英語で売る形が筋<\/li>\n          <\/ul>\n        <\/div>",
+   "updated_at": "2026-11-19T18:15:00+09:00"
   },
   {
    "id": "art",
@@ -772,7 +842,13 @@ function loadCache(){
   }catch(e){}
   return clone(SEED);
 }
-function saveCache(){ try{ localStorage.setItem(LS_CACHE, JSON.stringify(DATA)); }catch(e){} }
+/* v3.0.0: a failed device save is a visible state, not a silent
+   swallow (the zukan app's DATA_SAVE_FAIL rule) */
+var SAVE_FAIL = false;
+function saveCache(){
+  try{ localStorage.setItem(LS_CACHE, JSON.stringify(DATA)); SAVE_FAIL = false; }
+  catch(e){ SAVE_FAIL = true; }
+}
 function sectionById(id){
   for(var i=0;i<DATA.sections.length;i++) if(DATA.sections[i].id === id) return DATA.sections[i];
   return null;
@@ -838,7 +914,6 @@ function renderGrid(){
   var html = '';
   tabSections().forEach(function(sec){
     html += '<figure class="work" data-open="' + esc(sec.id) + '" tabindex="0" role="button" aria-label="' + esc(sec.title) + '">' +
-      '<div class="ph ' + esc(sec.themeClass) + '"><div class="imgholder"><span class="secmark">' + esc(sec.char) + '</span></div></div>' +
       '<figcaption><div class="nm">' + esc(sec.title) + '</div>' +
       '<div class="yrs">' + esc(sec.num) + ' ・ ' + esc(sec.tag) + '</div>' +
       '<div class="sub">' + esc(sec.meta) + '</div>' +
@@ -871,13 +946,15 @@ var SEC_ICONS = { schedule: 'clock', ideas: 'web', pending: 'pause', rules: 'lis
 function driveValText(){
   if(syncRunning) return '同期中…';
   if(syncError) return '同期エラー';
-  if(!isConnected()) return '未接続';
+  if(!isConnected() && !relayReady()) return '未接続';
   if(pendingCount > 0) return '未同期の変更' + pendingCount + '件';
   if(lastSyncAt) return '同期済み';
+  if(relayReady()) return '中継の準備OK';
   return '接続済み';
 }
 function onDriveRow(){
   if(syncRunning) return;
+  if(relayReady()){ appSync(true); return; }
   if(!isConnected() || (syncError && !accessToken)){ connectDrive(); return; }
   appSync(true);
 }
@@ -885,6 +962,8 @@ function renderOther(){
   var el = $('otherBody'); if(!el) return;
   var h = '';
   h += '<button class="pillrow" onclick="onDriveRow()"><span class="ic">' + SICON.cloud + '</span><span class="lb">Google Drive 同期</span><span class="val" id="driveval">' + esc(driveValText()) + '</span><span class="chev">›</span></button>';
+  h += '<div id="syncresults">' + syncLinesHTML() + '</div>';
+  if(SAVE_FAIL) h += '<div class="syncline err">端末への保存ができませんでした（空き容量を確認してください）</div>';
   h += '<div class="groupcard">';
   DATA.sections.filter(function(s){ return secTab(s) === 'other'; }).forEach(function(sec){
     var ic = SICON[SEC_ICONS[sec.id] || 'dot'];
@@ -899,6 +978,7 @@ function renderOther(){
   h += '<div class="orow-chips">';
   (DATA.home.chips || []).forEach(function(chip){ h += '<span class="chip">' + esc(chip) + '</span>'; });
   h += '</div></div>';
+  h += relayGroupHTML();
   h += '<div class="groupcard">';
   h += '<div class="srow"><span class="ic">' + SICON.info + '</span><span class="lb">このアプリについて</span><span class="val">Busilabo v' + APP_VERSION + '</span></div>';
   h += '<div class="srow"><span class="ic">' + SICON.db + '</span><span class="lb">データ</span><span class="val">bizplan.json（Drive）</span></div>';
@@ -1215,9 +1295,166 @@ window.addEventListener('popstate', function(){
   }
 })();
 
-/* ---------- Google Drive sync (GIS popup, drive.file) ---------- */
+/* ============================================================
+   v3.0.0: the zukan app's mechanism layer, ported wholesale —
+   relay transport, the sync rules (queue / one retry / guard
+   veto / convergence / stamp+hash skip), silent reconnect,
+   plan-change notifications, and the update-history feed.
+   ============================================================ */
+
+/* ---------- toast (the zukan app's, ported) ---------- */
+function toast(msg, ms){
+  var t = $('toast'); if(!t) return;
+  $('toastmsg').textContent = msg;
+  var act = $('toastact'); act.classList.add('hidden'); act.onclick = null;
+  t.classList.add('on');
+  clearTimeout(toast._tm); toast._tm = setTimeout(function(){ t.classList.remove('on'); }, ms || 2600);
+}
+
+/* ---------- fetch with timeout + content hash (the zukan app's
+   fetchT / syncHashOfStr, ported verbatim) ---------- */
+function fetchT(url, opts, ms){
+  return new Promise(function(resolve, reject){
+    var ctl = null;
+    try{ ctl = new AbortController(); }catch(e){}
+    var to = setTimeout(function(){ try{ if(ctl) ctl.abort(); }catch(e){} reject(new Error('通信がタイムアウトしました')); }, ms || 30000);
+    var o = Object.assign({}, opts || {}); if(ctl) o.signal = ctl.signal;
+    fetch(url, o).then(function(r){ clearTimeout(to); resolve(r); }, function(e){ clearTimeout(to); reject(e); });
+  });
+}
+function syncHashOfStr(s){
+  var h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for(var i = 0; i < s.length; i++){ var ch = s.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return s.length + ':' + (h2 >>> 0).toString(16) + (h1 >>> 0).toString(16);
+}
+function sleepMs(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+/* ---------- relay transport (the zukan app's, ported) ----------
+   The relay spec is frozen (ping/stat/get/put + a filename
+   pattern); bizplan.json matches the pattern, so the relay works
+   for this app with NO relay-side change. getSince is NOT used:
+   server-side it only splits the artists / exhibitions keys and
+   returns every other root key (here: sections, home) wholesale,
+   so stat + get is equivalent and simpler.
+   The config lives in this app's own key. When it is absent, the
+   zukan app's same-origin config is adopted read-only, so a
+   device that already runs Arcanum's relay needs no new setup
+   here. The secret is never embedded in this file. */
+var LS_RELAY = 'bizplan.relay';
+var RELAY_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbziV1Wpv7AWSUJJgaKyRzFeBR81Td4CjryGGuq4avt1xAo-e2mbeyS2vBpCuqx4_KI/exec';
+function relayCfgInfo(){
+  var own = null;
+  try{ own = JSON.parse(localStorage.getItem(LS_RELAY) || 'null'); }catch(e){}
+  if(own && own.disabled) return null;
+  if(own && own.secret) return { url: own.url || RELAY_URL_DEFAULT, secret: own.secret, adopted: false };
+  try{
+    var z = JSON.parse(localStorage.getItem('zukan.relay') || 'null');
+    if(z && z.secret) return { url: z.url || RELAY_URL_DEFAULT, secret: z.secret, adopted: true };
+  }catch(e){}
+  return null;
+}
+function relayCfg(){ var i = relayCfgInfo(); return i ? { url: i.url, secret: i.secret } : null; }
+function relayReady(){ return !!relayCfg(); }
+async function relayCall(op, name, content, extra){
+  var c = relayCfg(); if(!c) throw new Error('中継が未設定です');
+  var body = JSON.stringify(Object.assign({ secret: c.secret, op: op, name: name, content: content }, extra || {}));
+  var healed = false;
+  for(;;){
+    var res = await fetchT(c.url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: body }, 60000);
+    if(!res.ok) throw new Error('中継 HTTP ' + res.status);
+    var text = await res.text();
+    var ctype = (res.headers && res.headers.get) ? (res.headers.get('content-type') || '') : '';
+    var trimmed = text.replace(/^\s+/, '');
+    /* sentinel self-heal (zukan v27.11 B): a body opening with the
+       relay's doGet text — or any non-JSON text/plain body — proves
+       the POST was re-driven as a GET in the redirect chain.
+       Re-issue the POST once, silently, right here. */
+    var sentinel = trimmed.indexOf('Muse relay is alive') === 0 || (/^text\/plain/i.test(ctype) && trimmed.charAt(0) !== '{');
+    if(sentinel && !healed){ healed = true; continue; }
+    var j = null;
+    try{ j = JSON.parse(text); }catch(e){}
+    if(!j || typeof j !== 'object' || typeof j.ok === 'undefined'){
+      /* envelope discipline (zukan v27.11 A): a body that is not
+         the JSON envelope is a transport error — never surfaced
+         raw to the user. */
+      var err = new Error('中継の応答が正しく届きませんでした');
+      err.code = 'RELAY_BAD_BODY';
+      throw err;
+    }
+    if(!j.ok) throw new Error('中継エラー：' + ((j && j.error) || 'unknown'));
+    return j;
+  }
+}
+function relaySave(url, secret){
+  url = String(url || '').trim() || RELAY_URL_DEFAULT; secret = String(secret || '').trim();
+  if(!secret){ toast('シークレットを入力してください'); return false; }
+  try{ localStorage.setItem(LS_RELAY, JSON.stringify({ url: url, secret: secret })); }catch(e){}
+  renderSyncStatus();
+  return true;
+}
+function relayForget(){
+  var info = relayCfgInfo();
+  try{
+    if(info && !info.adopted) localStorage.removeItem(LS_RELAY);
+    else localStorage.setItem(LS_RELAY, JSON.stringify({ disabled: true }));
+  }catch(e){}
+  renderSyncStatus();
+  if(currentTab === 'other' && !detailOpen && !notifOpen) renderOther();
+  toast('この端末では中継を使わない設定にしました');
+}
+async function relaySaveAndTest(){
+  var u = $('relayUrl'), s = $('relaySecret'), st = $('relayStat');
+  if(!u || !s) return;
+  if(!relaySave(u.value, s.value)) return;
+  if(st) st.textContent = '接続テスト中…';
+  try{
+    await relayCall('ping');
+    if(st) st.textContent = '接続OK — この端末では Google ログインなしで同期します。';
+    appSync(false);
+  }catch(e){
+    if(st) st.textContent = '接続に失敗しました：' + ((e && e.message) || e);
+  }
+}
+function relayGroupHTML(){
+  var rc = relayCfgInfo();
+  var h = '<div class="groupcard">';
+  h += '<div class="srow"><span class="ic">' + SICON.web + '</span><span class="lb">中継（ログインなし同期）</span><span class="val">' + (rc ? (rc.adopted ? '図鑑と共有中' : '設定済み') : '未設定') + '</span></div>';
+  if(rc){
+    h += '<div class="rstat">' + (rc.adopted ? '図鑑アプリで設定した中継を、この端末ではそのまま使っています。Googleログインなしで同期します。' : 'この端末では Google ログインなしで同期します。') + '</div>';
+    h += '<button class="rbtn" onclick="relayForget()">この端末では中継を使わない</button>';
+  } else {
+    h += '<input class="rinput" id="relayUrl" type="text" placeholder="https://script.google.com/macros/s/…" autocomplete="off" value="' + esc(RELAY_URL_DEFAULT) + '">';
+    h += '<input class="rinput" id="relaySecret" type="password" placeholder="シークレット" autocomplete="off">';
+    h += '<button class="rbtn" onclick="relaySaveAndTest()">保存してテスト</button>';
+    h += '<div class="rstat" id="relayStat">中継を設定すると、Google ログインなしで同期できます（図鑑アプリと同じ仕組み）。</div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+/* ---------- sync state ---------- */
 var accessToken = null, tokenExp = 0, tokenClient = null, fileId = null;
 var syncRunning = false, syncError = null, lastSyncAt = 0, pendingCount = 0;
+var syncNote = '';
+var LS_META = 'bizplan.syncMeta', LS_KNOWN = 'bizplan.knownIds';
+var syncLines = [];
+function appendSyncLine(label, msg, err){
+  syncLines.push({ label: label, msg: msg, err: !!err });
+  if(syncLines.length > 6) syncLines = syncLines.slice(-6);
+  var el = $('syncresults'); if(el) el.innerHTML = syncLinesHTML();
+}
+function syncLinesHTML(){
+  return syncLines.map(function(l){
+    return '<div class="syncline' + (l.err ? ' err' : '') + '">' + esc(l.label) + '：' + esc(l.msg) + '</div>';
+  }).join('');
+}
+function syncMetaLoad(){ try{ return JSON.parse(localStorage.getItem(LS_META) || 'null'); }catch(e){ return null; } }
+function syncMetaSave(m){ try{ localStorage.setItem(LS_META, JSON.stringify(m)); }catch(e){} }
+function knownIdsLoad(){ try{ var k = JSON.parse(localStorage.getItem(LS_KNOWN) || 'null'); return (k && Array.isArray(k.sections)) ? k.sections : null; }catch(e){ return null; } }
+function knownIdsSave(ids){ try{ localStorage.setItem(LS_KNOWN, JSON.stringify({ sections: ids, at: nowISO() })); }catch(e){} }
+function dataIds(){ return DATA.sections.map(function(s){ return s.id; }); }
 
 function isConnected(){ try{ return localStorage.getItem(LS_CONN) === '1'; }catch(e){ return false; } }
 function setConnected(v){ try{ v ? localStorage.setItem(LS_CONN, '1') : localStorage.removeItem(LS_CONN); }catch(e){} }
@@ -1226,27 +1463,37 @@ function renderSyncStatus(){
   var html;
   if(syncRunning) html = '同期中…';
   else if(syncError) html = '<span class="err">同期エラー</span> ・ 未同期' + pendingCount + '件 ・ <span class="sbhint">タップで再試行</span>';
-  else if(!isConnected()) html = 'Drive未接続（端末内のデータを表示中） ・ <span class="sbhint">タップで接続</span>';
+  else if(!isConnected() && !relayReady()) html = 'Drive未接続（端末内のデータを表示中） ・ <span class="sbhint">タップで接続</span>';
   else if(pendingCount > 0) html = '未同期の変更' + pendingCount + '件 ・ <span class="sbhint">タップで同期</span>';
   else if(lastSyncAt){
     var d = new Date(lastSyncAt);
     html = '同期済み（' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') + '）';
   }
+  else if(relayReady()) html = '中継の準備OK ・ <span class="sbhint">タップで同期</span>';
   else html = '接続済み ・ <span class="sbhint">タップで同期</span>';
+  if(syncNote && !syncRunning && !syncError) html += ' ・ ' + esc(syncNote);
   $('syncbar').innerHTML = html;
   /* the その他 view's Drive row mirrors the same state (zukan manner) */
   var dv = $('driveval'); if(dv) dv.textContent = driveValText();
-  if(currentTab === 'other' && !detailOpen) renderOther();
-  /* zukan sync dot: green only with a live token and no error */
-  $('syncdot').style.background = (isConnected() && !syncError && !!accessToken) ? '#46a758' : '#e5484d';
+  if(currentTab === 'other' && !detailOpen && !notifOpen){
+    /* never rebuild その他 under the user's fingers while they
+       are typing the relay secret */
+    var sec = $('relaySecret');
+    if(!(sec && (sec.value || document.activeElement === sec))) renderOther();
+  }
+  /* zukan sync dot: green with a live path (relay, or a connected
+     token) and no error */
+  $('syncdot').style.background = (!syncError && (relayReady() || (isConnected() && !!accessToken))) ? '#46a758' : '#e5484d';
   fitHdr();
 }
 $('syncbar').addEventListener('click', function(){
   if(syncRunning) return;
+  if(relayReady()){ appSync(true); return; }
   if(!isConnected() || (syncError && !accessToken)){ connectDrive(); return; }
   appSync(true);
 });
 
+/* ---------- GIS token (popup only — never a redirect on iOS) --- */
 function waitGis(){
   return new Promise(function(res, rej){
     var n = 0;
@@ -1256,6 +1503,26 @@ function waitGis(){
     }, 250);
   });
 }
+/* the token lives in sessionStorage with its expiry (the zukan
+   app's storeToken), so an in-session reload does not need a new
+   GIS round-trip */
+function storeToken(tok, expiresInSec){
+  accessToken = tok;
+  tokenExp = Date.now() + (expiresInSec ? expiresInSec * 1000 : 3000000);
+  try{ sessionStorage.setItem('bizplan.token', tok); sessionStorage.setItem('bizplan.tokenExp', String(tokenExp)); }catch(e){}
+}
+function tokenFromSession(){
+  if(accessToken && Date.now() < tokenExp - 30000) return accessToken;
+  try{
+    var t = sessionStorage.getItem('bizplan.token'), x = Number(sessionStorage.getItem('bizplan.tokenExp') || 0);
+    if(t && Date.now() < x - 30000){ accessToken = t; tokenExp = x; return t; }
+  }catch(e){}
+  return null;
+}
+function clearToken(){
+  accessToken = null; tokenExp = 0;
+  try{ sessionStorage.removeItem('bizplan.token'); sessionStorage.removeItem('bizplan.tokenExp'); }catch(e){}
+}
 function requestToken(interactive){
   return new Promise(function(res, rej){
     waitGis().then(function(){
@@ -1263,21 +1530,34 @@ function requestToken(interactive){
         client_id: CLIENT_ID,
         scope: 'https://www.googleapis.com/auth/drive.file',
         callback: function(resp){
-          if(resp && resp.access_token){
-            accessToken = resp.access_token;
-            tokenExp = Date.now() + (resp.expires_in ? resp.expires_in * 1000 : 3000000);
-            res(accessToken);
-          } else rej(new Error('no-token'));
+          if(resp && resp.access_token){ storeToken(resp.access_token, resp.expires_in); res(accessToken); }
+          else rej(new Error('no-token'));
         },
         error_callback: function(err){ rej(new Error(err && err.type ? err.type : 'gis-error')); }
       });
-      tokenClient.requestAccessToken({ prompt: interactive ? 'consent' : '' });
+      /* the zukan v5.71.2 rule: an explicit connect ALWAYS shows
+         the account chooser — he holds two Google accounts, and a
+         silent pick once synced the wrong account's Drive */
+      tokenClient.requestAccessToken({ prompt: interactive ? 'select_account' : '' });
     }).catch(rej);
   });
 }
 function getValidToken(interactive){
-  if(accessToken && Date.now() < tokenExp - 30000) return Promise.resolve(accessToken);
+  var t = tokenFromSession();
+  if(t) return Promise.resolve(t);
   return requestToken(interactive);
+}
+/* silent reconnect (the zukan app's): only on a device that has
+   connected before, throttled to one silent attempt a minute,
+   and a failure never becomes an error state */
+var silentTryAt = 0;
+function trySilentReconnect(){
+  if(!isConnected() || relayReady()) return;
+  if(tokenFromSession()) return;
+  var now = Date.now();
+  if(now - silentTryAt < 60000) return;
+  silentTryAt = now;
+  requestToken(false).then(function(){ appSync(false); }).catch(function(){});
 }
 function connectDrive(){
   getValidToken(true).then(function(){
@@ -1290,16 +1570,18 @@ function connectDrive(){
   });
 }
 function disconnectDrive(){
-  accessToken = null; tokenExp = 0; fileId = null;
+  clearToken(); fileId = null;
   setConnected(false); syncError = null;
   renderSyncStatus();
 }
+
+/* ---------- Drive (GIS) primitives ---------- */
 function driveFetch(url, opts){
   return getValidToken(false).then(function(token){
     var headers = Object.assign({}, (opts && opts.headers) || {}, { 'Authorization': 'Bearer ' + token });
-    return fetch(url, Object.assign({}, opts || {}, { headers: headers }));
+    return fetchT(url, Object.assign({}, opts || {}, { headers: headers }), 60000);
   }).then(function(res){
-    if(res.status === 401){ accessToken = null; tokenExp = 0; throw new Error('auth-401'); }
+    if(res.status === 401){ clearToken(); throw new Error('auth-401'); }
     if(!res.ok) throw new Error('drive-' + res.status);
     return res;
   });
@@ -1320,6 +1602,11 @@ function ensureFileId(){
         return uploadData(DATA).then(function(){ return fileId; });
       });
     });
+}
+function remoteStampGIS(){
+  return ensureFileId().then(function(id){
+    return driveFetch('https://www.googleapis.com/drive/v3/files/' + id + '?fields=modifiedTime');
+  }).then(function(res){ return res.json(); }).then(function(j){ return j && j.modifiedTime ? String(j.modifiedTime) : null; });
 }
 function normalizeData(j){
   if(!j || !Array.isArray(j.sections) || !j.home) return null;
@@ -1344,70 +1631,403 @@ function uploadData(data){
     });
   });
 }
-/* item-level merge: per section id, the newer updated_at wins; home likewise.
-   Union only — the merged result never holds fewer sections than either side. */
+
+/* ---------- merge (the zukan app's rules, scaled to this shape)
+   Per section id the newer updated_at wins wholesale; home
+   likewise. Convergence: a local-only section whose id was in
+   the last landed server set is treated as deleted on the
+   server and dropped (deletions propagate); a local-only section
+   the server set has never contained is kept and counted
+   pending — it may be a brand-new local record whose upload has
+   not landed yet, and dropping it would lose data. */
 function mergeData(local, remote){
-  if(!remote) return { data: local, changed: false, pending: local.sections.length + 1 };
+  if(!remote) return { data: local, changed: false, pending: local.sections.length + 1, dropped: 0 };
+  var known = knownIdsLoad();
   var remoteById = {};
   remote.sections.forEach(function(s){ remoteById[s.id] = s; });
-  var seen = {}, mergedSections = [], pending = 0;
+  var seen = {}, mergedSections = [], pending = 0, dropped = 0;
   local.sections.forEach(function(ls){
     seen[ls.id] = true;
     var rs = remoteById[ls.id];
-    if(!rs){ mergedSections.push(ls); pending++; }
+    if(!rs){
+      if(known && known.indexOf(ls.id) >= 0){ dropped++; return; }
+      mergedSections.push(ls); pending++;
+    }
     else if((ls.updated_at || '') > (rs.updated_at || '')){ mergedSections.push(ls); pending++; }
     else mergedSections.push(rs);
   });
   remote.sections.forEach(function(rs){ if(!seen[rs.id]) mergedSections.push(rs); });
   var home = local.home, homePending = 0;
-  if((remote.home && remote.home.updated_at || '') > (local.home.updated_at || '')) home = remote.home;
+  if(((remote.home && remote.home.updated_at) || '') > (local.home.updated_at || '')) home = remote.home;
   else if((local.home.updated_at || '') > ((remote.home && remote.home.updated_at) || '')) homePending = 1;
   pending += homePending;
   var merged = { version: 1, updatedAt: local.updatedAt, home: home, sections: mergedSections };
-  return { data: merged, changed: JSON.stringify(merged) !== JSON.stringify(local), pending: pending };
+  return { data: merged, changed: JSON.stringify(merged) !== JSON.stringify(local), pending: pending, dropped: dropped };
+}
+
+/* ---------- plan-change notifications ----------
+   The zukan app's registration-notification mechanism, adapted:
+   whenever new data lands, section ids / updated_at are diffed
+   against the last landed snapshot; new and advanced sections
+   become notifications (burst cap 8 + one summary, store cap
+   60 — the zukan numbers). The first snapshot seeds silently. */
+var LS_PNOTIFS = 'bizplan.planNotifs', LS_STAMPS = 'bizplan.knownStamps';
+function planNotifsLoad(){ try{ var a = JSON.parse(localStorage.getItem(LS_PNOTIFS) || '[]'); return Array.isArray(a) ? a : []; }catch(e){ return []; } }
+function planNotifsSave(a){ try{ localStorage.setItem(LS_PNOTIFS, JSON.stringify(a.slice(0, 60))); }catch(e){} }
+function stampsLoad(){ try{ return JSON.parse(localStorage.getItem(LS_STAMPS) || 'null'); }catch(e){ return null; } }
+function stampsSave(data){
+  var m = { home: (data.home && data.home.updated_at) || '' };
+  (data.sections || []).forEach(function(s){ m[s.id] = s.updated_at || ''; });
+  try{ localStorage.setItem(LS_STAMPS, JSON.stringify(m)); }catch(e){}
+}
+function detectPlanChanges(after){
+  var prev = stampsLoad();
+  stampsSave(after);
+  if(!prev) return; /* first snapshot: seed silently, no flood */
+  var fresh = [];
+  (after.sections || []).forEach(function(s){
+    if(!(s.id in prev)) fresh.push({ sectionId: s.id, title: s.title || s.id, kind: 'new' });
+    else if((s.updated_at || '') > prev[s.id]) fresh.push({ sectionId: s.id, title: s.title || s.id, kind: 'updated' });
+  });
+  if(((after.home && after.home.updated_at) || '') > (prev.home || '')) fresh.push({ sectionId: '', title: 'ホーム（目標・前提）', kind: 'updated' });
+  if(!fresh.length) return;
+  var at = nowISO();
+  var mk = function(f){ return { id: 'pn' + Date.now().toString(36) + Math.floor(Math.random() * 1e6).toString(36), sectionId: f.sectionId, title: f.title, kind: f.kind, at: at, seen: false }; };
+  var entries = fresh.slice(0, 8).map(mk);
+  if(fresh.length > 8) entries.push({ id: 'pnsum' + Date.now().toString(36), summary: true, count: fresh.length - 8, members: fresh.slice(8).map(function(f){ return { sectionId: f.sectionId, title: f.title, kind: f.kind }; }), at: at, seen: false });
+  planNotifsSave(entries.concat(planNotifsLoad()));
+  refreshBell();
+}
+function planUnseenCount(){ return planNotifsLoad().filter(function(n){ return !n.seen; }).length; }
+function planMarkSeen(id){
+  var a = planNotifsLoad(), ch = false;
+  a.forEach(function(n){ if(n.id === id && !n.seen){ n.seen = true; ch = true; } });
+  if(ch){ planNotifsSave(a); refreshBell(); }
+}
+
+/* ---------- update history (the zukan app's changelog mechanism,
+   ported): changelog.json sits beside the app, fetched cache-free;
+   entries carry { v, at, notes[] }; the seen set is seeded so
+   only the newest entry starts as NEW; expanding an entry — or
+   its 確認した button — is what marks it seen. */
+var LS_CHANGELOG = 'bizplan.changelog', LS_CHANGELOG_SEEN = 'bizplan.changelogSeen';
+var changelogData = null, changelogOpen = {};
+function changelogCacheLoad(){ try{ return JSON.parse(localStorage.getItem(LS_CHANGELOG) || 'null'); }catch(e){ return null; } }
+function fetchChangelog(){
+  fetch('changelog.json?cv=' + Date.now(), { cache: 'no-store' }).then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
+    if(j && Array.isArray(j.entries)){
+      changelogData = j;
+      try{ localStorage.setItem(LS_CHANGELOG, JSON.stringify(j)); }catch(e){}
+      refreshBell();
+      if(notifOpen && bellTab === 'history') renderUpdateList();
+    }
+  }).catch(function(){});
+}
+function changelogEntryKey(e){ return String(e.v || '') + '|' + String(e.at || ''); }
+function changelogSeenLoad(entries){
+  try{ var d = JSON.parse(localStorage.getItem(LS_CHANGELOG_SEEN) || 'null'); if(Array.isArray(d)) return d; }catch(e){}
+  if(!entries || !entries.length) return [];
+  var sorted = entries.slice().sort(function(a, b){ return (Date.parse(b.at || '') || 0) - (Date.parse(a.at || '') || 0); });
+  var seed = sorted.slice(1).map(changelogEntryKey);
+  try{ localStorage.setItem(LS_CHANGELOG_SEEN, JSON.stringify(seed)); }catch(e){}
+  return seed;
+}
+function changelogUnseenCount(){
+  var d = changelogData || changelogCacheLoad();
+  if(!d || !d.entries.length) return 0;
+  var raw = null;
+  try{ raw = JSON.parse(localStorage.getItem(LS_CHANGELOG_SEEN) || 'null'); }catch(e){}
+  if(!Array.isArray(raw)) return 1; /* unseeded: only the newest entry will be NEW */
+  var s = {};
+  raw.forEach(function(k){ s[k] = true; });
+  return d.entries.filter(function(e){ return !s[changelogEntryKey(e)]; }).length;
+}
+function changelogMarkSeen(k){
+  var d = changelogData || changelogCacheLoad();
+  var seen = changelogSeenLoad(d ? d.entries : null);
+  if(seen.indexOf(k) >= 0) return;
+  seen.push(k);
+  try{ localStorage.setItem(LS_CHANGELOG_SEEN, JSON.stringify(seen)); }catch(e){}
+  refreshBell();
+}
+function notifWhen(iso){
+  var t = Date.parse(iso || ''); if(isNaN(t)) return '';
+  var d = new Date(t);
+  return d.getFullYear() + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + String(d.getDate()).padStart(2, '0');
+}
+
+/* ---------- the bell hub (the zukan app's panel, ported) -------
+   The header bell carries a presence dot only; the unseen counts
+   live on the panel's two tabs as gold pills. */
+var notifOpen = false, bellTab = 'notif', notifReturn = null;
+function refreshBell(){
+  var bn = $('bellTabNotif'), bh = $('bellTabHist'), dot = $('belldot');
+  var pn = planUnseenCount(), cn = changelogUnseenCount();
+  if(dot) dot.style.display = (pn + cn) > 0 ? '' : 'none';
+  if(bn){ bn.innerHTML = '通知' + (pn ? '<span class="belldot">' + pn + '</span>' : ''); bn.classList.toggle('on', bellTab === 'notif'); }
+  if(bh){ bh.innerHTML = '更新履歴' + (cn ? '<span class="belldot">' + cn + '</span>' : ''); bh.classList.toggle('on', bellTab === 'history'); }
+}
+function setBellTab(t){
+  bellTab = t;
+  $('notiflist').classList.toggle('hidden', t !== 'notif');
+  $('updatelist').classList.toggle('hidden', t !== 'history');
+  refreshBell();
+  if(t === 'history') renderUpdateList(); else renderNotifList();
+}
+function openNotif(){
+  if(notifOpen || vtBusy) return;
+  notifReturn = detailOpen ? current : null;
+  notifOpen = true;
+  document.body.classList.add('notifopen');
+  detailView.classList.add('hidden');
+  listView.classList.add('hidden');
+  $('viewNotif').classList.remove('hidden');
+  window.scrollTo(0, 0);
+  setBellTab(bellTab);
+  fetchChangelog();
+}
+function closeNotif(){
+  if(!notifOpen) return;
+  notifOpen = false;
+  document.body.classList.remove('notifopen');
+  $('viewNotif').classList.add('hidden');
+  var back = notifReturn; notifReturn = null;
+  if(back && sectionById(back)){
+    current = back; detailOpen = true;
+    $('detailBody').innerHTML = sectionById(back).html;
+    detailView.classList.remove('hidden');
+    window.scrollTo(0, 0);
+  } else {
+    detailOpen = false; current = null;
+    listView.classList.remove('hidden');
+    window.scrollTo(0, listScrollY);
+  }
+  ensurePillAnchor(true);
+}
+$('notifBackBtn').addEventListener('click', function(){ closeNotif(); });
+function renderNotifList(){
+  var el = $('notiflist'); if(!el) return;
+  var a = planNotifsLoad();
+  if(!a.length){ el.innerHTML = '<div class="empty">通知はまだありません</div>'; return; }
+  el.innerHTML = a.map(function(n){
+    if(n.summary){
+      var open = !!changelogOpen['sum:' + n.id];
+      return '<div class="uprow tap' + (n.seen ? '' : ' hasnew') + '" data-nsum="' + esc(n.id) + '"><div class="nrow"><span class="nname">ほか ' + n.count + ' 件の更新</span><span class="nkind">まとめ</span></div>' +
+        (n.seen ? '' : '<span class="newtag">NEW</span>') +
+        '<span class="nexp' + (open ? ' open' : '') + '">›</span>' +
+        (open ? '<div class="ndetail">' + (n.members || []).map(function(m){ return '<button class="nmember" data-njump="' + esc(m.sectionId) + '" data-nid="' + esc(n.id) + '">' + esc(m.title) + '</button>'; }).join('') + '</div>' : '') + '</div>';
+    }
+    return '<div class="uprow tap' + (n.seen ? '' : ' hasnew') + '" data-njump="' + esc(n.sectionId) + '" data-nid="' + esc(n.id) + '"><div class="nrow"><span class="nname">' + esc(n.title) + '</span><span class="nkind' + (n.kind === 'new' ? ' reg' : '') + '">' + (n.kind === 'new' ? '新規' : '更新') + '</span></div>' +
+      (n.seen ? '' : '<span class="newtag">NEW</span>') + '<span class="nexp">›</span></div>';
+  }).join('');
+}
+function notifJump(sectionId, nid){
+  if(nid) planMarkSeen(nid);
+  closeNotif();
+  if(!sectionId){ goTab('other'); return; }
+  if(sectionById(sectionId)) openDetail(sectionId, true);
+}
+function renderUpdateList(){
+  var el = $('updatelist'); if(!el) return;
+  var d = changelogData || changelogCacheLoad();
+  if(!d || !d.entries.length){ el.innerHTML = '<div class="empty">更新履歴はまだ読み込めていません</div>'; return; }
+  var entries = d.entries.slice().sort(function(a, b){ return (Date.parse(b.at || '') || 0) - (Date.parse(a.at || '') || 0); });
+  var seenSet = {};
+  changelogSeenLoad(entries).forEach(function(k){ seenSet[k] = true; });
+  el.innerHTML = entries.map(function(e){
+    var k = changelogEntryKey(e);
+    var open = !!changelogOpen[k];
+    return '<div class="uprow tap" data-ck="' + esc(k) + '"><div class="uphead"><span class="upv' + (e.v === APP_VERSION ? ' now' : '') + '">v' + esc(e.v) + '</span>' +
+      '<span class="upat">' + esc(notifWhen(e.at)) + '</span>' + (e.v === APP_VERSION ? '<span class="upat">（いまの版）</span>' : '') +
+      (seenSet[k] ? '' : '<span class="newtag inl">NEW</span>') +
+      (seenSet[k] ? '<span class="seenwrap"><button class="seenbtn done" disabled>確認済み</button></span>' : '<span class="seenwrap"><button class="seenbtn" data-confirm="' + esc(k) + '">確認した</button></span>') +
+      '<span class="nexp' + (open ? ' open' : '') + '">›</span></div>' +
+      (open ? '<ul class="upnotes">' + (e.notes || []).map(function(n){ return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>' : '') +
+      '</div>';
+  }).join('');
+}
+function toggleChangelogDetail(k){
+  changelogOpen[k] = !changelogOpen[k];
+  /* zukan v27.5: expanding an entry is what marks it seen —
+     rendering alone marks nothing */
+  if(changelogOpen[k]) changelogMarkSeen(k);
+  renderUpdateList();
+}
+document.addEventListener('click', function(e){
+  if(!notifOpen) return;
+  var t = e.target;
+  var c = t.closest ? t.closest('[data-confirm]') : null;
+  if(c){ e.preventDefault(); e.stopPropagation(); changelogMarkSeen(c.getAttribute('data-confirm')); renderUpdateList(); return; }
+  var j = t.closest ? t.closest('[data-njump]') : null;
+  if(j){ e.preventDefault(); notifJump(j.getAttribute('data-njump'), j.getAttribute('data-nid')); return; }
+  var sm = t.closest ? t.closest('[data-nsum]') : null;
+  if(sm){
+    var id = sm.getAttribute('data-nsum');
+    changelogOpen['sum:' + id] = !changelogOpen['sum:' + id];
+    planMarkSeen(id);
+    renderNotifList(); return;
+  }
+  var row = t.closest ? t.closest('[data-ck]') : null;
+  if(row){ toggleChangelogDetail(row.getAttribute('data-ck')); return; }
+});
+
+/* ---------- sync core (the zukan app's rules) ----------
+   One queue: every sync runs through queueSync, so two syncs
+   never overlap (the old flag simply dropped concurrent runs).
+   A timed-out attempt retries exactly once after 1.5s. A write
+   is built only on the fresh download of the same run, and the
+   totals guard is a VETO, not an error (zukan v14.1): if the
+   merged result would shrink the server file, the upload is
+   dropped, the merged state is adopted locally, and a note is
+   attached — no error, no retry loop. When the server stamp and
+   the local hash both match the last landed sync, the download
+   is skipped entirely (the zukan B shortcut). */
+var syncQueue = Promise.resolve();
+function queueSync(task){
+  var p = syncQueue.then(task, task);
+  syncQueue = p.then(function(){}, function(){});
+  return p;
+}
+function isTimeoutErr(e){
+  var m = String((e && e.message) || e || '');
+  return /タイムアウト|abort|network|failed to fetch/i.test(m) || (e && e.code === 'RELAY_BAD_BODY');
 }
 function appSync(manual){
-  if(syncRunning) return;
-  if(!isConnected()){ if(manual) connectDrive(); return; }
-  syncRunning = true; syncError = null; renderSyncStatus();
-  getValidToken(false)
-    .then(function(){ return downloadData(); })
-    .then(function(remote){
-      var m = mergeData(DATA, remote);
-      /* write guard: never upload a result with fewer sections than the fresh remote */
-      if(remote && m.data.sections.length < remote.sections.length) throw new Error('merge-guard');
-      var remoteChanged = !!remote && JSON.stringify(m.data) !== JSON.stringify({ version: 1, updatedAt: remote.updatedAt, home: remote.home, sections: remote.sections });
-      if(m.changed){
-        DATA = m.data; saveCache(); renderHome();
-        if(current) $('detailBody').innerHTML = (sectionById(current) || {}).html || '';
-      }
-      pendingCount = m.pending;
-      if(!remote || remoteChanged || m.pending > 0){
-        return uploadData(m.data).then(function(){
-          pendingCount = 0;
-          DATA.updatedAt = nowISO(); saveCache();
-        });
-      }
-    })
-    .then(function(){
-      lastSyncAt = Date.now();
-      syncRunning = false;
-      renderSyncStatus();
-    })
-    .catch(function(e){
-      syncError = String(e && e.message || e);
-      syncRunning = false;
-      renderSyncStatus();
-    });
+  return queueSync(function(){ return syncFlow(manual); });
 }
-/* token watchdog: silently re-acquire an expired token and re-sync */
-setInterval(function(){
-  if(isConnected() && (!accessToken || Date.now() >= tokenExp - 30000) && !syncRunning){
-    getValidToken(false).then(function(){ appSync(false); }).catch(function(){});
+async function syncFlow(manual){
+  if(!relayReady() && !isConnected()){ if(manual) connectDrive(); return; }
+  syncRunning = true; syncError = null; renderSyncStatus();
+  try{
+    await syncOnce();
+  }catch(e1){
+    if(isTimeoutErr(e1)){
+      await sleepMs(1500);
+      try{ await syncOnce(); }
+      catch(e2){ syncError = String((e2 && e2.message) || e2); appendSyncLine('同期', '失敗しました：' + syncError, true); }
+    } else {
+      syncError = String((e1 && e1.message) || e1);
+      appendSyncLine('同期', '失敗しました：' + syncError, true);
+    }
   }
+  syncRunning = false;
+  renderSyncStatus();
+}
+async function syncOnce(){
+  syncNote = '';
+  if(relayReady()) await syncViaRelay();
+  else await syncViaGIS();
+  lastSyncAt = Date.now();
+}
+function adoptMerged(m){
+  if(m.changed){
+    DATA = m.data; saveCache(); renderHome();
+    if(current && detailOpen) $('detailBody').innerHTML = (sectionById(current) || {}).html || '';
+    detectPlanChanges(DATA);
+  }
+  pendingCount = m.pending;
+}
+function guardTripped(m, remote){ return m.data.sections.length < remote.sections.length; }
+async function syncViaRelay(){
+  var st = await relayCall('stat', FILE_NAME);
+  var meta = syncMetaLoad();
+  if(st.exists && meta && String(meta.stamp) === String(st.updated) && meta.hash === syncHashOfStr(JSON.stringify(DATA))){
+    pendingCount = 0; /* stamp + local hash unchanged: skip the download */
+    return;
+  }
+  if(!st.exists){
+    var seedPayload = clone(DATA); seedPayload.updatedAt = nowISO();
+    await relayCall('put', FILE_NAME, JSON.stringify(seedPayload));
+    DATA.updatedAt = seedPayload.updatedAt; saveCache();
+    var st2 = await relayCall('stat', FILE_NAME);
+    syncMetaSave({ stamp: String(st2.updated), hash: syncHashOfStr(JSON.stringify(DATA)) });
+    knownIdsSave(dataIds());
+    stampsSave(DATA);
+    pendingCount = 0;
+    appendSyncLine('同期', '中継で bizplan.json を作成しました');
+    return;
+  }
+  var g = await relayCall('get', FILE_NAME);
+  var remote = null;
+  try{ remote = normalizeData(JSON.parse(g.content)); }catch(e){}
+  if(!remote) throw new Error('サーバのデータを読み取れませんでした');
+  var m = mergeData(DATA, remote);
+  if(guardTripped(m, remote)){
+    syncNote = 'サーバの最新に合わせ直しました';
+    adoptMerged(m);
+    pendingCount = 0;
+    knownIdsSave(remote.sections.map(function(s){ return s.id; }));
+    syncMetaSave({ stamp: String(g.updated), hash: syncHashOfStr(JSON.stringify(DATA)) });
+    appendSyncLine('同期', '古い送信を止めて、サーバの最新に合わせました');
+    return;
+  }
+  adoptMerged(m);
+  var remoteChanged = JSON.stringify(m.data) !== JSON.stringify({ version: 1, updatedAt: remote.updatedAt, home: remote.home, sections: remote.sections });
+  if(remoteChanged || m.pending > 0){
+    var payload = clone(m.data); payload.updatedAt = nowISO();
+    await relayCall('put', FILE_NAME, JSON.stringify(payload));
+    DATA.updatedAt = payload.updatedAt; saveCache();
+    pendingCount = 0;
+    var st3 = await relayCall('stat', FILE_NAME);
+    syncMetaSave({ stamp: String(st3.updated), hash: syncHashOfStr(JSON.stringify(DATA)) });
+  } else {
+    syncMetaSave({ stamp: String(g.updated), hash: syncHashOfStr(JSON.stringify(DATA)) });
+  }
+  knownIdsSave(dataIds());
+  appendSyncLine('同期', '完了しました（中継）');
+}
+async function syncViaGIS(){
+  var meta = syncMetaLoad();
+  var stamp = null;
+  try{ stamp = await remoteStampGIS(); }catch(e){ stamp = null; }
+  if(stamp && meta && String(meta.stamp) === String(stamp) && meta.hash === syncHashOfStr(JSON.stringify(DATA))){
+    pendingCount = 0; /* stamp + local hash unchanged: skip the download */
+    return;
+  }
+  var remote = await downloadData();
+  if(!remote){
+    /* ensureFileId has just created the file with our own data */
+    knownIdsSave(dataIds());
+    stampsSave(DATA);
+    pendingCount = 0;
+    return;
+  }
+  var m = mergeData(DATA, remote);
+  if(guardTripped(m, remote)){
+    syncNote = 'サーバの最新に合わせ直しました';
+    adoptMerged(m);
+    pendingCount = 0;
+    knownIdsSave(remote.sections.map(function(s){ return s.id; }));
+    appendSyncLine('同期', '古い送信を止めて、サーバの最新に合わせました');
+    return;
+  }
+  adoptMerged(m);
+  var remoteChanged = JSON.stringify(m.data) !== JSON.stringify({ version: 1, updatedAt: remote.updatedAt, home: remote.home, sections: remote.sections });
+  if(remoteChanged || m.pending > 0){
+    await uploadData(m.data);
+    pendingCount = 0;
+    DATA.updatedAt = nowISO(); saveCache();
+  }
+  var stamp2 = null;
+  try{ stamp2 = await remoteStampGIS(); }catch(e){}
+  syncMetaSave({ stamp: stamp2 ? String(stamp2) : null, hash: syncHashOfStr(JSON.stringify(DATA)) });
+  knownIdsSave(dataIds());
+  appendSyncLine('同期', '完了しました');
+}
+/* token watchdog (the zukan app's): an expired token is silently
+   re-acquired — throttled, and only on a device that connected
+   before. The relay path needs no token at all. */
+setInterval(function(){
+  if(syncRunning) return;
+  trySilentReconnect();
 }, 30000);
 document.addEventListener('visibilitychange', function(){
-  if(!document.hidden && isConnected()) appSync(false);
+  if(document.hidden) return;
+  if(relayReady()){ appSync(false); return; }
+  if(isConnected()){
+    if(tokenFromSession()) appSync(false);
+    else trySilentReconnect();
+  }
 });
 
 /* ---------- boot ---------- */
@@ -1418,8 +2038,11 @@ window.addEventListener('resize', fitHdr);
 requestAnimationFrame(fitHdr);
 if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ fitHdr(); });
 if(window.visualViewport) visualViewport.addEventListener('resize', fitHdr);
+var vb = $('verBadge'); if(vb) vb.textContent = 'v' + APP_VERSION;
 renderHome();
 renderSyncStatus();
+refreshBell();
+fetchChangelog();
 var initial = (location.hash || '').match(/^#\/(\w+)$/);
 if(initial && sectionById(initial[1])){
   setTab(secTab(sectionById(initial[1])));
@@ -1440,8 +2063,10 @@ if(initial && sectionById(initial[1])){
   if(reducedMotion()){ kill(); return; }
   setTimeout(kill, 900);
 })();
-if(isConnected()){
-  getValidToken(false).then(function(){ appSync(false); }).catch(function(){ renderSyncStatus(); });
+if(relayReady()){ appSync(false); }
+else if(isConnected()){
+  if(tokenFromSession()) appSync(false);
+  else trySilentReconnect();
 }
 </script>
 </body>
