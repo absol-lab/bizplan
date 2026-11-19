@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="2.1.1">
+<meta name="app-version" content="2.1.2">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -383,12 +383,20 @@ a{color:var(--accent);}
 .home-head{padding:10px 0 0;}
 .homestrip{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:11px 14px 10px; margin-bottom:9px;}
 .hs-theme{font-family:var(--headfont); font-size:16.5px; font-weight:700; letter-spacing:.05em; line-height:1.4;}
-.hs-goals{display:flex; align-items:center; flex-wrap:wrap; gap:6px 10px; margin-top:5px;}
-.hs-goal{display:inline-flex; align-items:baseline; gap:6px;}
+/* v2.1.2: the goals row is plain block flow, not a flex row. The
+   strip's height is then exactly the sum of its line boxes under
+   any font metrics — a flex cross-axis (align-items / baseline)
+   calculation can displace the row against the strip's own top
+   edge when the device renders the serif larger than the layout
+   assumed (his device recording: goals sliced at the strip top,
+   theme row pushed out of sight). Block flow cannot displace:
+   if a row wraps or grows, the strip grows with it. */
+.hs-goals{display:block; margin-top:6px; line-height:1.6;}
+.hs-goal{display:inline-flex; align-items:baseline; gap:6px; vertical-align:baseline;}
 .hs-gl{font-size:11px; color:var(--muted); letter-spacing:.04em; white-space:nowrap;}
 .hs-gn{font-family:var(--headfont); font-weight:700; font-size:16px; line-height:1.2;}
 .hs-gn small{font-size:11px; font-weight:600;}
-.hs-sep{width:1px; height:14px; background:var(--line); flex:none;}
+.hs-sep{display:inline-block; width:1px; height:14px; background:var(--line); margin:0 10px; vertical-align:-2px;}
 .chips{display:flex; flex-wrap:nowrap; gap:7px; overflow-x:auto; padding-bottom:2px; margin-bottom:2px; scrollbar-width:none; -webkit-overflow-scrolling:touch;}
 .chips::-webkit-scrollbar{display:none;}
 .chip{flex:none; font-size:11.5px; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:4px 10px; color:var(--text); white-space:nowrap;}
@@ -426,7 +434,10 @@ button.srow:active{opacity:.6;}
 .orow-goal .ogv{font-family:var(--headfont); font-weight:700; font-size:18px; white-space:nowrap;}
 .orow-goal .ogv small{font-size:12px; font-weight:600;}
 .orow-chips{display:flex; flex-wrap:wrap; gap:7px; padding:13px 0 10px;}
-#viewOther{padding-top:4px;}
+/* v2.1.2: extra bottom room so the last group card clears the
+   fixed pill nav with margin to spare at max scroll (the body's
+   108px reserve alone leaves only a few px on Face ID phones). */
+#viewOther{padding-top:4px; padding-bottom:30px;}
 
 /* card image face: no photos in this app — the section's character
    sits in the zukan .ph face at the same 4/3 ratio */
@@ -609,7 +620,7 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '2.1.1';
+var APP_VERSION = '2.1.2';
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
@@ -923,6 +934,13 @@ function goTab(t){
   }
   if(t !== currentTab) setTab(t);
   window.scrollTo(0, 0);
+  /* v2.1.2: iOS can hand back a small resting scroll after the
+     tap (restoration / anchoring), leaving the home strip tucked
+     under the fixed header at rest. Re-assert the top on the next
+     frame and once more shortly after — the same double-nudge
+     pattern showHome already uses for the list restore. */
+  requestAnimationFrame(function(){ window.scrollTo(0, 0); });
+  setTimeout(function(){ window.scrollTo(0, 0); }, 120);
 }
 /* pill anchor self-heal (the zukan app's guard, ported): when the
    compositor misplaces the fixed bar's layer during the app's view
@@ -1008,7 +1026,22 @@ var listView = $('viewList'), detailView = $('viewDetail');
 var current = null, detailOpen = false, vtBusy = false, listScrollY = 0;
 function reducedMotion(){ try{ return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; } }
 function hdrH(){ var h = document.querySelector('header.top'); return h ? h.offsetHeight : 0; }
-function fitHdr(){ document.documentElement.style.setProperty('--hdrh', hdrH() + 'px'); }
+function fitHdr(){
+  var v = hdrH() + 'px';
+  if(document.documentElement.style.getPropertyValue('--hdrh') !== v)
+    document.documentElement.style.setProperty('--hdrh', v);
+}
+/* v2.1.2: on iOS the fixed header's height is not final at the
+   first measure — the safe-area inset and the syncbar's wrapped
+   line count settle after boot, so a one-shot --hdrh can sit
+   ~a line short and the page's first band (the home strip) rests
+   tucked under the header (his device recording, 2026-11-19).
+   Watch the header itself and keep --hdrh in sync with whatever
+   height it actually settles at, whenever that happens. */
+if(window.ResizeObserver){
+  var hdrEl = document.querySelector('header.top');
+  if(hdrEl) new ResizeObserver(function(){ fitHdr(); }).observe(hdrEl);
+}
 
 function slideForward(newEl, oldEl){
   vtBusy = true;
@@ -1380,6 +1413,11 @@ document.addEventListener('visibilitychange', function(){
 /* ---------- boot ---------- */
 fitHdr();
 window.addEventListener('resize', fitHdr);
+/* v2.1.2: re-measure once the first frame and the fonts settle —
+   the boot-time measure can precede the header's final height. */
+requestAnimationFrame(fitHdr);
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ fitHdr(); });
+if(window.visualViewport) visualViewport.addEventListener('resize', fitHdr);
 renderHome();
 renderSyncStatus();
 var initial = (location.hash || '').match(/^#\/(\w+)$/);
