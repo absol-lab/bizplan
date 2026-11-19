@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="2.1.0">
+<meta name="app-version" content="2.1.1">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -80,13 +80,13 @@ h1.appname{font-family:var(--sans); font-size:16px; font-weight:700; letter-spac
 #syncbar .err{color:var(--danger);}
 #syncbar .sbhint{color:var(--accent);}
 main{display:block; max-width:720px; margin:0 auto; padding:0 14px; min-height:calc(100dvh + 1px);}
-.toolbar{padding:0 0 5px; position:sticky; top:var(--hdrh, 0px); z-index:28; background:var(--bg);}
+.toolbar{padding:0 0 5px; position:sticky; top:var(--hdrh, 0px); z-index:28; /* v2.1.1: no solid slab behind the mode bar — the bar itself carries the surface */ background:transparent;}
 .seg{display:inline-flex; gap:8px; flex-wrap:wrap;}
 .seg button{background:var(--bg2); border:1px solid var(--line); color:var(--text); padding:8px 16px; font-size:13px; letter-spacing:.06em; border-radius:999px; font-family:var(--sans); min-height:48px; display:inline-flex; align-items:center; justify-content:center;}
 .seg button.on{background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:600;}
 .seg.mini button{padding:7px 12px; font-size:12.5px;}
 .moderow{display:flex; gap:8px; align-items:stretch; margin-top:4px;}
-.modebar{display:flex; margin-top:0; background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+.modebar{display:flex; margin-top:0; background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.35);}
 .modebar button{flex:1; background:none; border:none; border-left:1px solid var(--line); padding:9px 0; font-size:12.5px; letter-spacing:.06em; color:var(--muted); font-family:var(--sans); min-height:48px;}
 .modebar button svg{width:19px; height:19px; display:block; margin:0 auto;}
 .modebar button:first-child{border-left:none;}
@@ -108,7 +108,7 @@ figure.work:active{background:var(--card2);}
 .fsyms{font-size:12px; line-height:1.35; color:var(--sub); letter-spacing:.28em; margin-top:1px;}
 .symlegend{padding:10px 14px; font-size:12.5px; color:var(--sub); line-height:2;}
 .symlegend b{display:inline-block; min-width:26px; color:var(--ink); font-weight:600; font-size:13px;}
-figure.work .ph{position:relative; aspect-ratio:4/3; background:var(--bg2); display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:9px;}
+figure.work .ph{position:relative; aspect-ratio:4/3; background:var(--bg2); display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:9px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.22);}
 /* v10.3: hi-res badge — the mark for works whose registered
    master is 4000px+ (definition owned by the data side). Sits
    at the photo's top-right on the photo-primary surfaces:
@@ -374,26 +374,66 @@ li{margin-bottom:.35em;}
 li:last-child{margin-bottom:0;}
 a{color:var(--accent);}
 
-/* home head */
-.home-head{padding:16px 0 2px;}
-.theme{font-family:var(--headfont); font-size:30px; font-weight:700; line-height:1.35; letter-spacing:.04em; margin:0 0 12px;}
-.theme-sub{margin-bottom:14px;}
-.goal-row{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:14px;}
-.goal{flex:1 1 200px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px 10px;}
-.goal .g-label{font-size:13px; color:var(--muted);}
-.goal .g-num{font-family:var(--headfont); font-weight:700; font-size:30px; line-height:1.25;}
-.goal .g-num small{font-size:15px; font-weight:600;}
-.goal .g-note{font-size:13px; color:var(--muted);}
-.goal.main{border-top:3px solid var(--accent);}
-.chips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:4px;}
-.chip{font-size:12.5px; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:5px 12px; color:var(--text);}
+/* home head — v2.1.1 brush-up: the zukan home opens straight onto
+   the grid, so the theme / goals / premises no longer stack as big
+   blocks above the cards. The home keeps only a slim summary strip
+   (theme line + the two goals inline) and a single-line chips rail;
+   the full texts (theme paragraph, goal notes, all premises) live
+   in the その他 view, in the zukan settings manner. */
+.home-head{padding:10px 0 0;}
+.homestrip{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:11px 14px 10px; margin-bottom:9px;}
+.hs-theme{font-family:var(--headfont); font-size:16.5px; font-weight:700; letter-spacing:.05em; line-height:1.4;}
+.hs-goals{display:flex; align-items:center; flex-wrap:wrap; gap:6px 10px; margin-top:5px;}
+.hs-goal{display:inline-flex; align-items:baseline; gap:6px;}
+.hs-gl{font-size:11px; color:var(--muted); letter-spacing:.04em; white-space:nowrap;}
+.hs-gn{font-family:var(--headfont); font-weight:700; font-size:16px; line-height:1.2;}
+.hs-gn small{font-size:11px; font-weight:600;}
+.hs-sep{width:1px; height:14px; background:var(--line); flex:none;}
+.chips{display:flex; flex-wrap:nowrap; gap:7px; overflow-x:auto; padding-bottom:2px; margin-bottom:2px; scrollbar-width:none; -webkit-overflow-scrolling:touch;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{flex:none; font-size:11.5px; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:4px 10px; color:var(--text); white-space:nowrap;}
+
+/* ---------- その他 view: the zukan app's settings system, ported
+   verbatim (.setttl / .pillrow / .groupcard / .srow from the zukan
+   app's own stylesheet). The four "other" sections are rows here,
+   not cards; app information (sync state, version, data file)
+   sits in rows the same way the zukan app keeps it in その他. */
+.setttl{text-align:center; font-size:18px; font-weight:700; letter-spacing:.08em; margin:6px 0 20px; font-family:var(--sans);}
+.pillrow{display:flex; align-items:center; gap:15px; width:100%; text-align:left; background:var(--card); border-radius:999px; padding:18px 22px; margin-bottom:26px; font-family:var(--sans); color:var(--text); min-height:48px;}
+.pillrow:active{background:var(--card2);}
+.groupcard{background:var(--card); border-radius:26px; padding:4px 20px; margin-bottom:26px;}
+.srow{display:flex; align-items:center; gap:15px; width:100%; text-align:left; padding:16px 0; border-bottom:1px solid var(--line); font-family:var(--sans); color:var(--text); min-height:48px;}
+.groupcard .srow:last-child{border-bottom:none;}
+button.srow:active{opacity:.6;}
+.srow .ic{flex:none; width:26px; height:26px; color:var(--muted); display:inline-flex; align-items:center; justify-content:center;}
+.srow .ic svg{width:25px; height:25px;}
+.pillrow .ic{flex:none; width:26px; height:26px; color:var(--muted); display:inline-flex; align-items:center; justify-content:center;}
+.pillrow .ic svg{width:25px; height:25px;}
+.srow .lb, .pillrow .lb{flex:1; font-size:calc(var(--fs) * 1.02); min-width:0;}
+.srow .val{color:var(--muted); font-size:calc(var(--fs) * .95);}
+.pillrow .val{color:var(--muted); font-size:calc(var(--fs) * .95);}
+.srow .chev, .pillrow .chev{color:var(--muted); font-size:22px; line-height:1;}
+.srow.danger .lb{color:var(--danger);}
+/* full-text block inside その他: theme paragraph, goal notes,
+   premise chips — everything the compact home strip abbreviates */
+.orow-text{padding:14px 0 12px; border-bottom:1px solid var(--line);}
+.oth-theme{font-family:var(--headfont); font-size:16px; font-weight:700; letter-spacing:.04em; margin-bottom:5px;}
+.oth-sub{font-size:13.5px; line-height:1.75;}
+.orow-goal{display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line);}
+.orow-goal .lb{flex:1; min-width:0;}
+.orow-goal .ogl{display:block; font-size:12px; color:var(--muted);}
+.orow-goal .ogn{display:block; font-size:13px; margin-top:1px;}
+.orow-goal .ogv{font-family:var(--headfont); font-weight:700; font-size:18px; white-space:nowrap;}
+.orow-goal .ogv small{font-size:12px; font-weight:600;}
+.orow-chips{display:flex; flex-wrap:wrap; gap:7px; padding:13px 0 10px;}
+#viewOther{padding-top:4px;}
 
 /* card image face: no photos in this app — the section's character
    sits in the zukan .ph face at the same 4/3 ratio */
-.ph .secmark{font-family:var(--serif); font-weight:700; color:var(--accent); line-height:1;}
-.grid.wide .secmark{font-size:64px;}
-.grid.def .secmark{font-size:52px;}
-.grid.compact .secmark{font-size:38px;}
+.ph .secmark{font-family:var(--serif); font-weight:700; color:var(--accent); line-height:1; opacity:.94;}
+.grid.wide .secmark{font-size:56px;}
+.grid.def .secmark{font-size:46px;}
+.grid.compact .secmark{font-size:34px;}
 .grid.mini .secmark{font-size:28px;}
 .grid.micro .secmark{font-size:20px;}
 .ph.t-schedule{background:#241c14;}
@@ -518,17 +558,18 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 <div id="veil" aria-hidden="true"></div>
 <header class="top">
   <div class="toprow">
-    <h1 class="appname">Busilabo</h1><span id="syncdot" title="同期状態：緑＝接続OK／赤＝未接続・エラー"></span>
+    <h1 class="appname" id="appname">Busilabo</h1><span id="syncdot" title="同期状態：緑＝接続OK／赤＝未接続・エラー"></span>
     <span class="topcount" id="topcount"></span>
     <span class="topsp"></span>
   </div>
   <button id="syncbar" type="button"><span>読み込み中…</span></button>
 </header>
 <main id="viewList">
-  <div class="home-head">
-    <p class="theme" id="homeTheme"></p>
-    <div class="theme-sub bodytext" id="homeThemeSub"></div>
-    <div class="goal-row" id="homeGoals"></div>
+  <div class="home-head" id="homeHead">
+    <div class="homestrip">
+      <div class="hs-theme" id="homeTheme"></div>
+      <div class="hs-goals" id="homeGoals"></div>
+    </div>
     <div class="chips" id="homeChips" aria-label="確定した前提"></div>
   </div>
   <div class="toolbar" id="toolbar">
@@ -545,8 +586,11 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
   <div id="listbody">
     <div class="grid def" id="cardGrid"></div>
   </div>
+  <div id="viewOther" hidden>
+    <div class="setttl">その他</div>
+    <div id="otherBody"></div>
+  </div>
   <p class="sources" id="homeSources"></p>
-  <p class="verline">Busilabo v<span id="verText"></span><span id="discWrap" hidden> ・ <button type="button" id="discBtn">Drive接続を解除</button></span></p>
 </main>
 <main id="viewDetail" class="hidden">
   <div class="bizbackbar"><button type="button" class="backbtn" id="backBtn">‹ 一覧に戻る</button></div>
@@ -565,7 +609,7 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '2.1.0';
+var APP_VERSION = '2.1.1';
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
@@ -736,17 +780,18 @@ function saveSettings(){ try{ localStorage.setItem(LS_SET, JSON.stringify(settin
 /* ---------- rendering (zukan card grid) ---------- */
 function renderHome(){
   $('homeTheme').textContent = DATA.home.theme || '';
-  $('homeThemeSub').innerHTML = DATA.home.themeSubHtml || '';
   var g = '';
-  (DATA.home.goals || []).forEach(function(goal){
-    g += '<div class="goal' + (goal.main ? ' main' : '') + '"><div class="g-label">' + esc(goal.label) +
-      '</div><div class="g-num">' + (goal.numHtml || '') + '</div><div class="g-note">' + esc(goal.note) + '</div></div>';
+  (DATA.home.goals || []).forEach(function(goal, i){
+    if(i > 0) g += '<span class="hs-sep"></span>';
+    g += '<span class="hs-goal"><span class="hs-gl">' + esc(goal.label) +
+      '</span><span class="hs-gn">' + (goal.numHtml || '') + '</span></span>';
   });
   $('homeGoals').innerHTML = g;
   var c = '';
   (DATA.home.chips || []).forEach(function(chip){ c += '<span class="chip">' + esc(chip) + '</span>'; });
   $('homeChips').innerHTML = c;
   $('homeSources').textContent = DATA.home.sources || '';
+  if(currentTab === 'other') renderOther();
   renderCount();
   renderGrid();
 }
@@ -770,6 +815,8 @@ function tabSections(){
   return DATA.sections.filter(function(s){ return secTab(s) === currentTab; });
 }
 function renderCount(){
+  /* the zukan manner: while その他 is open the header count is blank */
+  if(currentTab === 'other'){ $('topcount').textContent = ''; return; }
   $('topcount').textContent = '全' + DATA.sections.length + '件 ・ ' + TAB_NAMES[currentTab] + ' ' + tabSections().length + '件';
 }
 function applyPill(){
@@ -789,10 +836,81 @@ function renderGrid(){
   $('cardGrid').innerHTML = html;
   applyMode();
 }
+/* ---------- その他 view (the zukan app's settings system) ----------
+   In the zukan app, その他 is not a card grid: it is a settings
+   screen — a centered title, one big pill row for Drive sync, then
+   grouped row cards (icon / label / value / chevron), and while it
+   is open the header renames itself to その他 with the count
+   blanked. Busilabo's その他 follows the same system: the four
+   sections that live here are rows, and the app information (sync
+   state, version, data file, disconnect) sits in rows too. The
+   full home texts the compact strip abbreviates (theme paragraph,
+   goal notes, premises) are kept readable in a group card here. */
+var SICON = {
+  cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.8 18.5a4.3 4.3 0 01-.4-8.57 6.2 6.2 0 0111.94 1.6A3.9 3.9 0 0117.6 18.5H6.8z"/></svg>',
+  db: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="5.8" rx="7.5" ry="2.9"/><path d="M4.5 5.8v12.4c0 1.6 3.4 2.9 7.5 2.9s7.5-1.3 7.5-2.9V5.8"/><path d="M4.5 12c0 1.6 3.4 2.9 7.5 2.9s7.5-1.3 7.5-2.9"/></svg>',
+  info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="8.7"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="7.9" r="1.2" fill="currentColor" stroke="none"/></svg>',
+  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.7"/><path d="M12 7.2V12l3.2 2"/></svg>',
+  web: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.6"/><circle cx="17.5" cy="5.8" r="2.6"/><circle cx="17.5" cy="18.2" r="2.6"/><path d="M8.3 10.8l6.7-3.9M8.3 13.2l6.7 3.9"/></svg>',
+  pause: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.7"/><path d="M10 8.8v6.4M14 8.8v6.4"/></svg>',
+  list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6.2h10M9.5 12h10M9.5 17.8h10"/><path d="M4 6.4l1.1 1.1L7.3 5.3M4 12.2l1.1 1.1 2.2-2.2M4 18l1.1 1.1 2.2-2.2"/></svg>',
+  dot: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3.4"/></svg>'
+};
+var SEC_ICONS = { schedule: 'clock', ideas: 'web', pending: 'pause', rules: 'list' };
+function driveValText(){
+  if(syncRunning) return '同期中…';
+  if(syncError) return '同期エラー';
+  if(!isConnected()) return '未接続';
+  if(pendingCount > 0) return '未同期の変更' + pendingCount + '件';
+  if(lastSyncAt) return '同期済み';
+  return '接続済み';
+}
+function onDriveRow(){
+  if(syncRunning) return;
+  if(!isConnected() || (syncError && !accessToken)){ connectDrive(); return; }
+  appSync(true);
+}
+function renderOther(){
+  var el = $('otherBody'); if(!el) return;
+  var h = '';
+  h += '<button class="pillrow" onclick="onDriveRow()"><span class="ic">' + SICON.cloud + '</span><span class="lb">Google Drive 同期</span><span class="val" id="driveval">' + esc(driveValText()) + '</span><span class="chev">›</span></button>';
+  h += '<div class="groupcard">';
+  DATA.sections.filter(function(s){ return secTab(s) === 'other'; }).forEach(function(sec){
+    var ic = SICON[SEC_ICONS[sec.id] || 'dot'];
+    h += '<button class="srow" data-open="' + esc(sec.id) + '"><span class="ic">' + ic + '</span><span class="lb">' + esc(sec.title) + '</span><span class="val">' + esc(sec.tag) + '</span><span class="chev">›</span></button>';
+  });
+  h += '</div>';
+  h += '<div class="groupcard">';
+  h += '<div class="orow-text"><div class="oth-theme">' + esc(DATA.home.theme || '') + '</div><div class="oth-sub">' + (DATA.home.themeSubHtml || '') + '</div></div>';
+  (DATA.home.goals || []).forEach(function(goal){
+    h += '<div class="orow-goal"><span class="lb"><span class="ogl">' + esc(goal.label) + '</span><span class="ogn">' + esc(goal.note) + '</span></span><span class="ogv">' + (goal.numHtml || '') + '</span></div>';
+  });
+  h += '<div class="orow-chips">';
+  (DATA.home.chips || []).forEach(function(chip){ h += '<span class="chip">' + esc(chip) + '</span>'; });
+  h += '</div></div>';
+  h += '<div class="groupcard">';
+  h += '<div class="srow"><span class="ic">' + SICON.info + '</span><span class="lb">このアプリについて</span><span class="val">Busilabo v' + APP_VERSION + '</span></div>';
+  h += '<div class="srow"><span class="ic">' + SICON.db + '</span><span class="lb">データ</span><span class="val">bizplan.json（Drive）</span></div>';
+  if(isConnected()) h += '<button class="srow danger" onclick="disconnectDrive()"><span class="ic">' + SICON.cloud + '</span><span class="lb">Drive接続を解除</span><span class="chev">›</span></button>';
+  h += '</div>';
+  el.innerHTML = h;
+}
+function applyTabChrome(){
+  var isOther = currentTab === 'other';
+  $('viewOther').hidden = !isOther;
+  $('listbody').style.display = isOther ? 'none' : '';
+  $('toolbar').style.display = isOther ? 'none' : '';
+  $('homeHead').style.display = isOther ? 'none' : '';
+  $('homeSources').style.display = isOther ? 'none' : '';
+  /* zukan v2.48 manner: entering その他 renames the header */
+  $('appname').textContent = isOther ? 'その他' : 'Busilabo';
+  if(isOther) renderOther();
+}
 function setTab(t){
   if(TABS.indexOf(t) < 0) t = 'other';
   currentTab = t;
   applyPill();
+  applyTabChrome();
   renderCount();
   renderGrid();
 }
@@ -1083,7 +1201,9 @@ function renderSyncStatus(){
   }
   else html = '接続済み ・ <span class="sbhint">タップで同期</span>';
   $('syncbar').innerHTML = html;
-  $('discWrap').hidden = !isConnected();
+  /* the その他 view's Drive row mirrors the same state (zukan manner) */
+  var dv = $('driveval'); if(dv) dv.textContent = driveValText();
+  if(currentTab === 'other' && !detailOpen) renderOther();
   /* zukan sync dot: green only with a live token and no error */
   $('syncdot').style.background = (isConnected() && !syncError && !!accessToken) ? '#46a758' : '#e5484d';
   fitHdr();
@@ -1093,7 +1213,6 @@ $('syncbar').addEventListener('click', function(){
   if(!isConnected() || (syncError && !accessToken)){ connectDrive(); return; }
   appSync(true);
 });
-$('discBtn').addEventListener('click', function(){ disconnectDrive(); });
 
 function waitGis(){
   return new Promise(function(res, rej){
@@ -1259,7 +1378,6 @@ document.addEventListener('visibilitychange', function(){
 });
 
 /* ---------- boot ---------- */
-$('verText').textContent = APP_VERSION;
 fitHdr();
 window.addEventListener('resize', fitHdr);
 renderHome();
