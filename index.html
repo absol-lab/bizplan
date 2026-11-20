@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.1.2">
+<meta name="app-version" content="3.1.3">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -683,6 +683,14 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 .term .td{display:block; margin-top:2px; line-height:1.6;}
 .term .tm{display:block; margin-top:3px; font-size:12.5px; color:var(--muted); line-height:1.55;}
 .term .tm::before{content:'この計画では：'; font-weight:700; color:var(--accent);}
+/* dictionary term links (v3.1.3): a dotted gold underline —
+   visibly tappable, and distinct from the solid-underline
+   internal links (.idea .links a) so the two never read as
+   the same kind of jump */
+.term-link{color:var(--accent); border-bottom:1.5px dotted var(--accent); cursor:pointer; padding-bottom:1px;}
+.term-link:active{opacity:.55;}
+.term.term-hit{animation:termHit 1.9s ease-out;}
+@keyframes termHit{0%{background:rgba(221,181,95,.5); border-color:var(--accent);}100%{background:var(--card2); border-color:var(--line);}}
 .note{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:11px 14px 4px; margin-bottom:12px; font-size:14px;}
 
 .assets{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:4px 0 14px;}
@@ -832,7 +840,7 @@ body.notifopen #pillnav{opacity:0; pointer-events:none;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.1.2';
+var APP_VERSION = '3.1.3';
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
@@ -1450,6 +1458,7 @@ function openDetail(id, push){
   var st = secTab(sec);
   if(st !== currentTab) setTab(st);
   if(detailOpen && current === id) return;
+  if(id !== 'dict') termReturn = null; /* any fresh navigation drops the one-level term-jump return (v3.1.3) */
   current = id;
   detailOpen = true;
   $('detailBody').innerHTML = sec.html;
@@ -1466,6 +1475,8 @@ function openDetail(id, push){
 }
 function showHome(push){
   if(vtBusy) return;
+  termReturn = null;
+  updateBackBtn();
   if(!detailOpen){ if(push){ try{ history.pushState({ view: 'home' }, '', '#/'); }catch(e){} } return; }
   current = null;
   detailOpen = false;
@@ -1493,7 +1504,10 @@ document.addEventListener('keydown', function(e){
   var open = e.target.closest ? e.target.closest('[data-open]') : null;
   if(open){ e.preventDefault(); openDetail(open.getAttribute('data-open'), true); }
 });
-$('backBtn').addEventListener('click', function(){ showHome(true); });
+$('backBtn').addEventListener('click', function(){
+  if(termReturn && current === 'dict' && restoreTermReturn()) return;
+  showHome(true);
+});
 
 /* ---------- home detail (v3.0.6) ----------
    The strip's full texts as a detail page. HOME_ID is a
@@ -1755,10 +1769,207 @@ $('detailBody').addEventListener('click', function(e){
 function decorateDetail(sid){
   groupDetail(sid);
   decorateGoalPick();
+  linkifyTerms(sid);
+  updateBackBtn();
 }
+/* ---------- dictionary term links (v3.1.3) ----------
+   His call: body text may use business terms freely, as long
+   as tapping a term jumps to its dictionary entry — with a
+   back button that returns to the page he came from. The
+   term list is read out of the dict section's own data at
+   render time, so a term added to the dictionary later links
+   up on its own; a name written with variants (／-joined, or
+   a reading inside （…）) matches by each variant too.
+   Linkification runs on text nodes only, after the subtab
+   grouping, and skips anything already interactive or
+   label-like (links, buttons, headings, the subtab bar,
+   tags, figure labels and tiles) and the dictionary itself.
+   Within one group (subtab panel) only the first occurrence
+   of each term is linked, so a page never turns into a wall
+   of underlines; a consumed match also shields the inside of
+   a longer term from a shorter term's match. A jump keeps a
+   one-level return (section, group, scroll): the back pill
+   then reads 元のページに戻る and restores all three. */
+var TERM_SKIP_SEL = 'a, button, h2, h3, h4, .subtabs, .badge, .tag, .chip, .tt, .an, .pt, .st, .stat, .pstairs, .flow, .goalpick, .gpseg, .detail-head, .sources, [data-open], [data-open-link], [data-scroll]';
+var termReturn = null;
+var _termIdx = null, _termIdxStamp = '';
+function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function termVariants(name){
+  var out = [], seen = {};
+  function add(s){
+    s = (s || '').replace(/\s+/g, ' ').trim();
+    if(s.length >= 2 && !seen[s]){ seen[s] = 1; out.push(s); }
+  }
+  function addAll(s){
+    add(s);
+    var m = s.match(/^(.*?)[（(]([^）)]+)[）)]\s*$/);
+    if(m){ add(m[1]); add(m[2]); }
+  }
+  addAll(name);
+  name.split('／').forEach(addAll);
+  name.split('・').forEach(function(p){ if(p !== name) addAll(p); });
+  return out;
+}
+function dictTermIndex(){
+  var sec = sectionById('dict');
+  if(!sec){ _termIdx = { list: [], byVariant: {}, re: null }; _termIdxStamp = ''; return _termIdx; }
+  var stamp = (sec.updated_at || '') + ':' + sec.html.length;
+  if(_termIdx && _termIdxStamp === stamp) return _termIdx;
+  var idx = { list: [], byVariant: {}, re: null };
+  var doc = new DOMParser().parseFromString(sec.html, 'text/html');
+  Array.prototype.forEach.call(doc.querySelectorAll('.dgroup'), function(dg, gi){
+    Array.prototype.forEach.call(dg.querySelectorAll('li.term'), function(li){
+      var tt = li.querySelector('.tt');
+      if(!tt) return;
+      var name = tt.textContent.replace(/\s+/g, ' ').trim();
+      if(name) idx.list.push({ key: name, group: gi, variants: termVariants(name) });
+    });
+  });
+  var vars = [];
+  idx.list.forEach(function(e){
+    e.variants.forEach(function(v){ if(!idx.byVariant[v]){ idx.byVariant[v] = e; vars.push(v); } });
+  });
+  vars.sort(function(a, b){ return b.length - a.length; });
+  if(vars.length) idx.re = new RegExp('(' + vars.map(escRe).join('|') + ')', 'g');
+  _termIdx = idx; _termIdxStamp = stamp;
+  return idx;
+}
+function linkifyTerms(sid){
+  var db = $('detailBody');
+  var here = sid || current;
+  if(!db || !here || here === 'dict') return;
+  var idx = dictTermIndex();
+  if(!idx.re) return;
+  var scopes = [];
+  var panels = db.querySelectorAll('.dpanel');
+  if(panels.length){
+    /* the lead above the subtab bar is its own scope; each
+       panel is a group scope of its own */
+    Array.prototype.forEach.call(db.children, function(el){
+      if(el.classList && el.classList.contains('sec-lead')) scopes.push(el);
+    });
+    Array.prototype.forEach.call(panels, function(p){ scopes.push(p); });
+  } else {
+    scopes.push(db);
+  }
+  scopes.forEach(function(sc){ linkifyScope(sc, idx); });
+}
+function linkifyScope(scope, idx){
+  var linked = {};
+  var walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
+    acceptNode: function(n){
+      if(!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      var p = n.parentElement;
+      if(!p || (p.closest && p.closest(TERM_SKIP_SEL))) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  var nodes = [];
+  while(walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(function(n){ linkifyTextNode(n, idx, linked); });
+}
+function linkifyTextNode(node, idx, linked){
+  var text = node.nodeValue;
+  if(!text || !node.parentNode) return;
+  var re = new RegExp(idx.re.source, 'g');
+  var m;
+  while((m = re.exec(text)) !== null){
+    var entry = idx.byVariant[m[1]];
+    if(!entry || linked[entry.key]) continue; /* consumed either way: shields longer terms */
+    linked[entry.key] = 1;
+    var span = document.createElement('span');
+    span.className = 'term-link';
+    span.setAttribute('data-term', entry.key);
+    span.textContent = m[1];
+    var parent = node.parentNode;
+    var afterText = text.slice(m.index + m[1].length);
+    var afterNode = afterText ? document.createTextNode(afterText) : null;
+    if(afterNode) parent.insertBefore(afterNode, node.nextSibling);
+    parent.insertBefore(span, afterNode || node.nextSibling);
+    node.nodeValue = text.slice(0, m.index);
+    if(afterNode) linkifyTextNode(afterNode, idx, linked);
+    return;
+  }
+}
+function updateBackBtn(){
+  var b = $('backBtn');
+  if(!b) return;
+  b.textContent = (termReturn && current === 'dict') ? '‹ 元のページに戻る' : '‹ 一覧に戻る';
+}
+function jumpToTerm(key){
+  if(current === 'dict') return;
+  var idx = dictTermIndex();
+  var entry = null;
+  idx.list.forEach(function(e){ if(e.key === key) entry = e; });
+  if(!entry) return;
+  var db = $('detailBody');
+  var gi = 0;
+  Array.prototype.forEach.call(db.querySelectorAll('.dpanel'), function(p, i){ if(!p.hidden) gi = i; });
+  termReturn = { sid: current, group: gi, y: window.scrollY || 0 };
+  openDetail('dict', true);
+  setDetailGroup(entry.group);
+  var dg = db.querySelectorAll('.dgroup')[entry.group];
+  var target = null;
+  if(dg){
+    Array.prototype.forEach.call(dg.querySelectorAll('li.term'), function(li){
+      var tt = li.querySelector('.tt');
+      if(!target && tt && tt.textContent.replace(/\s+/g, ' ').trim() === entry.key) target = li;
+    });
+  }
+  updateBackBtn();
+  if(target){
+    /* scroll only once the slide has settled (it runs ~480ms
+       and pins the view fixed meanwhile — a scroll issued
+       inside that window is discarded), then correct once
+       more in case the smooth run landed short */
+    var delay = reducedMotion() ? 40 : 520;
+    setTimeout(function(){
+      target.scrollIntoView({ block: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });
+      target.classList.add('term-hit');
+      setTimeout(function(){ target.classList.remove('term-hit'); }, 2000);
+      setTimeout(function(){
+        var r = target.getBoundingClientRect();
+        if(r.bottom < 0 || r.top > window.innerHeight) target.scrollIntoView({ block: 'center', behavior: 'auto' });
+      }, 650);
+    }, delay);
+  }
+}
+function restoreTermReturn(){
+  var rt = termReturn;
+  if(!rt) return false;
+  termReturn = null;
+  var keepListY = listScrollY;
+  if(rt.sid === HOME_ID) openHomeDetail(false);
+  else openDetail(rt.sid, false);
+  listScrollY = keepListY;
+  if(rt.group) setDetailGroup(rt.group);
+  try{ history.pushState({ view: rt.sid }, '', rt.sid === HOME_ID ? '#/' : '#/' + rt.sid); }catch(e){}
+  /* the re-open slides (~480ms, view pinned fixed): early
+     scrolls are discarded, so repeat past the settle */
+  [40, 540, 740].forEach(function(d){ setTimeout(function(){ window.scrollTo(0, rt.y); }, d); });
+  updateBackBtn();
+  return true;
+}
+$('detailBody').addEventListener('click', function(e){
+  var t = (e.target && e.target.closest) ? e.target.closest('.term-link') : null;
+  if(!t || !$('detailBody').contains(t)) return;
+  e.preventDefault();
+  jumpToTerm(t.getAttribute('data-term'));
+});
 window.addEventListener('popstate', function(){
   var m = (location.hash || '').match(/^#\/(\w+)$/);
-  if(m && sectionById(m[1])){ if(!(detailOpen && current === m[1])) openDetail(m[1], false); }
+  if(m && sectionById(m[1])){
+    /* browser-back out of a term jump lands on the origin
+       section's hash: restore its group and scroll too (v3.1.3) */
+    var rt = (termReturn && termReturn.sid === m[1]) ? termReturn : null;
+    if(!(detailOpen && current === m[1])) openDetail(m[1], false);
+    if(rt){
+      termReturn = null;
+      if(rt.group) setDetailGroup(rt.group);
+      [80, 540, 740].forEach(function(d){ setTimeout(function(){ window.scrollTo(0, rt.y); }, d); });
+      updateBackBtn();
+    }
+  }
   else if(detailOpen) showHome(false);
 });
 /* swipe-back (zukan thresholds): engage on a right-dominant drag,
