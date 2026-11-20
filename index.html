@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.0.5">
+<meta name="app-version" content="3.0.6">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -48,7 +48,7 @@
 }
 :root[data-theme="wood-wenge"]{
   --bg:#100d0a; --bg2:#1b1611; --card:#211b15; --card2:#2f261e;
-  --text:#f3eee7; --muted:#c2ab8e; --accent:#ddb55f; --line:#3d3227; --lineStrong:#ad8d66;
+  --text:#f3eee7; --muted:#d8c29e; --accent:#ddb55f; --line:#3d3227; --lineStrong:#ad8d66;
   --danger:#ff6a55; --nav:rgba(27,22,17,.94); --sheet:rgba(0,0,0,.55);
   --fab:#ddb55f; --fabink:#100d0a; --ink35:rgba(243,238,231,.65);
   --desktex:var(--tex-wood-wenge);
@@ -370,11 +370,16 @@ a{color:var(--accent);}
 /* home head — v2.1.1 brush-up: the zukan home opens straight onto
    the grid, so the theme / goals / premises no longer stack as big
    blocks above the cards. The home keeps only a slim summary strip
-   (theme line + the two goals inline) and a single-line chips rail;
-   the full texts (theme paragraph, goal notes, all premises) live
-   in the その他 view, in the zukan settings manner. */
+   (theme line + the two goals inline) and a single-line chips rail.
+   v3.0.6 (his call: the full-text card at the head of the
+   アートビジネス tab was in the way): the strip itself is the
+   door — tapping it opens the full texts (theme paragraph, goal
+   notes, all premises) as a detail page, with the same slide as
+   a section detail; the chips rail stays a plain summary. */
 .home-head{padding:10px 0 0;}
-.homestrip{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:11px 14px 10px; margin-bottom:9px;}
+.homestrip{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:11px 36px 10px 14px; margin-bottom:9px; position:relative; cursor:pointer;}
+.homestrip:active{background:var(--card2);}
+.hs-chev{position:absolute; right:13px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:21px; line-height:1; font-family:var(--sans); pointer-events:none;}
 .hs-theme{font-family:var(--headfont); font-size:16.5px; font-weight:700; letter-spacing:.05em; line-height:1.4;}
 /* v2.1.2: the goals row is plain block flow, not a flex row. The
    strip's height is then exactly the sum of its line boxes under
@@ -416,9 +421,10 @@ button.srow:active{opacity:.6;}
 .srow .chev, .pillrow .chev{color:var(--muted); font-size:22px; line-height:1;}
 .srow.danger .lb{color:var(--danger);}
 /* full-text block: theme paragraph, goal notes, premise chips —
-   everything the compact home strip abbreviates. Until v3.0.3 it
-   sat at the bottom of その他; v3.0.4 moves it to the head of the
-   アートビジネス tab, where the strip reads as its summary. */
+   everything the compact home strip abbreviates. It sat at the
+   bottom of その他 until v3.0.3, led the アートビジネス tab as
+   a card in v3.0.4–v3.0.5, and since v3.0.6 opens as the strip's
+   detail page (the strip reads as its summary). */
 .orow-text{padding:14px 0 12px; border-bottom:1px solid var(--line);}
 .oth-theme{font-family:var(--headfont); font-size:16px; font-weight:700; letter-spacing:.04em; margin-bottom:5px;}
 .oth-sub{font-size:13.5px; line-height:1.75;}
@@ -429,11 +435,10 @@ button.srow:active{opacity:.6;}
 .orow-goal .ogv{font-family:var(--headfont); font-weight:700; font-size:18px; white-space:nowrap;}
 .orow-goal .ogv small{font-size:12px; font-weight:600;}
 .orow-chips{display:flex; flex-wrap:wrap; gap:7px; padding:13px 0 10px;}
-/* v3.0.4: the lead card at the top of the アートビジネス tab —
-   a breath of space under the home strip, then the card,
-   then the section grid */
-#leadCard:empty{display:none;}
-#leadCard .groupcard{margin-top:6px; margin-bottom:20px;}
+/* v3.0.4–v3.0.5 the full home texts led the アートビジネス tab
+   as a big card under the strip; v3.0.6 removes that card from
+   the list — the strip opens the same texts as a detail page
+   (homeCardHTML now feeds the detail, see openHomeDetail). */
 /* v2.1.2: extra bottom room so the last group card clears the
    fixed pill nav with margin to spare at max scroll (the body's
    108px reserve alone leaves only a few px on Face ID phones). */
@@ -452,7 +457,7 @@ button.srow:active{opacity:.6;}
 figure.work{padding:11px 13px 10px;}
 figure.work figcaption{padding:0;}
 .grid.wide figure.work{padding:17px 19px 15px;}
-.grid.compact figure.work{padding:8px 10px 7px;}
+.grid.compact figure.work{padding:9px 11px 8px;}
 .grid.mini figure.work{padding:5px 7px 4px;}
 .grid.mini figure.work figcaption{padding:0;}
 .grid.micro figure.work{padding:4px 6px 3px;}
@@ -466,7 +471,16 @@ figure.work figcaption{padding:0;}
 .grid.compact .cbadge{font-size:10px; padding:1px 7px;}
 
 /* detail content */
-.detail{padding-bottom:8px;}
+/* v3.0.6 brush-up (his call: 全体的に野暮ったくて見にくい):
+   the detail article IS the dark-brown panel — no prose sits
+   directly on the wood grain. Blocks that carried the card
+   tone step up to --card2 inside the panel, and the home
+   full-text card insets to --bg2, so nested surfaces still
+   read as separate layers. Auxiliary text brightens one step
+   app-wide via --muted in the theme block. */
+.detail{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 16px 12px; margin-bottom:16px; font-size:15px; line-height:1.78;}
+.detail .card, .detail .lane, .detail .note, .detail .stat, .detail .asset, .detail .idea, .detail .pending-list li{background:var(--card2);}
+.detail .groupcard{background:var(--bg2); border:1px solid var(--line); margin-bottom:0;}
 .detail-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:4px 0 8px;}
 .detail-head h2{font-family:var(--headfont); font-size:26px; font-weight:700; line-height:1.3; margin:0; letter-spacing:.05em;}
 .badge{display:inline-block; font-family:var(--sans); font-size:12px; font-weight:700; border-radius:999px; padding:3px 11px; white-space:nowrap;}
@@ -474,8 +488,16 @@ figure.work figcaption{padding:0;}
 .badge.pending{background:transparent; color:var(--muted); border:1.5px dashed var(--lineStrong);}
 .badge.now{background:var(--card2); color:var(--text); border:1px solid var(--line);}
 .sec-lead{color:var(--text); margin-bottom:14px;}
-.detail h3{font-family:var(--headfont); font-size:19px; font-weight:700; letter-spacing:.04em; margin:26px 0 8px; line-height:1.45;}
+.detail h3{font-family:var(--headfont); font-size:17.5px; font-weight:700; letter-spacing:.04em; margin:24px 0 8px; line-height:1.45;}
+.detail h3::before{content:''; display:inline-block; width:8px; height:8px; border-radius:2px; background:var(--accent); margin-right:9px; vertical-align:2px;}
 .detail h3:first-of-type{margin-top:16px;}
+/* plain lists read as divided rows on the panel （夢と理想 etc.) */
+.detail ul:not(.ladder):not(.steps):not(.parts):not(.rules):not(.pending-list),
+.detail ol:not(.steps){list-style:none; padding-left:0; margin:4px 0 14px;}
+.detail ul:not(.ladder):not(.steps):not(.parts):not(.rules):not(.pending-list) li,
+.detail ol:not(.steps) li{padding:8px 0; border-bottom:1px solid var(--line); margin:0; line-height:1.65;}
+.detail ul:not(.ladder):not(.steps):not(.parts):not(.rules):not(.pending-list) li:last-child,
+.detail ol:not(.steps) li:last-child{border-bottom:none;}
 .card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 16px 8px; margin-bottom:14px;}
 .card h3{margin-top:0;}
 
@@ -490,15 +512,26 @@ figure.work figcaption{padding:0;}
 .steps .done-when{font-size:13px; color:var(--muted); display:block; margin-top:2px;}
 .steps .done-when::before{content:"完了条件："; font-weight:700;}
 .firststep{display:block; font-size:13.5px; line-height:1.6; background:var(--card2); border-left:3px solid var(--accent); border-radius:8px; padding:8px 12px; margin:10px 0 12px;}
-.ladder .firststep{flex:1 1 100%; margin:6px 0 2px;}
+.ladder .firststep{flex:1 1 100%; margin:8px 0 0; background:var(--bg2);}
 .steps .firststep{margin-bottom:0;}
 
-.ladder{list-style:none; margin:6px 0 14px; padding:0;}
-.ladder li{display:flex; align-items:baseline; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); margin:0; flex-wrap:wrap;}
-.ladder li:last-child{border-bottom:none;}
-.ladder .amt{font-family:var(--headfont); font-weight:700; font-size:20px; min-width:112px;}
-.ladder .bar{height:8px; border-radius:4px; background:var(--accent); flex:none; align-self:center; max-width:calc(100% - 124px);}
-.ladder .what{color:var(--muted); font-size:14px; flex:1 1 150px;}
+/* v3.0.6: each checkpoint is one self-contained row card —
+   amount, what changes, and the first-step panel read as a
+   single unit; the floating gold bars (lengths with no legend)
+   are gone. Rows are tappable: the tapped step is 現在地
+   (cp-now), earlier steps read as reached (cp-done) — the
+   state lives on the device only (see decorateLadder). */
+.ladder{list-style:none; margin:8px 0 16px; padding:0; display:flex; flex-direction:column; gap:8px;}
+.ladder::before{content:'タップで現在地を設定（もう一度タップで解除）'; font-family:var(--sans); font-size:11.5px; color:var(--muted); letter-spacing:.03em;}
+.ladder li{display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:12px 13px; margin:0; cursor:pointer;}
+.ladder li:active{background:var(--bg2);}
+.ladder .bar{display:none;}
+.ladder .amt{display:inline-flex; align-items:center; font-family:var(--headfont); font-weight:700; font-size:19px;}
+.ladder .what{color:var(--muted); font-size:13.5px; line-height:1.55; flex:1 1 140px;}
+.ladder li.cp-done .amt{color:var(--accent);}
+.ladder li.cp-done .amt::before{content:'✓'; flex:none; width:19px; height:19px; border-radius:50%; background:var(--accent); color:var(--bg); font-family:var(--sans); font-size:11px; font-weight:800; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;}
+.ladder li.cp-now{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent);}
+.ladder li.cp-now .amt::after{content:'現在地'; flex:none; font-family:var(--sans); font-size:10.5px; font-weight:700; letter-spacing:.06em; color:var(--bg); background:var(--accent); border-radius:999px; padding:2px 8px; margin-left:9px;}
 
 .stats{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;}
 @media (min-width:640px){.stats{grid-template-columns:repeat(4,1fr);}}
@@ -600,7 +633,7 @@ body.notifopen #pillnav{opacity:0; pointer-events:none;}
 .upnotes{margin:8px 0 2px;}
 .upnotes li{font-size:13.5px; line-height:1.6; margin-bottom:2px;}
 .nrow{display:flex; align-items:center; gap:8px;}
-.nname{font-size:14.5px; font-weight:700; line-height:1.45;}
+.nname{font-size:15px; font-weight:700; line-height:1.45;}
 .nkind{flex:none; font-size:11px; letter-spacing:.08em; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:2px 8px; font-family:var(--sans);}
 .nkind.reg{color:var(--accent); border-color:var(--accent);}
 .ndetail{margin-top:9px; background:var(--bg2); border:1px solid var(--line); border-radius:12px; padding:11px 12px;}
@@ -609,9 +642,19 @@ body.notifopen #pillnav{opacity:0; pointer-events:none;}
 .seenwrap{margin-left:auto; display:flex; align-self:center;}
 .seenbtn{touch-action:manipulation; border:1px solid var(--accent); color:var(--accent); background:none; border-radius:999px; font-size:12px; font-weight:700; padding:8px 14px; min-height:40px; letter-spacing:.04em; font-family:var(--sans);}
 .seenbtn.done{border-color:var(--line); color:var(--muted); background:var(--bg2); font-weight:400;}
+/* v3.0.6: mark-all-seen row at the head of both bell-panel lists */
+.allseenrow{display:flex; justify-content:flex-end; margin:0 0 10px;}
+.allseenbtn{touch-action:manipulation; border:1px solid var(--accent); color:var(--accent); background:none; border-radius:999px; font-size:12.5px; font-weight:700; padding:8px 16px; min-height:40px; letter-spacing:.04em; font-family:var(--sans); cursor:pointer; -webkit-tap-highlight-color:transparent;}
+.allseenbtn[disabled]{border-color:var(--line); color:var(--muted); background:var(--bg2); font-weight:400; cursor:default;}
 /* sync result lines + the relay form, inside その他 */
 .syncline{font-size:13px; color:var(--muted); margin-top:8px; line-height:1.5; font-family:var(--sans);}
 .syncline.err{color:var(--danger);}
+/* v3.0.6 brush-up: sync result lines sit on a panel too, not
+   directly on the wood grain (the standalone save-failure line —
+   a direct child of the view — gets the same treatment) */
+#syncresults:not(:empty){background:var(--card); border:1px solid var(--line); border-radius:14px; padding:9px 16px; margin-bottom:26px;}
+#syncresults .syncline{margin-top:0; padding:3px 0;}
+#otherBody > .syncline.err{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:10px 16px; margin:0 0 26px;}
 .rinput{width:100%; font-size:16px; padding:12px 14px; border-radius:12px; border:1px solid var(--line); background:var(--card); color:var(--text); margin-top:10px; font-family:var(--sans); box-sizing:border-box;}
 .rbtn{margin-top:10px; width:100%; min-height:48px; border-radius:12px; border:1px solid var(--accent); background:none; color:var(--accent); font-size:14px; font-weight:600; font-family:var(--sans); cursor:pointer;}
 .rstat{font-size:13px; color:var(--muted); margin-top:8px; line-height:1.55; font-family:var(--sans);}
@@ -636,14 +679,14 @@ body.notifopen #pillnav{opacity:0; pointer-events:none;}
 </header>
 <main id="viewList">
   <div class="home-head" id="homeHead">
-    <div class="homestrip">
+    <div class="homestrip" id="homeStrip" role="button" tabindex="0" aria-label="テーマと目標の詳細を開く">
       <div class="hs-theme" id="homeTheme"></div>
       <div class="hs-goals" id="homeGoals"></div>
+      <span class="hs-chev" aria-hidden="true">›</span>
     </div>
     <div class="chips" id="homeChips" aria-label="確定した前提"></div>
   </div>
   <div id="listbody">
-    <div id="leadCard"></div>
     <div class="grid compact" id="cardGrid"></div>
   </div>
   <div id="viewOther" hidden>
@@ -683,7 +726,7 @@ body.notifopen #pillnav{opacity:0; pointer-events:none;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.0.5';
+var APP_VERSION = '3.0.6';
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
@@ -907,13 +950,13 @@ function applyPill(){
   var map = { art: 'pnArt', business: 'pnBusiness', other: 'pnOther' };
   for(var k in map){ var b = $(map[k]); if(b) b.classList.toggle('on', k === currentTab); }
 }
-/* ---------- lead card (v3.0.4) ----------
+/* ---------- home full texts (the strip's detail) ----------
    The plan's face — theme paragraph, the two goals with their
-   notes, and the premise chips, in full — leads the アートビジネス
-   tab above the section cards. The slim strip at the top of the
-   screen stays as the summary; this card is the complete text.
-   Until v3.0.3 the same card sat at the bottom of その他, where
-   it read as miscellany; his call (2026-11-20) moved it here.
+   notes, and the premise chips, in full. v3.0.4–v3.0.5 led the
+   アートビジネス tab with this as a big card; v3.0.6 (his call:
+   it was in the way) takes the card out of the list — the slim
+   strip at the top of the screen is now the door, and tapping
+   it opens these texts as a detail page (openHomeDetail).
    Data is unchanged: everything comes from DATA.home. */
 function homeCardHTML(){
   var h = '<div class="groupcard">';
@@ -926,12 +969,7 @@ function homeCardHTML(){
   h += '</div></div>';
   return h;
 }
-function renderLead(){
-  var el = $('leadCard'); if(!el) return;
-  el.innerHTML = (currentTab === 'art') ? homeCardHTML() : '';
-}
 function renderGrid(){
-  renderLead();
   var html = '';
   tabSections().forEach(function(sec){
     html += '<figure class="work" data-open="' + esc(sec.id) + '" tabindex="0" role="button" aria-label="' + esc(sec.title) + '">' +
@@ -952,7 +990,8 @@ function renderGrid(){
    v3.0.4 the four foundation sections were rows here and the full
    home texts (theme paragraph, goal notes, premises) sat below
    them; v3.0.4 moved the home texts to the head of the
-   アートビジネス tab (see renderLead), and v3.0.5 moved the four
+   アートビジネス tab (v3.0.6: the strip's detail page instead),
+   and v3.0.5 moved the four
    sections there too — so this screen is settings only: the Drive
    sync row, the relay group, and the app information (version,
    data file, disconnect). */
@@ -1166,6 +1205,7 @@ function openDetail(id, push){
   current = id;
   detailOpen = true;
   $('detailBody').innerHTML = sec.html;
+  decorateLadder();
   listScrollY = window.scrollY || 0;
   if(push){ try{ history.pushState({ view: id }, '', '#/' + id); }catch(e){} }
   if(reducedMotion()){
@@ -1206,6 +1246,70 @@ document.addEventListener('keydown', function(e){
   if(open){ e.preventDefault(); openDetail(open.getAttribute('data-open'), true); }
 });
 $('backBtn').addEventListener('click', function(){ showHome(true); });
+
+/* ---------- home detail (v3.0.6) ----------
+   The strip's full texts as a detail page. HOME_ID is a
+   pseudo-section: it never lives in DATA; current simply
+   points at it while the page is open, and every place that
+   re-renders the open detail (sync landing, notif return)
+   special-cases it back to homeDetailHTML(). The tab does
+   not change — back returns to the tab the strip was on. */
+var HOME_ID = '__home';
+function homeDetailHTML(){
+  return '<div class="detail-head"><h2>テーマと目標</h2></div>' + homeCardHTML();
+}
+function openHomeDetail(push){
+  if(vtBusy) return;
+  if(detailOpen && current === HOME_ID) return;
+  current = HOME_ID;
+  detailOpen = true;
+  $('detailBody').innerHTML = homeDetailHTML();
+  listScrollY = window.scrollY || 0;
+  if(push){ try{ history.pushState({ view: HOME_ID }, '', '#/'); }catch(e){} }
+  if(reducedMotion()){ listView.classList.add('hidden'); detailView.classList.remove('hidden'); window.scrollTo(0,0); return; }
+  slideForward(detailView, listView);
+}
+var hsEl = $('homeStrip');
+if(hsEl){
+  hsEl.addEventListener('click', function(){ openHomeDetail(true); });
+  hsEl.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openHomeDetail(true); }
+  });
+}
+
+/* ---------- checkpoint 現在地 (v3.0.6) ----------
+   The 時期と順番 ladder is tappable: tapping a step marks it
+   as the current position, earlier steps read as reached, and
+   tapping the current step again clears the mark. The choice
+   is this device's alone — one localStorage key, never written
+   into bizplan.json — and decoration is re-applied after every
+   detail render, so sync landings keep the marks. Steps are
+   keyed by their amount text, which the data owns. */
+var LS_CPNOW = 'bizplan.cpNow';
+function cpNowLoad(){ try{ return localStorage.getItem(LS_CPNOW) || ''; }catch(e){ return ''; } }
+function cpNowSave(v){ try{ if(v) localStorage.setItem(LS_CPNOW, v); else localStorage.removeItem(LS_CPNOW); }catch(e){} }
+function decorateLadder(){
+  var lis = Array.prototype.slice.call(document.querySelectorAll('#detailBody ul.ladder > li'));
+  if(!lis.length) return;
+  var now = cpNowLoad(), nowIdx = -1;
+  lis.forEach(function(li, i){
+    var a = li.querySelector('.amt');
+    if(now && a && a.textContent.trim() === now) nowIdx = i;
+  });
+  lis.forEach(function(li, i){
+    li.classList.toggle('cp-now', nowIdx >= 0 && i === nowIdx);
+    li.classList.toggle('cp-done', nowIdx >= 0 && i < nowIdx);
+  });
+}
+$('detailBody').addEventListener('click', function(e){
+  var li = (e.target && e.target.closest) ? e.target.closest('ul.ladder > li') : null;
+  if(!li || !$('detailBody').contains(li)) return;
+  var a = li.querySelector('.amt');
+  var key = a ? a.textContent.trim() : '';
+  if(!key) return;
+  cpNowSave(cpNowLoad() === key ? '' : key);
+  decorateLadder();
+});
 window.addEventListener('popstate', function(){
   var m = (location.hash || '').match(/^#\/(\w+)$/);
   if(m && sectionById(m[1])){ if(!(detailOpen && current === m[1])) openDetail(m[1], false); }
@@ -1705,6 +1809,16 @@ function planMarkSeen(id){
   a.forEach(function(n){ if(n.id === id && !n.seen){ n.seen = true; ch = true; } });
   if(ch){ planNotifsSave(a); refreshBell(); }
 }
+/* v3.0.6: the panel's すべて既読 — every stored notification at
+   once, through the same localStorage record the single-item
+   path uses, so the seen state survives reloads. */
+function planMarkAllSeen(){
+  var a = planNotifsLoad(), ch = false;
+  a.forEach(function(n){ if(!n.seen){ n.seen = true; ch = true; } });
+  if(ch) planNotifsSave(a);
+  refreshBell();
+  if(notifOpen && bellTab === 'notif') renderNotifList();
+}
 
 /* ---------- update history (the zukan app's changelog mechanism,
    ported): changelog.json sits beside the app, fetched cache-free;
@@ -1751,6 +1865,21 @@ function changelogMarkSeen(k){
   try{ localStorage.setItem(LS_CHANGELOG_SEEN, JSON.stringify(seen)); }catch(e){}
   refreshBell();
 }
+/* v3.0.6: the history tab's すべて既読 — the single-item 確認した
+   applied to every entry, stored in the same seen set. */
+function changelogMarkAllSeen(){
+  var d = changelogData || changelogCacheLoad();
+  if(!d || !d.entries.length) return;
+  var seen = changelogSeenLoad(d.entries), have = {}, ch = false;
+  seen.forEach(function(k){ have[k] = true; });
+  d.entries.forEach(function(e){
+    var k = changelogEntryKey(e);
+    if(!have[k]){ seen.push(k); ch = true; }
+  });
+  if(ch){ try{ localStorage.setItem(LS_CHANGELOG_SEEN, JSON.stringify(seen)); }catch(e){} }
+  refreshBell();
+  if(notifOpen && bellTab === 'history') renderUpdateList();
+}
 function notifWhen(iso){
   var t = Date.parse(iso || ''); if(isNaN(t)) return '';
   var d = new Date(t);
@@ -1793,9 +1922,10 @@ function closeNotif(){
   document.body.classList.remove('notifopen');
   $('viewNotif').classList.add('hidden');
   var back = notifReturn; notifReturn = null;
-  if(back && sectionById(back)){
+  if(back && (sectionById(back) || back === HOME_ID)){
     current = back; detailOpen = true;
-    $('detailBody').innerHTML = sectionById(back).html;
+    $('detailBody').innerHTML = (back === HOME_ID) ? homeDetailHTML() : sectionById(back).html;
+    decorateLadder();
     detailView.classList.remove('hidden');
     window.scrollTo(0, 0);
   } else {
@@ -1810,7 +1940,8 @@ function renderNotifList(){
   var el = $('notiflist'); if(!el) return;
   var a = planNotifsLoad();
   if(!a.length){ el.innerHTML = '<div class="empty">通知はまだありません</div>'; return; }
-  el.innerHTML = a.map(function(n){
+  var pUnseen = a.filter(function(n){ return !n.seen; }).length;
+  el.innerHTML = '<div class="allseenrow"><button type="button" class="allseenbtn" data-allseen="notif"' + (pUnseen ? '' : ' disabled') + '>すべて既読</button></div>' + a.map(function(n){
     if(n.summary){
       var open = !!changelogOpen['sum:' + n.id];
       return '<div class="uprow tap' + (n.seen ? '' : ' hasnew') + '" data-nsum="' + esc(n.id) + '"><div class="nrow"><span class="nname">ほか ' + n.count + ' 件の更新</span><span class="nkind">まとめ</span></div>' +
@@ -1835,7 +1966,8 @@ function renderUpdateList(){
   var entries = d.entries.slice().sort(function(a, b){ return (Date.parse(b.at || '') || 0) - (Date.parse(a.at || '') || 0); });
   var seenSet = {};
   changelogSeenLoad(entries).forEach(function(k){ seenSet[k] = true; });
-  el.innerHTML = entries.map(function(e){
+  var cUnseen = entries.filter(function(e){ return !seenSet[changelogEntryKey(e)]; }).length;
+  el.innerHTML = '<div class="allseenrow"><button type="button" class="allseenbtn" data-allseen="history"' + (cUnseen ? '' : ' disabled') + '>すべて既読</button></div>' + entries.map(function(e){
     var k = changelogEntryKey(e);
     var open = !!changelogOpen[k];
     return '<div class="uprow tap" data-ck="' + esc(k) + '"><div class="uphead"><span class="upv' + (e.v === APP_VERSION ? ' now' : '') + '">v' + esc(e.v) + '</span>' +
@@ -1857,6 +1989,8 @@ function toggleChangelogDetail(k){
 document.addEventListener('click', function(e){
   if(!notifOpen) return;
   var t = e.target;
+  var asb = t.closest ? t.closest('[data-allseen]') : null;
+  if(asb && !asb.disabled){ e.preventDefault(); if(asb.getAttribute('data-allseen') === 'history') changelogMarkAllSeen(); else planMarkAllSeen(); return; }
   var c = t.closest ? t.closest('[data-confirm]') : null;
   if(c){ e.preventDefault(); e.stopPropagation(); changelogMarkSeen(c.getAttribute('data-confirm')); renderUpdateList(); return; }
   var j = t.closest ? t.closest('[data-njump]') : null;
@@ -1923,7 +2057,7 @@ async function syncOnce(){
 function adoptMerged(m){
   if(m.changed){
     DATA = m.data; saveCache(); renderHome();
-    if(current && detailOpen) $('detailBody').innerHTML = (sectionById(current) || {}).html || '';
+    if(current && detailOpen){ $('detailBody').innerHTML = (current === HOME_ID) ? homeDetailHTML() : ((sectionById(current) || {}).html || ''); decorateLadder(); }
     detectPlanChanges(DATA);
   }
   pendingCount = m.pending;
@@ -2048,6 +2182,7 @@ var initial = (location.hash || '').match(/^#\/(\w+)$/);
 if(initial && sectionById(initial[1])){
   setTab(secTab(sectionById(initial[1])));
   $('detailBody').innerHTML = sectionById(initial[1]).html;
+  decorateLadder();
   listView.classList.add('hidden');
   detailView.classList.remove('hidden');
   detailOpen = true; current = initial[1];
