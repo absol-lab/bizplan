@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.0.6">
+<meta name="app-version" content="3.0.7">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -425,16 +425,16 @@ button.srow:active{opacity:.6;}
    bottom of その他 until v3.0.3, led the アートビジネス tab as
    a card in v3.0.4–v3.0.5, and since v3.0.6 opens as the strip's
    detail page (the strip reads as its summary). */
-.orow-text{padding:14px 0 12px; border-bottom:1px solid var(--line);}
+.orow-text{padding:11px 0 9px; border-bottom:1px solid var(--line);}
 .oth-theme{font-family:var(--headfont); font-size:16px; font-weight:700; letter-spacing:.04em; margin-bottom:5px;}
-.oth-sub{font-size:13.5px; line-height:1.75;}
-.orow-goal{display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line);}
+.oth-sub{font-size:13.5px; line-height:1.65;}
+.orow-goal{display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--line);}
 .orow-goal .lb{flex:1; min-width:0;}
 .orow-goal .ogl{display:block; font-size:12px; color:var(--muted);}
 .orow-goal .ogn{display:block; font-size:13px; margin-top:1px;}
 .orow-goal .ogv{font-family:var(--headfont); font-weight:700; font-size:18px; white-space:nowrap;}
 .orow-goal .ogv small{font-size:12px; font-weight:600;}
-.orow-chips{display:flex; flex-wrap:wrap; gap:7px; padding:13px 0 10px;}
+.orow-chips{display:flex; flex-wrap:wrap; gap:7px; padding:10px 0 8px;}
 /* v3.0.4–v3.0.5 the full home texts led the アートビジネス tab
    as a big card under the strip; v3.0.6 removes that card from
    the list — the strip opens the same texts as a detail page
@@ -478,40 +478,51 @@ figure.work figcaption{padding:0;}
    full-text card insets to --bg2, so nested surfaces still
    read as separate layers. Auxiliary text brightens one step
    app-wide via --muted in the theme block. */
-.detail{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 16px 12px; margin-bottom:16px; font-size:15px; line-height:1.78;}
+/* v3.0.7 compact pass (his call: もっとコンパクトに見やすく):
+   the detail type steps down half a size, line-height and the
+   vertical rhythm tighten one notch across every block below;
+   headings keep their size gap so the hierarchy still reads. */
+.detail{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:15px 14px 9px; margin-bottom:14px; font-size:14.5px; line-height:1.68;}
 .detail .card, .detail .lane, .detail .note, .detail .stat, .detail .asset, .detail .idea, .detail .pending-list li{background:var(--card2);}
 .detail .groupcard{background:var(--bg2); border:1px solid var(--line); margin-bottom:0;}
-.detail-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:4px 0 8px;}
-.detail-head h2{font-family:var(--headfont); font-size:26px; font-weight:700; line-height:1.3; margin:0; letter-spacing:.05em;}
+.detail-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:2px 0 6px;}
+.detail-head h2{font-family:var(--headfont); font-size:24px; font-weight:700; line-height:1.3; margin:0; letter-spacing:.05em;}
 .badge{display:inline-block; font-family:var(--sans); font-size:12px; font-weight:700; border-radius:999px; padding:3px 11px; white-space:nowrap;}
 .badge.decided{background:var(--accent); color:var(--bg);}
 .badge.pending{background:transparent; color:var(--muted); border:1.5px dashed var(--lineStrong);}
 .badge.now{background:var(--card2); color:var(--text); border:1px solid var(--line);}
-.sec-lead{color:var(--text); margin-bottom:14px;}
-.detail h3{font-family:var(--headfont); font-size:17.5px; font-weight:700; letter-spacing:.04em; margin:24px 0 8px; line-height:1.45;}
+.sec-lead{color:var(--text); margin-bottom:10px;}
+.detail p{margin-bottom:.7em;}
+.detail h3{font-family:var(--headfont); font-size:17px; font-weight:700; letter-spacing:.04em; margin:19px 0 6px; line-height:1.45;}
 .detail h3::before{content:''; display:inline-block; width:8px; height:8px; border-radius:2px; background:var(--accent); margin-right:9px; vertical-align:2px;}
-.detail h3:first-of-type{margin-top:16px;}
+.detail h3:first-of-type{margin-top:12px;}
 /* plain lists read as divided rows on the panel （夢と理想 etc.) */
-.detail ul:not(.ladder):not(.steps):not(.parts):not(.rules):not(.pending-list),
-.detail ol:not(.steps){list-style:none; padding-left:0; margin:4px 0 14px;}
-.detail ul:not(.ladder):not(.steps):not(.parts):not(.rules):not(.pending-list) li,
-.detail ol:not(.steps) li{padding:8px 0; border-bottom:1px solid var(--line); margin:0; line-height:1.65;}
-.detail ul:not(.ladder):not(.steps):not(.parts):not(.rules):not(.pending-list) li:last-child,
-.detail ol:not(.steps) li:last-child{border-bottom:none;}
-.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 16px 8px; margin-bottom:14px;}
+/* plain lists only — every component list (rules / steps /
+   parts / ladder / pending-list) is excluded on BOTH the ul and
+   the ol side. v3.0.7: the ol side used to exclude only .steps,
+   so this rule out-specified .rules li, stripped its left
+   padding and left the gold number sitting on the first
+   character of the body text (his screenshot, 2026-11-20). */
+.detail ul:not(.ladder):not(.steps):not(.parts):not(.rules):not(.pending-list):not(.checklist):not(.goalpick):not(.terms),
+.detail ol:not(.steps):not(.rules):not(.ladder):not(.parts):not(.pending-list){list-style:none; padding-left:0; margin:2px 0 12px;}
+.detail ul:not(.ladder):not(.steps):not(.parts):not(.rules):not(.pending-list):not(.checklist):not(.goalpick):not(.terms) li,
+.detail ol:not(.steps):not(.rules):not(.ladder):not(.parts):not(.pending-list) li{padding:6px 0; border-bottom:1px solid var(--line); margin:0; line-height:1.6;}
+.detail ul:not(.ladder):not(.steps):not(.parts):not(.rules):not(.pending-list):not(.checklist):not(.goalpick):not(.terms) li:last-child,
+.detail ol:not(.steps):not(.rules):not(.ladder):not(.parts):not(.pending-list) li:last-child{border-bottom:none;}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:13px 14px 6px; margin-bottom:12px;}
 .card h3{margin-top:0;}
 
-.steps{list-style:none; margin:6px 0 14px; padding:0;}
-.steps li{position:relative; padding:0 0 20px 46px; margin:0;}
-.steps li::before{content:attr(data-n); position:absolute; left:0; top:1px; width:30px; height:30px; border-radius:50%; background:var(--accent); color:var(--bg); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center;}
-.steps li::after{content:""; position:absolute; left:14.5px; top:36px; bottom:2px; width:2px; background:var(--line);}
-.steps li:last-child{padding-bottom:4px;}
+.steps{list-style:none; margin:4px 0 12px; padding:0;}
+.steps li{position:relative; padding:0 0 15px 42px; margin:0;}
+.steps li::before{content:attr(data-n); position:absolute; left:0; top:1px; width:27px; height:27px; border-radius:50%; background:var(--accent); color:var(--bg); font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center;}
+.steps li::after{content:""; position:absolute; left:12.5px; top:32px; bottom:2px; width:2px; background:var(--line);}
+.steps li:last-child{padding-bottom:2px;}
 .steps li:last-child::after{display:none;}
 .steps .st{font-weight:700; display:block;}
-.steps .sd{color:var(--muted); font-size:14.5px; display:block;}
+.steps .sd{color:var(--muted); font-size:14px; display:block;}
 .steps .done-when{font-size:13px; color:var(--muted); display:block; margin-top:2px;}
 .steps .done-when::before{content:"完了条件："; font-weight:700;}
-.firststep{display:block; font-size:13.5px; line-height:1.6; background:var(--card2); border-left:3px solid var(--accent); border-radius:8px; padding:8px 12px; margin:10px 0 12px;}
+.firststep{display:block; font-size:13.5px; line-height:1.55; background:var(--card2); border-left:3px solid var(--accent); border-radius:8px; padding:7px 11px; margin:8px 0 10px;}
 .ladder .firststep{flex:1 1 100%; margin:8px 0 0; background:var(--bg2);}
 .steps .firststep{margin-bottom:0;}
 
@@ -521,37 +532,45 @@ figure.work figcaption{padding:0;}
    are gone. Rows are tappable: the tapped step is 現在地
    (cp-now), earlier steps read as reached (cp-done) — the
    state lives on the device only (see decorateLadder). */
-.ladder{list-style:none; margin:8px 0 16px; padding:0; display:flex; flex-direction:column; gap:8px;}
+.ladder{list-style:none; margin:6px 0 13px; padding:0; display:flex; flex-direction:column; gap:7px;}
 .ladder::before{content:'タップで現在地を設定（もう一度タップで解除）'; font-family:var(--sans); font-size:11.5px; color:var(--muted); letter-spacing:.03em;}
-.ladder li{display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:12px 13px; margin:0; cursor:pointer;}
+.ladder li{display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin:0; cursor:pointer;}
 .ladder li:active{background:var(--bg2);}
-.ladder .bar{display:none;}
-.ladder .amt{display:inline-flex; align-items:center; font-family:var(--headfont); font-weight:700; font-size:19px;}
+/* v3.0.7: the checkpoint rows become a staircase — each row
+   opens with a gold tread whose length the data already
+   carries (the .bar widths, hidden in v3.0.6), and the rows
+   cascade right as they climb (--i set by decorateLadder).
+   The 現在地／到達済み states ride on the same rows. */
+.ladder .bar{display:block; order:-1; flex:1 1 100%; height:5px; border-radius:3px; background:var(--accent); opacity:.5; margin-bottom:2px;}
+.ladder li{margin-left:calc(var(--i, 0) * 4px);}
+.ladder li.cp-done .bar{opacity:.95;}
+.ladder li.cp-now .bar{opacity:1;}
+.ladder .amt{display:inline-flex; align-items:center; font-family:var(--headfont); font-weight:700; font-size:18px;}
 .ladder .what{color:var(--muted); font-size:13.5px; line-height:1.55; flex:1 1 140px;}
 .ladder li.cp-done .amt{color:var(--accent);}
 .ladder li.cp-done .amt::before{content:'✓'; flex:none; width:19px; height:19px; border-radius:50%; background:var(--accent); color:var(--bg); font-family:var(--sans); font-size:11px; font-weight:800; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;}
 .ladder li.cp-now{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent);}
 .ladder li.cp-now .amt::after{content:'現在地'; flex:none; font-family:var(--sans); font-size:10.5px; font-weight:700; letter-spacing:.06em; color:var(--bg); background:var(--accent); border-radius:999px; padding:2px 8px; margin-left:9px;}
 
-.stats{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;}
+.stats{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;}
 @media (min-width:640px){.stats{grid-template-columns:repeat(4,1fr);}}
-.stat{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 14px 10px;}
-.stat .v{font-family:var(--headfont); font-weight:700; font-size:24px; line-height:1.25;}
+.stat{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:11px 12px 8px;}
+.stat .v{font-family:var(--headfont); font-weight:700; font-size:22px; line-height:1.25;}
 .stat .v small{font-size:14px; font-weight:600;}
 .stat .k{font-size:13px; color:var(--muted); margin-top:2px;}
 
-.parts{list-style:none; margin:6px 0 14px; padding:0;}
-.parts li{display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--line); margin:0;}
+.parts{list-style:none; margin:4px 0 12px; padding:0;}
+.parts li{display:flex; gap:11px; align-items:flex-start; padding:9px 0; border-bottom:1px solid var(--line); margin:0;}
 .parts li:last-child{border-bottom:none;}
-.parts .pn{flex:none; width:30px; height:30px; border-radius:50%; border:1.5px solid var(--accent); color:var(--accent); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; margin-top:2px;}
+.parts .pn{flex:none; width:28px; height:28px; border-radius:50%; border:1.5px solid var(--accent); color:var(--accent); font-weight:700; font-size:13.5px; display:flex; align-items:center; justify-content:center; margin-top:0;}
 .parts .pb{flex:1;}
 .parts .pt{font-weight:700;}
-.parts .pd{color:var(--muted); font-size:14.5px; display:block;}
+.parts .pd{color:var(--muted); font-size:14px; display:block;}
 .status{flex:none; font-family:var(--sans); font-size:12px; font-weight:700; border-radius:999px; padding:3px 9px; margin-top:4px; background:var(--card2); color:var(--muted); white-space:nowrap;}
 .status.gap{color:var(--accent);}
 
-table.plan{width:100%; border-collapse:collapse; margin:6px 0 16px; font-size:14.5px;}
-table.plan th,table.plan td{text-align:left; vertical-align:top; padding:10px; border-bottom:1px solid var(--line);}
+table.plan{width:100%; border-collapse:collapse; margin:4px 0 13px; font-size:14px;}
+table.plan th,table.plan td{text-align:left; vertical-align:top; padding:8px 10px; border-bottom:1px solid var(--line);}
 table.plan th{font-size:13px; color:var(--muted); font-weight:700; white-space:nowrap;}
 table.plan td.price{font-weight:700; white-space:nowrap;}
 @media (max-width:560px){
@@ -570,33 +589,121 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 .lane.art{border-top:3px solid var(--accent);}
 .lane.other{border-top:3px solid var(--lineStrong);}
 
-.pending-list{list-style:none; margin:6px 0 14px; padding:0;}
-.pending-list li{background:var(--card); border:1.5px dashed var(--lineStrong); border-radius:14px; padding:14px 16px 8px; margin-bottom:10px;}
+.pending-list{list-style:none; margin:4px 0 12px; padding:0;}
+.pending-list li{background:var(--card); border:1.5px dashed var(--lineStrong); border-radius:14px; padding:11px 14px 6px; margin-bottom:8px;}
 .pending-list .pt{font-weight:700; display:block;}
-.pending-list .pd{color:var(--muted); font-size:14.5px; display:block;}
+.pending-list .pd{color:var(--muted); font-size:14px; display:block;}
 
-.rules{list-style:none; margin:6px 0 14px; padding:0; counter-reset:rule;}
-.rules li{counter-increment:rule; position:relative; padding:8px 0 8px 40px; border-bottom:1px solid var(--line); margin:0;}
-.rules li:last-child{border-bottom:none;}
-.rules li::before{content:counter(rule); position:absolute; left:2px; top:9px; font-family:var(--headfont); font-weight:700; font-size:17px; color:var(--accent);}
-.note{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px 6px; margin-bottom:14px; font-size:14.5px;}
+/* v3.0.7: the numbered list carries its number in a fixed
+   gutter column — the ::before owns the left 26px of the row
+   and the body text starts at 38px, so marker and text can
+   never overlap. Scoped under .detail ol.rules so the padding
+   that reserves the gutter stands on its own specificity. */
+.detail .rules{list-style:none; margin:4px 0 12px; padding:0; counter-reset:rule;}
+.detail ol.rules li{counter-increment:rule; position:relative; padding:6px 0 6px 38px; border-bottom:1px solid var(--line); margin:0; line-height:1.6;}
+.detail ol.rules li:last-child{border-bottom:none;}
+.detail ol.rules li::before{content:counter(rule); position:absolute; left:0; top:6px; width:26px; text-align:center; font-family:var(--headfont); font-weight:700; font-size:16px; line-height:1.45; color:var(--accent);}
 
-.assets{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:6px 0 18px;}
+/* ---------- v3.0.7 diagrams ----------
+   His standing rule （鉄則）: content sits in frames, and
+   anything that states an order, a staircase, a branch, a
+   comparison or a judgment is drawn as a diagram — prose is
+   demoted to labels and short captions. Everything below is
+   built from the app's own surfaces; no external images. */
+/* judgment flow （ルール： 評価の物差し — 問い1 → 問い2 → 判定） */
+.judge{margin:4px 0 14px;}
+.jq{background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:10px 12px; display:flex; gap:10px; align-items:flex-start;}
+.jq>span{min-width:0;}
+.jq .qn{flex:none; font-family:var(--sans); font-size:11px; font-weight:800; letter-spacing:.05em; color:var(--bg); background:var(--accent); border-radius:999px; padding:2px 8px; margin-top:2px;}
+.jq .qt{font-weight:700; display:block; line-height:1.5;}
+.jq .qd{color:var(--muted); font-size:13px; display:block; line-height:1.55;}
+.jarrow{text-align:center; color:var(--accent); font-size:14px; line-height:1.25; padding:2px 0;}
+.jout{display:flex; gap:8px; flex-wrap:wrap;}
+.jout span{flex:1 1 140px; border-radius:12px; padding:9px 12px; font-weight:700; font-size:13.5px; line-height:1.5; text-align:center;}
+.jok{background:var(--accent); color:var(--bg);}
+.jng{background:var(--bg2); color:var(--muted); border:1.5px dashed var(--lineStrong);}
+/* checklist （ルール： 禁止ライン — a ✕ in a square owns the
+   left column, the body starts after it, same gutter contract
+   as the numbered list) */
+.checklist{list-style:none; margin:4px 0 12px; padding:0;}
+.checklist li{position:relative; padding:6px 0 6px 38px; border-bottom:1px solid var(--line); margin:0; line-height:1.6;}
+.checklist li:last-child{border-bottom:none;}
+.checklist li::before{content:'✕'; position:absolute; left:1px; top:7px; width:22px; height:22px; border:1.5px solid var(--danger); border-radius:6px; color:var(--danger); font-family:var(--sans); font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center;}
+/* branch diagram （図鑑事業： 仕組み → 受託 / 横展開） */
+.branch2{margin:4px 0 14px;}
+.b-src{background:var(--card2); border:1px solid var(--accent); border-radius:12px; padding:9px 12px; text-align:center; font-weight:700;}
+.b-stem{width:2px; height:11px; background:var(--lineStrong); margin:0 auto;}
+.b-bar{height:2px; background:var(--lineStrong); margin:0 25%;}
+.b-cols{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.b-col{position:relative; background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:9px 10px 7px; margin-top:11px; text-align:center;}
+.b-col::before{content:''; position:absolute; top:-11px; left:50%; width:2px; height:11px; background:var(--lineStrong);}
+.b-col .b-t{display:block; font-size:12px; color:var(--muted); letter-spacing:.05em;}
+.b-col .b-v{display:block; font-family:var(--headfont); font-weight:700; font-size:19px; margin:1px 0 2px;}
+.b-col .b-d{display:block; font-size:12.5px; color:var(--muted); line-height:1.55;}
+.b-col.art{border-top:3px solid var(--accent);}
+/* trio （ビジネス計画： A/B/C を並列に、その下に進める順番） */
+.trio{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin:4px 0 8px;}
+.tcol{background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:9px 8px 7px; text-align:center;}
+.tcol .tl-t{display:block; font-family:var(--headfont); font-weight:700; font-size:17px; color:var(--accent);}
+.tcol .tl-n{display:block; font-weight:700; font-size:12.5px; line-height:1.45; margin-top:1px;}
+.tcol .tl-d{display:block; color:var(--muted); font-size:11.5px; line-height:1.5; margin-top:2px;}
+.trio-seq{background:var(--bg2); border:1px solid var(--line); border-radius:10px; padding:8px 12px; font-size:13px; line-height:1.6; margin:0 0 14px;}
+/* price staircase （アートビジネス計画： 価格の階段 — rows
+   cascade right as the tier climbs, --i is in the markup) */
+.pstairs{margin:4px 0 12px; display:flex; flex-direction:column; gap:7px;}
+.ps-row{display:flex; align-items:center; gap:11px; background:var(--card2); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:12px; padding:9px 12px; margin-left:calc(var(--i, 0) * 11px);}
+.ps-n{flex:none; font-family:var(--sans); font-size:11px; font-weight:800; letter-spacing:.05em; color:var(--bg); background:var(--accent); border-radius:999px; padding:2px 8px;}
+.ps-price{flex:none; font-family:var(--headfont); font-weight:700; font-size:16.5px; white-space:nowrap;}
+.ps-b{flex:1; min-width:0;}
+.ps-f{display:block; font-weight:600; line-height:1.5;}
+.ps-r{display:block; color:var(--muted); font-size:12.5px; line-height:1.5;}
+/* goal picker （テーマと目標の詳細： 目標のチェックポイントを
+   選ぶ） + the 目標 tag on the ladder itself */
+.goalpick{list-style:none; margin:4px 0 6px; padding:0; display:flex; flex-direction:column; gap:7px;}
+.goalpick li{display:flex; align-items:center; gap:10px; background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:9px 12px; margin:0; cursor:pointer;}
+.goalpick li:active{background:var(--bg2);}
+.goalpick .amt{font-family:var(--headfont); font-weight:700; font-size:16.5px; flex:none;}
+.goalpick .what{color:var(--muted); font-size:12.5px; line-height:1.5; flex:1; min-width:0;}
+.goalpick li.gp-on{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent);}
+.goalpick li.gp-on .amt{color:var(--accent);}
+.goalpick li.gp-on::after{content:'目標'; flex:none; font-family:var(--sans); font-size:10.5px; font-weight:800; letter-spacing:.06em; color:var(--bg); background:var(--accent); border-radius:999px; padding:2px 8px;}
+.gp-head{font-family:var(--sans); font-size:12px; font-weight:700; color:var(--muted); letter-spacing:.05em; margin:14px 0 2px;}
+.cpgoal-tag{flex:none; font-family:var(--sans); font-size:10.5px; font-weight:800; letter-spacing:.06em; color:var(--accent); border:1.5px solid var(--accent); border-radius:999px; padding:1px 8px;}
+.hs-goal-g{display:inline-block; vertical-align:top; max-width:57%;}
+.hs-gw{display:block; font-size:11px; color:var(--muted); line-height:1.5; margin-top:1px;}
+/* v3.0.7 (his call): the sources footer no longer sits under
+   the list screens — the data keeps it, the lists do not
+   show it, and no new home is made for it */
+#homeSources{display:none;}
+/* dictionary （用語辞典）: framed groups, one framed row per
+   term — name, plain definition, and where it sits in this
+   plan when that applies */
+.dgroup{border:1px solid var(--line); border-radius:14px; background:rgba(255,244,214,.05); padding:12px 11px 5px; margin:0 0 12px;}
+.dgroup-h{font-family:var(--headfont); font-weight:700; font-size:16.5px; margin:0 2px 9px; padding-bottom:7px; border-bottom:1px solid var(--line);}
+.terms{list-style:none; margin:0 0 6px; padding:0; display:flex; flex-direction:column; gap:7px;}
+.term{background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:9px 12px 10px; margin:0;}
+.term .tt{font-family:var(--headfont); font-weight:700; font-size:15.5px;}
+.term .td{display:block; margin-top:2px; line-height:1.6;}
+.term .tm{display:block; margin-top:3px; font-size:12.5px; color:var(--muted); line-height:1.55;}
+.term .tm::before{content:'この計画では：'; font-weight:700; color:var(--accent);}
+.note{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:11px 14px 4px; margin-bottom:12px; font-size:14px;}
+
+.assets{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:4px 0 14px;}
 @media (min-width:640px){.assets{grid-template-columns:repeat(3,1fr);}}
-.asset{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 14px 8px;}
+.asset{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:10px 12px 6px;}
 .asset .an{font-weight:700; font-size:15px; display:block;}
 .asset .ad{font-size:13px; color:var(--muted); display:block;}
-.idea{background:var(--card); border:1.5px dashed var(--lineStrong); border-radius:14px; padding:16px 18px 10px; margin-bottom:12px; scroll-margin-top:calc(var(--hdrh, 56px) + 70px);}
+.idea{background:var(--card); border:1.5px dashed var(--lineStrong); border-radius:14px; padding:13px 15px 8px; margin-bottom:10px; scroll-margin-top:calc(var(--hdrh, 56px) + 70px);}
 .idea h3{margin:0 0 6px; font-size:17px;}
-.idea p{font-size:14.5px; color:var(--muted);}
+.idea p{font-size:14px; color:var(--muted);}
 .tags{display:flex; flex-wrap:wrap; gap:6px; margin:8px 0;}
 .tags .tl{font-size:12px; font-weight:700; color:var(--muted); width:100%;}
 .tag{font-size:12.5px; background:var(--card2); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:3px 10px; font-weight:700;}
 .idea .links{font-size:13.5px; color:var(--muted); margin-bottom:8px;}
 .idea .links a{color:var(--accent); text-decoration:underline; text-underline-offset:3px; padding:4px 2px; display:inline-block;}
-.sources{font-size:12.5px; color:var(--muted); margin-top:30px; line-height:1.7;}
-.flow{display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-weight:700; font-size:15px; margin-bottom:12px;}
-.flow span{background:var(--card); border:1px solid var(--line); border-radius:8px; padding:6px 12px;}
+.sources{font-size:12.5px; color:var(--muted); margin-top:22px; line-height:1.65;}
+.flow{display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-weight:700; font-size:15px; margin-bottom:9px;}
+.flow span{background:var(--card); border:1px solid var(--line); border-radius:8px; padding:5px 11px;}
 .flow i{color:var(--accent); font-style:normal;}
 .verline{font-size:12px; color:var(--muted); margin-top:14px;}
 .verline button{background:none; border:0; color:var(--muted); font:inherit; font-size:12px; text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:4px 2px; min-height:0;}
@@ -721,32 +828,34 @@ body.notifopen #pillnav{opacity:0; pointer-events:none;}
 <nav id="pillnav">
   <button id="pnArt" class="on" onclick="goTab('art')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9.2" cy="10" r="1.5"/><path d="M4.5 18.5l4.7-4.7 3.3 3 2.9-2.4 4.1 4.1"/></svg><span>アートビジネス</span></button>
   <button id="pnBusiness" onclick="goTab('business')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v15.5h16"/><rect x="7" y="12.5" width="3.2" height="7"/><rect x="12" y="9.5" width="3.2" height="10"/><path d="M6.5 8.5l4-3 3 2.3 4.7-3.6"/><path d="M15.4 4.2h2.8v2.8"/></svg><span>ビジネス</span></button>
+  <button id="pnMoney" onclick="goTab('money')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M8.4 8.6l3.6 3.8 3.6-3.8M12 12.4v5.4M9.2 14.9h5.6M9.2 16.9h5.6"/></svg><span>お金</span></button>
+  <button id="pnDict" onclick="goTab('dict')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a1 1 0 0 0-1-1H6.5A2.5 2.5 0 0 0 4 5.5v14z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><path d="M9 7.5h7M9 11h5"/></svg><span>用語辞典</span></button>
   <button id="pnOther" onclick="goTab('other')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.1"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>その他</span></button>
 </nav>
 
 <script>
 'use strict';
-var APP_VERSION = '3.0.6';
+var APP_VERSION = '3.0.7';
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
  "version": 1,
- "updatedAt": "2026-11-20T13:49:32+09:00",
+ "updatedAt": "2026-11-20T14:48:41+09:00",
  "home": {
   "theme": "一文無しから富を築く",
   "themeSubHtml": "最初に築くのは金ではなく、金に変わる資産。順番は固定されている——<strong>労働 → 種銭 → 小さな仕組み → 仕組みの複利<\/strong>。いまは「労働→種銭」の段を登り切り、仕組みの設計図が引けた段階にある。",
   "goals": [
    {
-    "label": "第1チェックポイント",
-    "numHtml": "年600<small>万円<\/small>",
-    "note": "父親の年収を超えるライン",
-    "main": true
+    "label": "節目",
+    "main": true,
+    "note": "父親の年収を超えるライン。階段では月50万円の地点",
+    "numHtml": "年600<small>万円<\/small>"
    },
    {
     "label": "最終目標",
-    "numHtml": "年1,000<small>万円<\/small>",
+    "main": false,
     "note": "画家として活動し、金の不安がない状態",
-    "main": false
+    "numHtml": "年1,000<small>万円<\/small>"
    }
   ],
   "chips": [
@@ -758,36 +867,22 @@ var SEED = {
    "テストは最大3つまで並行"
   ],
   "sources": "出典：個人アートビジネス全体設計（2026-11-08）／稼ぎプロジェクト全体の流れ（2026-11-04）／将来逆算マップ（2026-11-08）／調査統合 結論まとめ（2026-11-11）／アプリ収益ノウハウ 翔万版リスト（2026-11-11）／図鑑事業と特許 決定事項（2026-11-19）／物語のある物 物販テスト 決定事項（2026-11-19）",
-  "updated_at": "2026-11-19T13:32:00+09:00"
+  "updated_at": "2026-11-20T14:42:01+09:00"
  },
  "sections": [
   {
-   "id": "art",
+   "id": "schedule",
    "tab": "art",
-   "num": "03",
-   "char": "画",
-   "tag": "管の6部品",
-   "themeClass": "t-art",
-   "title": "アートビジネス計画",
-   "meta": "設計原則、ビジネスの管、価格の階段、フェーズ0〜3、現実の数字",
+   "num": "01",
+   "char": "時",
+   "tag": "3期間",
+   "themeClass": "t-schedule",
+   "title": "時期と順番",
+   "meta": "受験を軸に固定された順番と、収入の階段（月1,000円〜年1,000万円）",
    "badgeClass": "decided",
-   "badgeText": "設計済み",
-   "html": "<div class=\"detail-head\"><h2>アートビジネス計画<\/h2><span class=\"badge decided\">設計済み<\/span><\/div>\n        <p class=\"sec-lead\">天才の偶然売れではなく、計画的にいく。ただし計画は表に見せない——表に出るのは作品と物語だけ。<\/p>\n        <h3>設計原則（4つ）<\/h3>\n        <ol class=\"rules\">\n          <li><strong>計画は裏、表は作品と物語だけ<\/strong>——計算・検証・価格の設計は裏側に置く。名前を守る構造でもある<\/li>\n          <li><strong>関係は柔らかく、条件は硬く<\/strong>——値段・エディション数・権利の条件は先に固定し、その場の交渉に性格を持ち込まない<\/li>\n          <li><strong>視覚言語の同一性<\/strong>——集客の動画も、売る物も、本命の絵画も、同じモチーフ・同じ世界で通す<\/li>\n          <li><strong>reveal-ready<\/strong>——原画・日付・制作記録を残し、将来本名に接続できる来歴を最初から作る<\/li>\n        <\/ol>\n        <h3>ビジネスの管（6つの部品）<\/h3>\n        <div class=\"flow\"><span>制作<\/span><i>→<\/i><span>提示<\/span><i>→<\/i><span>取引<\/span><i>→<\/i><span>記録・認証<\/span><i>→<\/i><span>評価<\/span><i>→<\/i><span>次の制作<\/span><\/div>\n        <p>「作品を作って売る」だけでは金にならない。管のどれが欠けても止まる。いまの不足は <strong>3・4・5<\/strong> で、ここがビジネスの実体部分。<\/p>\n        <ul class=\"parts\">\n          <li><span class=\"pn\">1<\/span><div class=\"pb\"><span class=\"pt\">作品（質）<\/span><span class=\"pd\">個人でしか生み出せない質の高いもの。全ての前提<\/span><\/div><span class=\"status\">制作中<\/span><\/li>\n          <li><span class=\"pn\">2<\/span><div class=\"pb\"><span class=\"pt\">物語<\/span><span class=\"pd\">作家と世界の物語。買い手は絵と一緒に物語を買う<\/span><\/div><span class=\"status\">設計中（顔のない男）<\/span><\/li>\n          <li><span class=\"pn\">3<\/span><div class=\"pb\"><span class=\"pt\">価格の階段<\/span><span class=\"pd\">「買える層」の設計。高額一点だけでは取引が発生しない<\/span><\/div><span class=\"status gap\">未設計<\/span><\/li>\n          <li><span class=\"pn\">4<\/span><div class=\"pb\"><span class=\"pt\">最初の買い手<\/span><span class=\"pd\">「市場」ではなく具体的な少数。SNSの蓄積＋身近な評価者<\/span><\/div><span class=\"status gap\">未着手<\/span><\/li>\n          <li><span class=\"pn\">5<\/span><div class=\"pb\"><span class=\"pt\">記録・認証<\/span><span class=\"pd\">エディション番号、制作年、原画データ、販売記録。来歴が将来の価格の土台になる<\/span><\/div><span class=\"status gap\">仕組み化が課題<\/span><\/li>\n          <li><span class=\"pn\">6<\/span><div class=\"pb\"><span class=\"pt\">見せる場と頻度<\/span><span class=\"pd\">作品が人の目に触れる回数と場所。質×露出でしか評価は生まれない<\/span><\/div><span class=\"status\">TikTok設計中<\/span><\/li>\n        <\/ul>\n        <p class=\"firststep\"><strong>最初の一歩：<\/strong>不足している3つ（価格の階段・最初の買い手・記録と認証）のうち、まず記録の型をフェーズ0で決める。残り2つはフェーズ1で作る<br><strong>時期：<\/strong>記録の型は今（フェーズ0）。価格の階段と最初の買い手は受験後（フェーズ1）<\/p>\n        <h3>価格の階段<\/h3>\n        <p>一点ものの高額作品だけを置くと、欲しい人の99%が買えずに去る。階段を作ると、各段が次の段の買い手を育てる。<strong>原則：値段は下げない。<\/strong>下の段を増やして買える人を増やすのであって、同じ物の値段を割って売らない。<\/p>\n        <table class=\"plan\">\n          <thead><tr><th>段<\/th><th>価格帯<\/th><th>形<\/th><th>役割<\/th><\/tr><\/thead>\n          <tbody>\n            <tr><td data-l=\"段\">0<\/td><td class=\"price\" data-l=\"価格帯\">無料<\/td><td data-l=\"形\">動画・投稿（世界観の提示）<\/td><td data-l=\"役割\">集客と物語の蓄積<\/td><\/tr>\n            <tr><td data-l=\"段\">1<\/td><td class=\"price\" data-l=\"価格帯\">数百〜数千円<\/td><td data-l=\"形\">デジタル素材、描き文字、小プリント<\/td><td data-l=\"役割\">最初の取引。買う体験を作る<\/td><\/tr>\n            <tr><td data-l=\"段\">2<\/td><td class=\"price\" data-l=\"価格帯\">1万〜5万円<\/td><td data-l=\"形\">エディション作品（番号・記録つき）<\/td><td data-l=\"役割\">本命の入口。来歴が始まる<\/td><\/tr>\n            <tr><td data-l=\"段\">3<\/td><td class=\"price\" data-l=\"価格帯\">10万円〜<\/td><td data-l=\"形\">原画、大判エディション<\/td><td data-l=\"役割\">評価と価格の頂点。供給は絞る<\/td><\/tr>\n            <tr><td data-l=\"段\">4<\/td><td class=\"price\" data-l=\"価格帯\">契約<\/td><td data-l=\"形\">ライセンス（グッズ・コラボ）<\/td><td data-l=\"役割\">自分の手を離れて回る層。権利は渡さず貸す<\/td><\/tr>\n          <\/tbody>\n        <\/table>\n        <p class=\"firststep\"><strong>最初の一歩：<\/strong>段1の品目を1つ決め、既存のドローイングからエディションにする1点を選ぶ<br><strong>時期：<\/strong>受験後（フェーズ1と並行）<\/p>\n        <h3>フェーズ<\/h3>\n        <ol class=\"steps\">\n          <li data-n=\"0\"><span class=\"st\">土台（今ここ）<\/span><span class=\"sd\">制作ラインを維持する（受験制作がそのまま作品蓄積になる）。世界観と視覚言語を1つに絞る。記録の型を決める：作品ごとに原画ファイル／制作日／タイトル／技法を残す。<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>記録の型を1枚に決めて、次に仕上がる作品からその型で残し始める<br><strong>時期：<\/strong>今すぐ（受験制作と一体で進める）<\/p><\/li>\n          <li data-n=\"1\"><span class=\"st\">提示と最初の取引<\/span><span class=\"sd\">投稿001（v3）を出し、30本検証で「提示の型」を1つ当てる。並行して既存ドローイングからエディション1点をBOOTHに受注生産で出す。<\/span><span class=\"done-when\">最初の1件の取引（金額は問わない）と、提示の型の当たり1つ<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>投稿001（v3）のカットを Kling で生成・選別する（未決・保留にもある、本人の作業待ちの続き）<br><strong>時期：<\/strong>受験後（2027年3月以降）<\/p><\/li>\n          <li data-n=\"2\"><span class=\"st\">階段を組む<\/span><span class=\"sd\">当たった型を連載化し、フォロワーの蓄積を始める。エディションの点数を増やし段2を常設にする。売上の実績に応じてバイトを段階的に減らす。<\/span><span class=\"done-when\">月10万円の売上ラインが見えること<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>フェーズ1で当たった型の2本目を出す<br><strong>時期：<\/strong>フェーズ1が終わってから<\/p><\/li>\n          <li data-n=\"3\"><span class=\"st\">権利の層<\/span><span class=\"sd\">ライセンス・コラボの打診を受ける側に立つ（自分から売り込まない。条件はこちらが決める）。原画の価格帯を上げる。供給は絞ったまま。<\/span><span class=\"done-when\">年600万円ペース（第1チェックポイント）<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>ライセンスの条件（権利は渡さず貸す、条件はこちらが決める）を1枚に書き出す<br><strong>時期：<\/strong>フェーズ2で売上の実績が立ってから<\/p><\/li>\n        <\/ol>\n        <h3>現実の数字<\/h3>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">4,000〜5,000<small>円\/号<\/small><\/div><div class=\"k\">号単価（学生・無名）。実績が積めれば8,000〜15,000円\/号<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">50 : 50<\/div><div class=\"k\">画廊委託の標準的な取り分<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">約239<small>万円<\/small><\/div><div class=\"k\">美術家の平均年収。半数が200万円未満<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">上限360<small>万円<\/small><\/div><div class=\"k\">ポーラの在外研修助成。募集は毎年10〜11月<\/div><\/div>\n        <\/div>\n        <p>数字が示す標準形は「安定した枠 ＋ 作品販売 ＋ 公募・助成」の複合。作品販売一本では立たない。<\/p>\n        <h3>画家の集客の実態<\/h3>\n        <ul>\n          <li>決定的なのはフォロワー数ではなく、<strong>一貫した作風の継続投稿<\/strong>と、著名な作家・コレクターの購入と推薦による<strong>信用の橋渡し<\/strong><\/li>\n          <li>SNSは発見と身辺調査の道具。価格は非公開・問い合わせ制が原則で、直販は入口に限定する<\/li>\n          <li>失敗側の教訓：投機バブルは崩壊した（若手市場は2021年比で約3分の1に縮小）<\/li>\n        <\/ul>\n        <h3>時間の設計<\/h3>\n        <ul>\n          <li><strong>制作と集客を分けない<\/strong>。制作過程そのものが集客素材になる<\/li>\n          <li>販売は受注生産＋プラットフォームに寄せ、在庫・発送・交渉の時間を消す<\/li>\n          <li>運営時間に上限を置く。順番は制作 → 運営。制作時間が残り物にならないようにする<\/li>\n          <li>Phase 2で売上が立つまで、事業に生活費を背負わせない（焦りが作風と価格を壊すため）<\/li>\n        <\/ul>",
-   "updated_at": "2026-11-20T04:03:05+09:00"
-  },
-  {
-   "id": "zukan",
-   "tab": "art",
-   "num": "04",
-   "char": "鑑",
-   "tag": "受託／横展開",
-   "themeClass": "t-zukan",
-   "title": "図鑑事業",
-   "meta": "美術＝受託／他ジャンル＝横展開。キット販売はしない。特許の結論",
-   "badgeClass": "decided",
-   "badgeText": "2026-11-19 決定",
-   "html": "<div class=\"detail-head\"><h2>図鑑事業<\/h2><span class=\"badge decided\">2026-11-19 決定<\/span><\/div>\n        <p class=\"sec-lead\">図鑑アプリの仕組み（エンジン）は分野を選ばない。金の変え方は、分野によって2つに分けることが決まった。<\/p>\n        <div class=\"lanes\">\n          <div class=\"lane art\">\n            <h3>美術分野 ＝ 受託<\/h3>\n            <p>画廊・画家・美術団体などの「自分たちの図鑑が欲しいけど作れない」側から、構築を受ける。狙いは<strong>金＋美術界との縁＋実績<\/strong>の3つ同時。<\/p>\n            <ul>\n              <li><strong>客の像<\/strong>：自分の全作品のアーカイブが欲しい画家本人／小さい画廊・美術団体／ファンコミュニティ／専門店／小さい博物館・資料館／コレクター<\/li>\n              <li><strong>売る物の3段<\/strong>：構築一式（データ整形込み）／点数単位のデータ化／月額の運用代行<\/li>\n              <li><strong>条件<\/strong>：渡すのは完成したアプリだけ。エンジンの権利は翔万に残す。データの権利は発注側に置く<\/li>\n              <li><strong>始動<\/strong>：納期のある他人の仕事なので、本格始動は受験後<\/li>\n            <\/ul>\n            <p class=\"firststep\"><strong>最初の一歩：<\/strong>受託の受け皿（何を・いくらで・どのくらいで作れるかの一枚）を作る<br><strong>時期：<\/strong>受験後（2027年3月以降）に本格始動<\/p>\n          <\/div>\n          <div class=\"lane other\">\n            <h3>他ジャンル ＝ 横展開<\/h3>\n            <p>ジャンルごとの図鑑を自前アプリとして売り出し、アプリ収入の階段に乗せる。名前のリスクがない分野で、匿名のまま展開できる。<\/p>\n            <ul>\n              <li><strong>実装済みの証明<\/strong>：音楽／映画／食材<\/li>\n              <li><strong>効く分野の条件<\/strong>：「人と作品と記録」の蓄積型で、ファンが深く調べたくて、既存の情報が散らかっている場所<\/li>\n              <li><strong>候補<\/strong>：スポーツ記録（野球選手・力士）／声優・アイドル／漫画／名車／時計／スニーカー<\/li>\n            <\/ul>\n            <p class=\"firststep\"><strong>最初の一歩：<\/strong>候補の中から、最初に出す分野を1つ決める<br><strong>時期：<\/strong>受験後（2027年3月以降）<\/p>\n          <\/div>\n        <\/div>\n        <h3>決まっている線引き<\/h3>\n        <ul>\n          <li><strong>エンジンのキット販売はしない<\/strong>。仕組みを公開することになるため。売るのは完成品であって、作り方ではない<\/li>\n          <li><strong>アプリは動く時にAIを呼ばない<\/strong>。AIが働くのは作る時とデータを揃える時だけ。だから他人が使っても自分のAIアカウントは減らず、運営費もゼロのまま渡せる<\/li>\n          <li><strong>唯一無二性の堀は3つ<\/strong>：データの深さと正確さ／本人の目による選定／元々の文章（ガイド・調査）。コードは真似できても、この3つは年月がかかる<\/li>\n        <\/ul>\n        <div class=\"note\">\n          <h3 style=\"margin-top:0\">特許についての結論<\/h3>\n          <p>今のアプリ群の大半は特許化が難しい。理由は3つ——進歩性の壁（既存技術の組み合わせと判断されやすい）、既に公開済み（救済は本人の公開から1年以内）、ソフトウェア単体では対象になりにくい。日記アプリのTodo（金額と写真の自動回収）も、ほしい物リスト等の先行例が大きく単体では厳しい見立て。<\/p>\n          <p>図鑑の独自性は仕組みの新しさではなく、データの量・編集・選定の蓄積にある。守りは著作権と「真似に同じ年月がかかる」という事実の側。特許の正しい出番は、自分の商品・仕組みを外に出す時に、<strong>公開する前に<\/strong>中核だけ検討すること。<\/p>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>自分の商品・仕組みを次に外に出す時、公開前に特許の検討を1回挟む<br><strong>時期：<\/strong>公開の直前、その都度<\/p>\n        <\/div>",
-   "updated_at": "2026-11-20T04:03:05+09:00"
+   "badgeText": "決定済み",
+   "html": "<div class=\"detail-head\"><h2>時期と順番<\/h2><span class=\"badge decided\">決定済み<\/span><\/div>\n        <p class=\"sec-lead\">受験を軸に、やる順番は固定されている。並行開発はしない。<\/p>\n        <ol class=\"steps\">\n          <li data-n=\"1\"><span class=\"st\">今 〜 共通テスト（2027年1月16・17日）<\/span><span class=\"sd\">候補A（単語原木）を自分用に育てる。並行するのは候補Cの題材決定（段0）まで。<\/span><\/li>\n          <li data-n=\"2\"><span class=\"st\">共通テスト後 〜 2月<\/span><span class=\"sd\">候補C×B（現場の不便解消 × シェアされる出力）の最小版を公開し、集客テスト30日。<\/span><\/li>\n          <li data-n=\"3\"><span class=\"st\">受験後<\/span><span class=\"sd\">候補Aの一般公開版を調整・公開。図鑑事業の受託を本格始動させる。<\/span><\/li>\n        <\/ol>\n        <div class=\"note\">\n          <p>補足として、知識の蓄積だけは受験前から進めてよい（アフィリエイトの仕組みを学ぶ学習編など）。応募・出品・公開といった実践は、すべて受験後の段に置く。<\/p>\n        <\/div>\n        <h3>収入の階段（チェックポイント）<\/h3>\n        <p>2026-11-20、夢と理想の棚卸しを受けて、階段を細かく割った。金額はすべて「仕組みからの月収」で、各地点に生活の何が変わるかを付けてある。<\/p>\n        <ul class=\"ladder\">\n          <li><span class=\"amt\">月1,000円<\/span><span class=\"bar\" style=\"width:5%\"><\/span><span class=\"what\">最初の取引。額ではなく「仕組みが金を生んだ」ことの証明<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>有料の物を1つ出して、最初の取引を作る<br><strong>時期：<\/strong>受験後、最初に届いた仕組みから<\/p><\/li>\n          <li><span class=\"amt\">月1万円<\/span><span class=\"bar\" style=\"width:12%\"><\/span><span class=\"what\">ツール代・教材費が仕組みから出る。自腹が終わる<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>最初の取引が立った仕組みで、2件目・2つ目の商品を作り、再現するか確かめる<br><strong>時期：<\/strong>最初の取引が立ってから<\/p><\/li>\n          <li><span class=\"amt\">月3万円<\/span><span class=\"bar\" style=\"width:20%\"><\/span><span class=\"what\">家賃3万円を仕組みが払う。バイトを減らし始める目安<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>家賃分が仕組みから出る月を作り、バイトのシフトを減らす相談を始める<br><strong>時期：<\/strong>月1万円に届いてから<\/p><\/li>\n          <li><span class=\"amt\">月7万円<\/span><span class=\"bar\" style=\"width:30%\"><\/span><span class=\"what\">バイト引退。今のバイト給料と同額で、今の暮らし＋先取り貯金まで仕組みで再現できる<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>バイトを辞める条件（仕組みの収入が今の暮らし＋先取り貯金を賄う月が続くこと）を先に決め、月次で記録する<br><strong>時期：<\/strong>月3万円に届いてから<\/p><\/li>\n          <li><span class=\"amt\">月10万円<\/span><span class=\"bar\" style=\"width:38%\"><\/span><span class=\"what\">画材を少し奮発できる。貯金のペースが上がる<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>届いた1つの仕組みを、繰り返し売れる形（連載化・定番化）に整える<br><strong>時期：<\/strong>月7万円に届いてから<\/p><\/li>\n          <li><span class=\"amt\">月15万円<\/span><span class=\"bar\" style=\"width:46%\"><\/span><span class=\"what\">広めの部屋への引っ越しが視野（家賃アップを吸収できる）。犬の初期費用と月の飼育費もここ<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>広めの部屋の条件（広さ・家賃の上限）を決めて物件を探し始める。犬は迎える条件（犬種・初期費用）を書き出す<br><strong>時期：<\/strong>月10万円に届いてから<\/p><\/li>\n          <li><span class=\"amt\">月20万円<\/span><span class=\"bar\" style=\"width:54%\"><\/span><span class=\"what\">取材旅行に年数回行ける。ファッションに月数万回せる<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>取材旅行を1回、行き先と予算を先に決めて実際に計画する<br><strong>時期：<\/strong>月15万円に届いてから<\/p><\/li>\n          <li><span class=\"amt\">月30万円<\/span><span class=\"bar\" style=\"width:64%\"><\/span><span class=\"what\">年換算360万円。同年代の平均を超える。バー通いも無理のない範囲に入る<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>柱を2本目に増やす（届いた仕組みともう1系統を並走させる）<br><strong>時期：<\/strong>月20万円の帯で安定してから<\/p><\/li>\n          <li><span class=\"amt\">月50万円<\/span><span class=\"bar\" style=\"width:78%\"><\/span><span class=\"what\">年600万円＝父親超えのチェックポイント。工場跡アトリエの賃貸、人をパートで雇う、親族への恩返しが年単位で可能になる<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>月50万円ペースが続いたら、年600万円の到達として記録し、次の目標に切り替える<br><strong>時期：<\/strong>月30万円の帯に入ってから<\/p><\/li>\n          <li><span class=\"amt\">月83万円<\/span><span class=\"bar\" style=\"width:92%\"><\/span><span class=\"what\">年換算で約1,000万円＝最終目標。拠点を東京か京都に置く選択が現実になる<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>拠点（東京か京都）の条件を決め、移住の試算を1枚作る<br><strong>時期：<\/strong>月50万円の帯で安定してから<\/p><\/li>\n        <\/ul>\n        <h3>資産フェーズ（年1,000万円の先）<\/h3>\n        <div class=\"note\">\n          <p>木の家の購入／イギリス拠点／人を常勤で雇う／大金の貯金——この4つは、年1,000万円の収入があってもまだ先の話で、「収入」ではなく「資産」のフェーズに属する。階段の外ではなく、10番のチェックポイントの先に置く。<\/p>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>収入のうち資産に回す割合を決め、積立を始める<br><strong>時期：<\/strong>年1,000万円に届いてから<\/p>\n        <\/div>\n        <h3>夢と理想（2026-11-20 の棚卸し）<\/h3>\n        <p>上のチェックポイントの根拠。2026-11-20に本人が語った内容を、短い一覧で残す。<\/p>\n        <ul>\n          <li>絵を描き続ける。大きい絵も描く<\/li>\n          <li>広めの部屋に住む（狭いと壁やら何やらにぶつかる）<\/li>\n          <li>工場跡地のような広い場所をアトリエにする（井田幸昌のアトリエのような）<\/li>\n          <li>服や香水などファッションアイテムを買うお金に困らない。高いものも<\/li>\n          <li>旅行は取材という名目ですぐ行けるくらいになる<\/li>\n          <li>木の家に住む<\/li>\n          <li>相棒となる犬がほしい<\/li>\n          <li>豊かな生活。バーにも通う<\/li>\n          <li>バイトはしない。画材は値段を見ずに買う<\/li>\n          <li>親族に恩返しをする<\/li>\n          <li>貯金は大金を<\/li>\n          <li>拠点は東京か京都かイギリス。ただし不利な土地は選ばない<\/li>\n          <li>人は雇ってみたい<\/li>\n        <\/ul>",
+   "updated_at": "2026-11-20T14:42:01+09:00"
   },
   {
    "id": "business",
@@ -800,22 +895,78 @@ var SEED = {
    "meta": "アプリ候補A・B・C、検証の段0〜段4、市場の現実の数字、テスト枠4件（make.fun／物語のある物／海外向けデジタル商品／海外アフィリエイト比較記事）",
    "badgeClass": "decided",
    "badgeText": "骨格は決定済み",
-   "html": "<div class=\"detail-head\"><h2>ビジネス計画<\/h2><span class=\"badge decided\">骨格は決定済み<\/span><\/div>\n        <p class=\"sec-lead\">柱はアプリ。市場の現実を踏まえ、「小さく複数出し、届いたものだけ伸ばす」が勝ち方として決まっている。<\/p>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">約83<small>%<\/small><\/div><div class=\"k\">新作アプリが2年経っても月$1,000に届かない割合<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">月$72<\/div><div class=\"k\">公開1年後の月収の中央値<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">58<small>日<\/small><\/div><div class=\"k\">月$1,000到達までの中央値。届くものは早く届く<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">5〜9<small>倍<\/small><\/div><div class=\"k\">「痛み止め」が「ビタミン」より転換する倍率<\/div><\/div>\n        <\/div>\n        <h3>候補は3つともやる。順番だけ固定<\/h3>\n        <div class=\"card\">\n          <h3>A. 単語原木（一般公開版） <span class=\"badge now\">自分用に走行中<\/span><\/h3>\n          <p>英語の単語暗記が続かない痛みへの道具。育成×図鑑の形で、「変身の実感」と「卒業した単語の図鑑」というシェアできる成果物を持つ。既にv1が走っているのが強み。弱みは学習アプリ市場の激戦。<\/p>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>自分で使いながら、公開版に残すもの・削るものをメモに書きためる<br><strong>時期：<\/strong>今〜共通テスト（自分用に育てる期間）。公開版の調整と公開は受験後<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>B. シェアされる結果画面型の小ツール<\/h3>\n          <p>手持ちの記録や写真から「分析／図鑑／年表」のような結果画像を出す道具。結果がそのまま投稿物になる形が集客装置になる（IsTalkの型）。強みは日本事例で最も再現性が高いこと。弱みは題材の当たり外れが全てで、「誰の何の結果が見たいか」の選定が勝負になる。<\/p>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>Cの題材が決まったら、その結果画面の試し画像を1枚作る<br><strong>時期：<\/strong>共通テスト後〜2月（Cの最小版と一体で作る）<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>C. 現場の不便解消型（作品台帳が有力）<\/h3>\n          <p>自分の制作・受験生活の現場の道具。調査で「スマホ完結・日本語・私的な作品台帳」は日本語圏に不在の<strong>無人地帯<\/strong>と確認済み。海外製品は高額・英語・PC寄りで、国内は公開ポートフォリオと物理保管に二極化している。<\/p>\n          <ul>\n            <li><strong>価格の隙間<\/strong>：買い切り〜月300〜980円、点数課金・広告なし<\/li>\n            <li><strong>集客になる出力<\/strong>：展示・完成ごとの「作品1点カード（縦型）」、第二弾に年間「制作Wrapped」<\/li>\n            <li><strong>弱み<\/strong>：層が狭く天井は低い。最初の月1万円ライン向き<\/li>\n          <\/ul>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>段0の一文を決める（下の検証の階段の段0と、未決・保留の筆頭がここ）<br><strong>時期：<\/strong>今〜共通テスト（題材の決定だけは受験前から進める）<\/p>\n        <\/div>\n        <h3>検証の階段（段0〜段4）<\/h3>\n        <ol class=\"steps\">\n          <li data-n=\"0\"><span class=\"st\">題材を1つ決める<\/span><span class=\"done-when\">「誰が・いつ・何に困って・今どう凌いでいるか」を一文で言えること<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>題材候補（作品台帳／制作ログ／画材の在庫と消費／シフトと収入の見える化）から1つに絞って、その一文を書く<br><strong>時期：<\/strong>今〜共通テスト<\/p><\/li>\n          <li data-n=\"1\"><span class=\"st\">最小版を公開する<\/span><span class=\"done-when\">実際に他人が触れるURLがあること（決済はまだ付けない）<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>最小版の最初の1画面を作る<br><strong>時期：<\/strong>共通テスト後〜2月<\/p><\/li>\n          <li data-n=\"2\"><span class=\"st\">集客テスト30日<\/span><span class=\"done-when\">結果画面のシェアか短尺動画経由で、身内以外の利用者が10人。ゼロなら題材を変える<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>公開した日に、結果画面のシェア投稿か短尺動画を1本出す<br><strong>時期：<\/strong>段1の公開直後から30日間<\/p><\/li>\n          <li data-n=\"3\"><span class=\"st\">課金の仮設置<\/span><span class=\"done-when\">最初の1件の支払い（広告削除か年額サブスクの小さい壁で試す）<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>広告を消す有料版か年額サブスクの、どちらか1つの課金の受け皿を付ける<br><strong>時期：<\/strong>段2で身内以外の利用者が10人に届いたら<\/p><\/li>\n          <li data-n=\"4\"><span class=\"st\">判定<\/span><span class=\"done-when\">続ける／題材を変える／量産ラインに移す、を数字で決める<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>数字を見て「続ける／題材を変える／量産ラインに移す」のどれかを決め、結果を記録する<br><strong>時期：<\/strong>段3の後<\/p><\/li>\n        <\/ol>\n        <h3>課金と集客の決まり<\/h3>\n        <ul>\n          <li><strong>課金の本命<\/strong>はサブスク（年額主役）＋買い切りの受け皿。広告は単価が低く、柱にしない<\/li>\n          <li><strong>再生数 ≠ ダウンロード<\/strong>。差を分けるのは、シェアされる結果画面／プロフィールからの導線／チャネルと対象の一致<\/li>\n          <li>Xでは告知より「質問投稿」が効く。最初の利用者は手で集め、要望には速く応える<\/li>\n          <li>フォロワーは借り物。<strong>所有できる連絡先（リスト）<\/strong>を別に持つ<\/li>\n        <\/ul>\n        <h3>収益化の実務メモ<\/h3>\n        <ul>\n          <li>Stripeは個人でも使えるが、決済・税務は実名が前提。特商法の「請求があれば開示」は完全な匿名化ではない<\/li>\n          <li>1,000円あたりの手取り：STORES 945円／BOOTH 899円／note 855円<\/li>\n          <li>青色申告の承認申請は「開業後2か月以内」を逃さない<\/li>\n        <\/ul>\n        <div class=\"card\">\n          <h3>AIバウンティ（make.fun） <span class=\"badge pending\">テスト枠・検討中<\/span><\/h3>\n          <p>集客が要らず、AIの労働力そのものが商品になる経路。ただし性質は「仕組み」ではなく「懸賞」で、本命ルートにはならない。位置づけはテスト枠：目的は種銭の獲得と、AIに仕事を取らせて報酬を得る実地ノウハウ。<\/p>\n          <ul>\n            <li><strong>規律<\/strong>：並行は最大3件まで。期間と撤退線を先に決める。外れたら記録して次へ<\/li>\n            <li><strong>選ぶ基準<\/strong>：賞金÷参加者数がましで、締切に余裕があるもの。審査が「質」の案件を優先する<\/li>\n            <li><strong>注意<\/strong>：受け取りはUSDC／Solanaウォレット側で、換金と税務の手間が後で来る<\/li>\n          <\/ul>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>締切に余裕があり、審査が「質」の案件を1件選んで応募する（並行は最大3件まで、期間と撤退線を先に決める）<br><strong>時期：<\/strong>受験後（2027年3月以降）<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>物語のある物（物販テスト） <span class=\"badge pending\">テスト枠・2026-11-19 合意<\/span><\/h3>\n          <p>売るのは呪物ではない。<strong>「物語と力」<\/strong>——見惚れるような質の高い物に、質の高い物語を付けて売る。make.funと同格のテスト枠として、期間と撤退ラインを先に決めて小さく試す。<\/p>\n          <p><strong>担い手は石に限らない。<\/strong>売るのは物語そのものであり、表面的な物が石である必要はない。担い手は石・ガラス・金属・木などの小物でもよい。見惚れてしまうようなキラキラした石はその一例にすぎない。<\/p>\n          <ul>\n            <li><strong>狙う層<\/strong>：スピ層<\/li>\n            <li><strong>売り場<\/strong>：メルカリ。購入者の能動性が必要な場に置く<\/li>\n            <li><strong>物の土台<\/strong>：素人が適当に拾った石ころや小物に情報を付ける形とは分ける。物自体の質が土台で、マテリアルへの感覚そのものが商品力になる<\/li>\n          <\/ul>\n          <p><strong>合意したルール（3つ）<\/strong>——担い手が石でもガラスでも金属でも木でも、何であれそのまま適用される。<\/p>\n          <ul>\n            <li><strong>効能を断定しない<\/strong>——説明文で断定すると嘘になる。「〜と言われてきた」「〜と云われる」という言い回しが大切で、それこそが物語である<\/li>\n            <li><strong>無理な売りつけはしない<\/strong>——欲しい人が能動的に買う構造に置く。無理やりは悪質<\/li>\n            <li><strong>物の質は本物にする<\/strong>——物語を剥がしても、物そのものに持つ価値があること<\/li>\n          <\/ul>\n          <p><strong>位置づけ——アートビジネスの練習。<\/strong>値付け、物語の付け方、固定価格、記録の練習であり、「意味のないものに付加価値を与える」という、本命の作品販売（作品の値付けと言説化）と同じ力学で動く。<\/p>\n          <p>効果の受け止め方についての考え：実際に作用するかどうかは、買う人がどれほど強く信じているかによる。強く信じれば精神的に作用し、思い込みは現実に影響する。だから無意味ではない、という立場を取る。<\/p>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>最初の1品を決めて、その出品文の下書きを作る<br><strong>時期：<\/strong>受験後（2027年3月以降）。期間と撤退ラインを決めてから出す<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>海外向けデジタル商品（言語市場の裁定） <span class=\"badge pending\">テスト枠・候補<\/span><\/h3>\n          <p>きっかけはXで見かけた「海外note」系の投稿。収益の自己申告（初月の金額など）は裏付けがないので採らない。残すのは仕組みの部分だけ。<\/p>\n          <ul>\n            <li><strong>仕組み<\/strong>：言語の市場の間で情報の値段が違う。日本語圏では当たり前で飽和している情報が、英語圏では薄くて売れることがある（言語市場の裁定取引）<\/li>\n            <li><strong>追い風<\/strong>：AIで翻訳と制作のコストが落ち、この裁定の敷居が下がった<\/li>\n            <li><strong>売り場<\/strong>：Gumroadなど海外のデジタル商品の販売プラットフォーム（実在する経路）<\/li>\n            <li><strong>資産性<\/strong>：売れた商品のバックリストは在庫として残る。懸賞型と違い、ゼロにはならない<\/li>\n            <li><strong>重い部分<\/strong>：勝ち筋は英語圏での集客をゼロから作る力で、そこが最も重い。受験期にやる作業ではない<\/li>\n            <li><strong>置き場所<\/strong>：テスト枠の候補（決定ではない）。やるなら受験後。題材は「日本人にしか書けない日本の何か」を英語で売る形が筋<\/li>\n          <\/ul>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>「日本人にしか書けない日本の何か」の題材候補を3つ書き出す<br><strong>時期：<\/strong>受験後（2027年3月以降）<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>海外アフィリエイト比較記事（AI自動） <span class=\"badge pending\">テスト枠・候補<\/span><\/h3>\n          <p>きっかけはXの記事「Muse自動×海外アフィが想像以上に最強だった」（とら🐯AI副業 @3Imzdo3）。候補3（海外向けデジタル商品）と同じ「言語市場の裁定」の系統だが、仕組みが違う。候補3は自分の商品を売る形、こちらは<strong>他人の商品を紹介して、紹介料を得る<\/strong>形。原典の収益数字は実績の証拠がないので採らない。残すのは仕組みと、実在が確認できる部分だけ。<\/p>\n          <ul>\n            <li><strong>仕組み<\/strong>：AIを使い、英語圏向けに一式を回す。ターゲット選定→悩み分析→商品3件を公式情報ベースで比較→英語の比較記事→SEO／YouTube／X・Threadsで集客→アフィリエイト成果→数字で改善。原典には7日間ロードマップがある<\/li>\n            <li><strong>実在する土台<\/strong>：単価の高いSaaSのアフィリエイトは実在する。Semrushの公式プログラムは、SEO Toolkitの新規成約1件で$200（上位ランクでは$250〜350）。薄く広くではなく「少ない件数×高い単価」の型<\/li>\n            <li><strong>運用の注意<\/strong>：広告であることの開示を明記する。試していない商品を「試した」と書かない（原典にもある注意で、こちらの禁止ラインとも一致する）<\/li>\n            <li><strong>正直な留保<\/strong>：原典に収益の実績証拠はない（単価×件数の計算の提示のみ）。記事自体が無料LINE教材への誘導で、投稿者の本当の狙いは見込み客集め。重い部分は候補3と同じで、英語圏での集客とSEOの信頼づくり。ただし比較記事という中身は資産として積み上がる<\/li>\n            <li><strong>置き場所<\/strong>：テスト枠の候補（決定ではない）。受験後に回す枠<\/li>\n          <\/ul>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>アフィリエイトの仕組みを学ぶ（Muse が用意する学習編を読む）<br><strong>時期：<\/strong>知識は受験前から可、実践は受験後<\/p>\n        <\/div>",
-   "updated_at": "2026-11-20T04:03:05+09:00"
+   "html": "<div class=\"detail-head\"><h2>ビジネス計画<\/h2><span class=\"badge decided\">骨格は決定済み<\/span><\/div>\n        <p class=\"sec-lead\">柱はアプリ。市場の現実を踏まえ、「小さく複数出し、届いたものだけ伸ばす」が勝ち方として決まっている。<\/p>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">約83<small>%<\/small><\/div><div class=\"k\">新作アプリが2年経っても月$1,000に届かない割合<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">月$72<\/div><div class=\"k\">公開1年後の月収の中央値<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">58<small>日<\/small><\/div><div class=\"k\">月$1,000到達までの中央値。届くものは早く届く<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">5〜9<small>倍<\/small><\/div><div class=\"k\">「痛み止め」が「ビタミン」より転換する倍率<\/div><\/div>\n        <\/div>\n        <h3>候補は3つともやる。順番だけ固定<\/h3>\n        <div class=\"trio\">\n          <div class=\"tcol\"><span class=\"tl-t\">A<\/span><span class=\"tl-n\">単語原木<\/span><span class=\"tl-d\">自分用に育てる<\/span><\/div>\n          <div class=\"tcol\"><span class=\"tl-t\">B<\/span><span class=\"tl-n\">結果画面型の小ツール<\/span><span class=\"tl-d\">Cと一体で作る<\/span><\/div>\n          <div class=\"tcol\"><span class=\"tl-t\">C<\/span><span class=\"tl-n\">現場の不便解消型<\/span><span class=\"tl-d\">題材は段0で決める<\/span><\/div>\n        <\/div>\n        <p class=\"trio-seq\">進める順番：<strong>Aを育てる（今〜共通テスト）→ C×Bの最小版（共通テスト後〜2月）→ Aの一般公開版（受験後）<\/strong><\/p>\n        <div class=\"card\">\n          <h3>A. 単語原木（一般公開版） <span class=\"badge now\">自分用に走行中<\/span><\/h3>\n          <p>英語の単語暗記が続かない痛みへの道具。育成×図鑑の形で、「変身の実感」と「卒業した単語の図鑑」というシェアできる成果物を持つ。既にv1が走っているのが強み。弱みは学習アプリ市場の激戦。<\/p>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>自分で使いながら、公開版に残すもの・削るものをメモに書きためる<br><strong>時期：<\/strong>今〜共通テスト（自分用に育てる期間）。公開版の調整と公開は受験後<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>B. シェアされる結果画面型の小ツール<\/h3>\n          <p>手持ちの記録や写真から「分析／図鑑／年表」のような結果画像を出す道具。結果がそのまま投稿物になる形が集客装置になる（IsTalkの型）。強みは日本事例で最も再現性が高いこと。弱みは題材の当たり外れが全てで、「誰の何の結果が見たいか」の選定が勝負になる。<\/p>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>Cの題材が決まったら、その結果画面の試し画像を1枚作る<br><strong>時期：<\/strong>共通テスト後〜2月（Cの最小版と一体で作る）<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>C. 現場の不便解消型（作品台帳が有力）<\/h3>\n          <p>自分の制作・受験生活の現場の道具。調査で「スマホ完結・日本語・私的な作品台帳」は日本語圏に不在の<strong>無人地帯<\/strong>と確認済み。海外製品は高額・英語・PC寄りで、国内は公開ポートフォリオと物理保管に二極化している。<\/p>\n          <ul>\n            <li><strong>価格の隙間<\/strong>：買い切り〜月300〜980円、点数課金・広告なし<\/li>\n            <li><strong>集客になる出力<\/strong>：展示・完成ごとの「作品1点カード（縦型）」、第二弾に年間「制作Wrapped」<\/li>\n            <li><strong>弱み<\/strong>：層が狭く天井は低い。最初の月1万円ライン向き<\/li>\n          <\/ul>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>段0の一文を決める（下の検証の階段の段0と、未決・保留の筆頭がここ）<br><strong>時期：<\/strong>今〜共通テスト（題材の決定だけは受験前から進める）<\/p>\n        <\/div>\n        <h3>検証の階段（段0〜段4）<\/h3>\n        <ol class=\"steps\">\n          <li data-n=\"0\"><span class=\"st\">題材を1つ決める<\/span><span class=\"done-when\">「誰が・いつ・何に困って・今どう凌いでいるか」を一文で言えること<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>題材候補（作品台帳／制作ログ／画材の在庫と消費／シフトと収入の見える化）から1つに絞って、その一文を書く<br><strong>時期：<\/strong>今〜共通テスト<\/p><\/li>\n          <li data-n=\"1\"><span class=\"st\">最小版を公開する<\/span><span class=\"done-when\">実際に他人が触れるURLがあること（決済はまだ付けない）<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>最小版の最初の1画面を作る<br><strong>時期：<\/strong>共通テスト後〜2月<\/p><\/li>\n          <li data-n=\"2\"><span class=\"st\">集客テスト30日<\/span><span class=\"done-when\">結果画面のシェアか短尺動画経由で、身内以外の利用者が10人。ゼロなら題材を変える<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>公開した日に、結果画面のシェア投稿か短尺動画を1本出す<br><strong>時期：<\/strong>段1の公開直後から30日間<\/p><\/li>\n          <li data-n=\"3\"><span class=\"st\">課金の仮設置<\/span><span class=\"done-when\">最初の1件の支払い（広告削除か年額サブスクの小さい壁で試す）<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>広告を消す有料版か年額サブスクの、どちらか1つの課金の受け皿を付ける<br><strong>時期：<\/strong>段2で身内以外の利用者が10人に届いたら<\/p><\/li>\n          <li data-n=\"4\"><span class=\"st\">判定<\/span><span class=\"done-when\">続ける／題材を変える／量産ラインに移す、を数字で決める<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>数字を見て「続ける／題材を変える／量産ラインに移す」のどれかを決め、結果を記録する<br><strong>時期：<\/strong>段3の後<\/p><\/li>\n        <\/ol>\n        <h3>課金と集客の決まり<\/h3>\n        <ul>\n          <li><strong>課金の本命<\/strong>はサブスク（年額主役）＋買い切りの受け皿。広告は単価が低く、柱にしない<\/li>\n          <li><strong>再生数 ≠ ダウンロード<\/strong>。差を分けるのは、シェアされる結果画面／プロフィールからの導線／チャネルと対象の一致<\/li>\n          <li>Xでは告知より「質問投稿」が効く。最初の利用者は手で集め、要望には速く応える<\/li>\n          <li>フォロワーは借り物。<strong>所有できる連絡先（リスト）<\/strong>を別に持つ<\/li>\n        <\/ul>\n        <h3>収益化の実務メモ<\/h3>\n        <ul>\n          <li>Stripeは個人でも使えるが、決済・税務は実名が前提。特商法の「請求があれば開示」は完全な匿名化ではない<\/li>\n          <li>1,000円あたりの手取り：STORES 945円／BOOTH 899円／note 855円<\/li>\n          <li>青色申告の承認申請は「開業後2か月以内」を逃さない<\/li>\n        <\/ul>\n        <div class=\"card\">\n          <h3>AIバウンティ（make.fun） <span class=\"badge pending\">テスト枠・検討中<\/span><\/h3>\n          <p>集客が要らず、AIの労働力そのものが商品になる経路。ただし性質は「仕組み」ではなく「懸賞」で、本命ルートにはならない。位置づけはテスト枠：目的は種銭の獲得と、AIに仕事を取らせて報酬を得る実地ノウハウ。<\/p>\n          <ul>\n            <li><strong>規律<\/strong>：並行は最大3件まで。期間と撤退線を先に決める。外れたら記録して次へ<\/li>\n            <li><strong>選ぶ基準<\/strong>：賞金÷参加者数がましで、締切に余裕があるもの。審査が「質」の案件を優先する<\/li>\n            <li><strong>注意<\/strong>：受け取りはUSDC／Solanaウォレット側で、換金と税務の手間が後で来る<\/li>\n          <\/ul>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>締切に余裕があり、審査が「質」の案件を1件選んで応募する（並行は最大3件まで、期間と撤退線を先に決める）<br><strong>時期：<\/strong>受験後（2027年3月以降）<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>物語のある物（物販テスト） <span class=\"badge pending\">テスト枠・2026-11-19 合意<\/span><\/h3>\n          <p>売るのは呪物ではない。<strong>「物語と力」<\/strong>——見惚れるような質の高い物に、質の高い物語を付けて売る。make.funと同格のテスト枠として、期間と撤退ラインを先に決めて小さく試す。<\/p>\n          <p><strong>担い手は石に限らない。<\/strong>売るのは物語そのものであり、表面的な物が石である必要はない。担い手は石・ガラス・金属・木などの小物でもよい。見惚れてしまうようなキラキラした石はその一例にすぎない。<\/p>\n          <ul>\n            <li><strong>狙う層<\/strong>：スピ層<\/li>\n            <li><strong>売り場<\/strong>：メルカリ。購入者の能動性が必要な場に置く<\/li>\n            <li><strong>物の土台<\/strong>：素人が適当に拾った石ころや小物に情報を付ける形とは分ける。物自体の質が土台で、マテリアルへの感覚そのものが商品力になる<\/li>\n          <\/ul>\n          <p><strong>合意したルール（3つ）<\/strong>——担い手が石でもガラスでも金属でも木でも、何であれそのまま適用される。<\/p>\n          <ul>\n            <li><strong>効能を断定しない<\/strong>——説明文で断定すると嘘になる。「〜と言われてきた」「〜と云われる」という言い回しが大切で、それこそが物語である<\/li>\n            <li><strong>無理な売りつけはしない<\/strong>——欲しい人が能動的に買う構造に置く。無理やりは悪質<\/li>\n            <li><strong>物の質は本物にする<\/strong>——物語を剥がしても、物そのものに持つ価値があること<\/li>\n          <\/ul>\n          <p><strong>位置づけ——アートビジネスの練習。<\/strong>値付け、物語の付け方、固定価格、記録の練習であり、「意味のないものに付加価値を与える」という、本命の作品販売（作品の値付けと言説化）と同じ力学で動く。<\/p>\n          <p>効果の受け止め方についての考え：実際に作用するかどうかは、買う人がどれほど強く信じているかによる。強く信じれば精神的に作用し、思い込みは現実に影響する。だから無意味ではない、という立場を取る。<\/p>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>最初の1品を決めて、その出品文の下書きを作る<br><strong>時期：<\/strong>受験後（2027年3月以降）。期間と撤退ラインを決めてから出す<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>海外向けデジタル商品（言語市場の裁定） <span class=\"badge pending\">テスト枠・候補<\/span><\/h3>\n          <p>きっかけはXで見かけた「海外note」系の投稿。収益の自己申告（初月の金額など）は裏付けがないので採らない。残すのは仕組みの部分だけ。<\/p>\n          <ul>\n            <li><strong>仕組み<\/strong>：言語の市場の間で情報の値段が違う。日本語圏では当たり前で飽和している情報が、英語圏では薄くて売れることがある（言語市場の裁定取引）<\/li>\n            <li><strong>追い風<\/strong>：AIで翻訳と制作のコストが落ち、この裁定の敷居が下がった<\/li>\n            <li><strong>売り場<\/strong>：Gumroadなど海外のデジタル商品の販売プラットフォーム（実在する経路）<\/li>\n            <li><strong>資産性<\/strong>：売れた商品のバックリストは在庫として残る。懸賞型と違い、ゼロにはならない<\/li>\n            <li><strong>重い部分<\/strong>：勝ち筋は英語圏での集客をゼロから作る力で、そこが最も重い。受験期にやる作業ではない<\/li>\n            <li><strong>置き場所<\/strong>：テスト枠の候補（決定ではない）。やるなら受験後。題材は「日本人にしか書けない日本の何か」を英語で売る形が筋<\/li>\n          <\/ul>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>「日本人にしか書けない日本の何か」の題材候補を3つ書き出す<br><strong>時期：<\/strong>受験後（2027年3月以降）<\/p>\n        <\/div>\n        <div class=\"card\">\n          <h3>海外アフィリエイト比較記事（AI自動） <span class=\"badge pending\">テスト枠・候補<\/span><\/h3>\n          <p>きっかけはXの記事「Muse自動×海外アフィが想像以上に最強だった」（とら🐯AI副業 @3Imzdo3）。候補3（海外向けデジタル商品）と同じ「言語市場の裁定」の系統だが、仕組みが違う。候補3は自分の商品を売る形、こちらは<strong>他人の商品を紹介して、紹介料を得る<\/strong>形。原典の収益数字は実績の証拠がないので採らない。残すのは仕組みと、実在が確認できる部分だけ。<\/p>\n          <ul>\n            <li><strong>仕組み<\/strong>：AIを使い、英語圏向けに一式を回す。ターゲット選定→悩み分析→商品3件を公式情報ベースで比較→英語の比較記事→SEO／YouTube／X・Threadsで集客→アフィリエイト成果→数字で改善。原典には7日間ロードマップがある<\/li>\n            <li><strong>実在する土台<\/strong>：単価の高いSaaSのアフィリエイトは実在する。Semrushの公式プログラムは、SEO Toolkitの新規成約1件で$200（上位ランクでは$250〜350）。薄く広くではなく「少ない件数×高い単価」の型<\/li>\n            <li><strong>運用の注意<\/strong>：広告であることの開示を明記する。試していない商品を「試した」と書かない（原典にもある注意で、こちらの禁止ラインとも一致する）<\/li>\n            <li><strong>正直な留保<\/strong>：原典に収益の実績証拠はない（単価×件数の計算の提示のみ）。記事自体が無料LINE教材への誘導で、投稿者の本当の狙いは見込み客集め。重い部分は候補3と同じで、英語圏での集客とSEOの信頼づくり。ただし比較記事という中身は資産として積み上がる<\/li>\n            <li><strong>置き場所<\/strong>：テスト枠の候補（決定ではない）。受験後に回す枠<\/li>\n          <\/ul>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>アフィリエイトの仕組みを学ぶ（Muse が用意する学習編を読む）<br><strong>時期：<\/strong>知識は受験前から可、実践は受験後<\/p>\n        <\/div>",
+   "updated_at": "2026-11-20T14:42:01+09:00"
   },
   {
-   "id": "schedule",
-   "tab": "art",
-   "num": "01",
-   "char": "時",
-   "tag": "3期間",
-   "themeClass": "t-schedule",
-   "title": "時期と順番",
-   "meta": "受験を軸に固定された順番と、収入の階段（月1,000円〜年1,000万円）",
+   "id": "money",
+   "tab": "money",
+   "num": "08",
+   "char": "金",
+   "tag": "学習シリーズ ①",
+   "themeClass": "t-money",
+   "title": "お金とは何か",
+   "meta": "お金は「誰かに価値を渡した」という記録。労働と仕組みで天井が違う理由",
    "badgeClass": "decided",
-   "badgeText": "決定済み",
-   "html": "<div class=\"detail-head\"><h2>時期と順番<\/h2><span class=\"badge decided\">決定済み<\/span><\/div>\n        <p class=\"sec-lead\">受験を軸に、やる順番は固定されている。並行開発はしない。<\/p>\n        <ol class=\"steps\">\n          <li data-n=\"1\"><span class=\"st\">今 〜 共通テスト（2027年1月16・17日）<\/span><span class=\"sd\">候補A（単語原木）を自分用に育てる。並行するのは候補Cの題材決定（段0）まで。<\/span><\/li>\n          <li data-n=\"2\"><span class=\"st\">共通テスト後 〜 2月<\/span><span class=\"sd\">候補C×B（現場の不便解消 × シェアされる出力）の最小版を公開し、集客テスト30日。<\/span><\/li>\n          <li data-n=\"3\"><span class=\"st\">受験後<\/span><span class=\"sd\">候補Aの一般公開版を調整・公開。図鑑事業の受託を本格始動させる。<\/span><\/li>\n        <\/ol>\n        <p>補足として、知識の蓄積だけは受験前から進めてよい（アフィリエイトの仕組みを学ぶ学習編など）。応募・出品・公開といった実践は、すべて受験後の段に置く。<\/p>\n        <h3>収入の階段（チェックポイント）<\/h3>\n        <p>2026-11-20、夢と理想の棚卸しを受けて、階段を細かく割った。金額はすべて「仕組みからの月収」で、各地点に生活の何が変わるかを付けてある。<\/p>\n        <ul class=\"ladder\">\n          <li><span class=\"amt\">月1,000円<\/span><span class=\"bar\" style=\"width:5%\"><\/span><span class=\"what\">最初の取引。額ではなく「仕組みが金を生んだ」ことの証明<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>有料の物を1つ出して、最初の取引を作る<br><strong>時期：<\/strong>受験後、最初に届いた仕組みから<\/p><\/li>\n          <li><span class=\"amt\">月1万円<\/span><span class=\"bar\" style=\"width:12%\"><\/span><span class=\"what\">ツール代・教材費が仕組みから出る。自腹が終わる<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>最初の取引が立った仕組みで、2件目・2つ目の商品を作り、再現するか確かめる<br><strong>時期：<\/strong>最初の取引が立ってから<\/p><\/li>\n          <li><span class=\"amt\">月3万円<\/span><span class=\"bar\" style=\"width:20%\"><\/span><span class=\"what\">家賃3万円を仕組みが払う。バイトを減らし始める目安<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>家賃分が仕組みから出る月を作り、バイトのシフトを減らす相談を始める<br><strong>時期：<\/strong>月1万円に届いてから<\/p><\/li>\n          <li><span class=\"amt\">月7万円<\/span><span class=\"bar\" style=\"width:30%\"><\/span><span class=\"what\">バイト引退。今のバイト給料と同額で、今の暮らし＋先取り貯金まで仕組みで再現できる<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>バイトを辞める条件（仕組みの収入が今の暮らし＋先取り貯金を賄う月が続くこと）を先に決め、月次で記録する<br><strong>時期：<\/strong>月3万円に届いてから<\/p><\/li>\n          <li><span class=\"amt\">月10万円<\/span><span class=\"bar\" style=\"width:38%\"><\/span><span class=\"what\">画材を少し奮発できる。貯金のペースが上がる<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>届いた1つの仕組みを、繰り返し売れる形（連載化・定番化）に整える<br><strong>時期：<\/strong>月7万円に届いてから<\/p><\/li>\n          <li><span class=\"amt\">月15万円<\/span><span class=\"bar\" style=\"width:46%\"><\/span><span class=\"what\">広めの部屋への引っ越しが視野（家賃アップを吸収できる）。犬の初期費用と月の飼育費もここ<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>広めの部屋の条件（広さ・家賃の上限）を決めて物件を探し始める。犬は迎える条件（犬種・初期費用）を書き出す<br><strong>時期：<\/strong>月10万円に届いてから<\/p><\/li>\n          <li><span class=\"amt\">月20万円<\/span><span class=\"bar\" style=\"width:54%\"><\/span><span class=\"what\">取材旅行に年数回行ける。ファッションに月数万回せる<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>取材旅行を1回、行き先と予算を先に決めて実際に計画する<br><strong>時期：<\/strong>月15万円に届いてから<\/p><\/li>\n          <li><span class=\"amt\">月30万円<\/span><span class=\"bar\" style=\"width:64%\"><\/span><span class=\"what\">年換算360万円。同年代の平均を超える。バー通いも無理のない範囲に入る<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>柱を2本目に増やす（届いた仕組みともう1系統を並走させる）<br><strong>時期：<\/strong>月20万円の帯で安定してから<\/p><\/li>\n          <li><span class=\"amt\">月50万円<\/span><span class=\"bar\" style=\"width:78%\"><\/span><span class=\"what\">年600万円＝父親超えのチェックポイント。工場跡アトリエの賃貸、人をパートで雇う、親族への恩返しが年単位で可能になる<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>月50万円ペースが続いたら、年600万円の到達として記録し、次の目標に切り替える<br><strong>時期：<\/strong>月30万円の帯に入ってから<\/p><\/li>\n          <li><span class=\"amt\">月83万円<\/span><span class=\"bar\" style=\"width:92%\"><\/span><span class=\"what\">年換算で約1,000万円＝最終目標。拠点を東京か京都に置く選択が現実になる<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>拠点（東京か京都）の条件を決め、移住の試算を1枚作る<br><strong>時期：<\/strong>月50万円の帯で安定してから<\/p><\/li>\n        <\/ul>\n        <h3>資産フェーズ（年1,000万円の先）<\/h3>\n        <p>木の家の購入／イギリス拠点／人を常勤で雇う／大金の貯金——この4つは、年1,000万円の収入があってもまだ先の話で、「収入」ではなく「資産」のフェーズに属する。階段の外ではなく、10番のチェックポイントの先に置く。<\/p>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>収入のうち資産に回す割合を決め、積立を始める<br><strong>時期：<\/strong>年1,000万円に届いてから<\/p>\n        <h3>夢と理想（2026-11-20 の棚卸し）<\/h3>\n        <p>上のチェックポイントの根拠。2026-11-20に本人が語った内容を、短い一覧で残す。<\/p>\n        <ul>\n          <li>絵を描き続ける。大きい絵も描く<\/li>\n          <li>広めの部屋に住む（狭いと壁やら何やらにぶつかる）<\/li>\n          <li>工場跡地のような広い場所をアトリエにする（井田幸昌のアトリエのような）<\/li>\n          <li>服や香水などファッションアイテムを買うお金に困らない。高いものも<\/li>\n          <li>旅行は取材という名目ですぐ行けるくらいになる<\/li>\n          <li>木の家に住む<\/li>\n          <li>相棒となる犬がほしい<\/li>\n          <li>豊かな生活。バーにも通う<\/li>\n          <li>バイトはしない。画材は値段を見ずに買う<\/li>\n          <li>親族に恩返しをする<\/li>\n          <li>貯金は大金を<\/li>\n          <li>拠点は東京か京都かイギリス。ただし不利な土地は選ばない<\/li>\n          <li>人は雇ってみたい<\/li>\n        <\/ul>",
-   "updated_at": "2026-11-20T13:49:32+09:00"
+   "badgeText": "学習済み",
+   "html": "<div class=\"detail-head\"><h2>お金とは何か<\/h2><span class=\"badge decided\">学習シリーズ ①<\/span><\/div>\n        <p class=\"sec-lead\">お金は、モノじゃない。記録だ。<\/p>\n        <h3>お金の流れ<\/h3>\n        <div class=\"flow\"><span>価値を渡す<\/span><i>→<\/i><span>認められる<\/span><i>→<\/i><span>記録が増える<\/span><\/div>\n        <p>お金そのものに価値はない。お金は「誰かに価値を渡した」という記録だ。渡した価値が認められたときだけ、記録が増える。<\/p>\n        <h3>2つの形<\/h3>\n        <div class=\"lanes\">\n          <div class=\"lane other\">\n            <h3>バイト（労働）<\/h3>\n            <p>時間を1回売って、1回分の記録をもらう形。確実だが、記録の量は「時間×時給」で頭打ちになる。<\/p>\n          <\/div>\n          <div class=\"lane art\">\n            <h3>仕組み<\/h3>\n            <p>一度作ったものが、何度も記録を生む形。動画1本、商品1点、顔のコレクション1つが、寝ている間も記録を生み得る。だから天井が違う。<\/p>\n          <\/div>\n        <\/div>\n        <div class=\"note\">\n          <p>逆に、誰の「欲しい」にも当たらなければ記録は0のまま。努力と記録が比例しないのが、この世界のいちばんきついところだ。<\/p>\n        <\/div>\n        <h3>翔万の数字で見ると<\/h3>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">年600<small>万円<\/small><\/div><div class=\"k\">「月50万円分の記録を生み続ける状態」と言い換えられる<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">年1,000<small>万円<\/small><\/div><div class=\"k\">月83万円分の記録を生み続ける状態<\/div><\/div>\n        <\/div>\n        <p>問いは「頑張れるか」じゃなく「何が、誰の欲しいに当たって、記録を繰り返し生むか」になる。<\/p>\n        <h3>次のレッスン<\/h3>\n        <ul>\n          <li>② ビジネスとは何か（仕組みの定義。労働と仕組みの違い）<\/li>\n          <li>③ アフィリエイトの中身（誰が誰に、何の対価を払っているのか）<\/li>\n          <li>④ 過去の人間がどう仕組みを作ったか／低い地位からの成り上がりの型<\/li>\n        <\/ul>\n        <p class=\"sources\">出典・前提：翔万本人の言葉（2026-11-05）と、同日出た50方法マップの分布。数字の細部はマップ側に譲る。学習シリーズ ①（2026-11-05）、宿題なし<\/p>",
+   "updated_at": "2026-11-20T14:42:01+09:00"
+  },
+  {
+   "id": "moneymap",
+   "tab": "money",
+   "num": "09",
+   "char": "図",
+   "tag": "カリキュラム",
+   "themeClass": "t-money",
+   "title": "お金の勉強の地図",
+   "meta": "作る→守る→増やす→運用する。8テーマの順番と現在地（次は「数字の式」）",
+   "badgeClass": "now",
+   "badgeText": "次は「数字の式」",
+   "html": "<div class=\"detail-head\"><h2>お金の勉強の地図<\/h2><span class=\"badge now\">次は「数字の式」<\/span><\/div>\n        <p class=\"sec-lead\">全部を先に学ばない。「今のステージで必要なものだけ」を、1回3分で読める量で学ぶ。使わない知識は腐るし、勉強が「動けない」の隠れ蓑になる。順番は現在地に合わせてある。<\/p>\n        <h3>大きな流れ<\/h3>\n        <div class=\"flow\"><span>作る<\/span><i>→<\/i><span>守る<\/span><i>→<\/i><span>増やす（再投資）<\/span><i>→<\/i><span>運用する（投資）<\/span><\/div>\n        <h3>学ぶ順番<\/h3>\n        <ol class=\"steps\">\n          <li data-n=\"0\"><span class=\"st\">お金とは何か <span class=\"badge decided\">済み<\/span><\/span><span class=\"sd\">お金＝価値交換と信用の記録。渇きが止まった時に金が動く（学習シリーズ01）<\/span><\/li>\n          <li data-n=\"1\"><span class=\"st\">ビジネスの管 <span class=\"badge decided\">済み<\/span><\/span><span class=\"sd\">集客 → 興味・信頼 → 販売 → 継続。金は管のどこかで落ちる（道筋ファイル）<\/span><\/li>\n          <li data-n=\"2\"><span class=\"st\">数字の式 <span class=\"badge now\">次の学習<\/span><\/span><span class=\"sd\">売上＝単価×客数×リピート／利益＝売上−経費／粗利／キャッシュフロー（手元に現金が残るか）<\/span><\/li>\n          <li data-n=\"3\"><span class=\"st\">集客と販売の実務<\/span><span class=\"sd\">渇きの種類、オファー（提案の形）、価格の決め方、ファネルの指標の読み方。今の主戦場と直結<\/span><\/li>\n          <li data-n=\"4\"><span class=\"st\">テストと改善<\/span><span class=\"sd\">仮説→小さく試す→数字で判定→当たった型だけ残す。30本検証の考え方そのもの。検証と並行<\/span><\/li>\n          <li data-n=\"5\"><span class=\"st\">守りの実務<\/span><span class=\"sd\">開業届・青色申告・確定申告／著作権／ステマ規制（PR表記）／特商法。最初の収益が出たら<\/span><\/li>\n          <li data-n=\"6\"><span class=\"st\">仕組みの拡大<\/span><span class=\"sd\">ストック化、外注（お金で手を買う）、ライセンス、蛇口の複数化。月10万円が見えたら<\/span><\/li>\n          <li data-n=\"7\"><span class=\"st\">投資・資産運用<\/span><span class=\"sd\">インデックス投資の基本、リスクと複利、詐欺の見分け方。最後（余剰資金ができてから）<\/span><\/li>\n        <\/ol>\n        <h3>なぜ投資が最後なのか<\/h3>\n        <div class=\"note\">\n          <p>投資のリターンは「元本×利率」。元本10万円を年5%で運用しても年5,000円。同じ労力で「月1万円稼ぐ仕組み」を作れば年12万円で、しかも仕組みは育つ。<\/p>\n          <div class=\"flow\"><span>仕組みで元本を作る<\/span><i>→<\/i><span>税金と管理で守る<\/span><i>→<\/i><span>仕組みに再投資して増やす<\/span><i>→<\/i><span>余った分だけ運用する<\/span><\/div>\n          <p>例外として今すぐ必要な投資リテラシーは「守り」だけ：元本保証＋高利回りの話は詐欺、FX・仮想通貨のレバレッジは初心者の入口ではない、という見分け方。<\/p>\n        <\/div>\n        <h3>今は学ばなくていいもの<\/h3>\n        <ul>\n          <li>簿記の細部、法人設立の手続き論（売上が立ってからで間に合う）<\/li>\n          <li>株のチャート分析・短期売買（今のステージでは再現性がない）<\/li>\n          <li>節税テクニック（守るべき利益が出てから）<\/li>\n          <li>広告運用の詳細（集客の型が当たってから）<\/li>\n        <\/ul>\n        <p class=\"firststep\"><strong>最初の一歩：<\/strong>次の学習「数字の式」を読む（学習ファイルは Muse が用意する。読むだけ）<br><strong>時期：<\/strong>今（知識の蓄積だけは受験前から進めてよい）<\/p>",
+   "updated_at": "2026-11-20T14:42:01+09:00"
+  },
+  {
+   "id": "dict",
+   "tab": "dict",
+   "num": "10",
+   "char": "辞",
+   "tag": "用語50語",
+   "themeClass": "t-dict",
+   "title": "ビジネス用語辞典",
+   "meta": "計画に出てくる用語と、一般のビジネス用語の定義集（4グループ・50語）",
+   "badgeClass": "decided",
+   "badgeText": "50語を登録",
+   "html": "<div class=\"detail-head\"><h2>ビジネス用語辞典<\/h2><span class=\"badge decided\">50語を登録<\/span><\/div>\n        <p class=\"sec-lead\">この計画の中に出てくる用語と、一般のビジネス用語を集めた辞典。1語＝用語＋短い定義＋（あれば）この計画での位置づけ。<\/p><div class=\"dgroup\"><div class=\"dgroup-h\">売る仕組み<\/div><ul class=\"terms\"><li class=\"term\"><span class=\"tt\">B2B<\/span><span class=\"td\">企業相手に売る商売の形。相手は会社なので、判断は個人の好みより論理と予算で進む。<\/span><span class=\"tm\">図鑑事業の受託はこちら側。<\/span><\/li><li class=\"term\"><span class=\"tt\">B2C<\/span><span class=\"td\">一般の消費者相手に売る形。<\/span><span class=\"tm\">note・BOOTH・物販はこちら側。<\/span><\/li><li class=\"term\"><span class=\"tt\">D2C<\/span><span class=\"td\">メーカーが卸や小売を通さず、自分の店（ネット通販など）で消費者に直接売る形。間の取り分がない代わりに、集客は自分でやる。<\/span><\/li><li class=\"term\"><span class=\"tt\">サブスクリプション<\/span><span class=\"td\">月額など、期間ごとに料金を払い続ける売り方。売る側は収入が積み上がって先が読みやすい。<\/span><span class=\"tm\">noteの定期購読や、将来のアプリ課金の形。<\/span><\/li><li class=\"term\"><span class=\"tt\">フリーミアム<\/span><span class=\"td\">基本は無料で使わせ、有料の追加機能で稼ぐ形。無料の部分が集客の役目をする。<\/span><\/li><li class=\"term\"><span class=\"tt\">プラットフォーム<\/span><span class=\"td\">売る人と買う人が出会う「場」そのものを提供する事業。場の持ち主は手数料で稼ぐ。<\/span><span class=\"tm\">note・BOOTH・メルカリは全部これ。自分は場の上で売る側。<\/span><\/li><li class=\"term\"><span class=\"tt\">マーケットプレイス<\/span><span class=\"td\">売り手と買い手が集まる市場型のプラットフォーム。<\/span><span class=\"tm\">物語のある物のテスト販売先（メルカリ）。<\/span><\/li><li class=\"term\"><span class=\"tt\">フランチャイズ<\/span><span class=\"td\">本部が看板とやり方を貸し、加盟店がロイヤリティを払って商売する仕組み。<\/span><\/li><li class=\"term\"><span class=\"tt\">卸売／小売<\/span><span class=\"td\">卸売は小売店など事業者へまとめて売ること、小売は消費者へ1つずつ売ること。間の差額がそれぞれの取り分になる。<\/span><\/li><li class=\"term\"><span class=\"tt\">フロー収入／ストック収入<\/span><span class=\"td\">フローは働いた分だけ入る一過性の収入、ストックは仕組みや資産から繰り返し入る収入。<\/span><span class=\"tm\">バイト代はフロー。目指すのはストック側。<\/span><\/li><li class=\"term\"><span class=\"tt\">エディション<\/span><span class=\"td\">版画や写真のように、部数を決めて複数制作する作品の売り方。部数と番号が価値の根拠になる。<\/span><span class=\"tm\">価格の階段の段3。<\/span><\/li><li class=\"term\"><span class=\"tt\">ライセンス<\/span><span class=\"td\">作品そのものではなく「使う権利」を貸して対価を得る形。手放さずに何度も稼げる。<\/span><span class=\"tm\">価格の階段の最終段。<\/span><\/li><li class=\"term\"><span class=\"tt\">号単価<\/span><span class=\"td\">日本画などで使われる、号（サイズの単位）あたりの価格。作家の格を表す物差しにもなる。<\/span><span class=\"tm\">原画価格の目安の置き方。<\/span><\/li><\/ul><\/div><div class=\"dgroup\"><div class=\"dgroup-h\">お金の数字<\/div><ul class=\"terms\"><li class=\"term\"><span class=\"tt\">粗利<\/span><span class=\"td\">売上から原価を引いた残り。商売の土台の儲けで、ここから人件費や家賃などを払う。<\/span><\/li><li class=\"term\"><span class=\"tt\">原価<\/span><span class=\"td\">商品や作品を作る・仕入れるのに直接かかった費用。画材代や印刷代など。<\/span><\/li><li class=\"term\"><span class=\"tt\">固定費／変動費<\/span><span class=\"td\">固定費は売上に関係なく毎月かかる費用（家賃など）、変動費は売れるほど増える費用（材料費など）。<\/span><\/li><li class=\"term\"><span class=\"tt\">営業利益<\/span><span class=\"td\">本業の儲け。粗利から、売るため・管理のためにかかる費用を引いたもの。<\/span><\/li><li class=\"term\"><span class=\"tt\">経常利益<\/span><span class=\"td\">営業利益に本業以外の損益（利息など）を足し引きした、会社の普段の実力。<\/span><\/li><li class=\"term\"><span class=\"tt\">純利益<\/span><span class=\"td\">税金など全部を引いた後に残る、最終の儲け。<\/span><\/li><li class=\"term\"><span class=\"tt\">キャッシュフロー<\/span><span class=\"td\">実際のお金の出入り。利益が出ていても現金が尽きれば商売は止まるので、利益とは別に見る。<\/span><\/li><li class=\"term\"><span class=\"tt\">運転資金<\/span><span class=\"td\">商売を回し続けるために手元に必要なお金。在庫や経費を先に払うための分。<\/span><\/li><li class=\"term\"><span class=\"tt\">損益分岐点<\/span><span class=\"td\">売上がちょうど費用と等しくなり、儲けがゼロになる地点。ここを超えると黒字。<\/span><\/li><li class=\"term\"><span class=\"tt\">ROI（投資回収）<\/span><span class=\"td\">投資で得た利益÷かけた費用。お金や時間の使い方が良かったかを比べる物差し。<\/span><span class=\"tm\">テストの撤退判断にも使う。<\/span><\/li><li class=\"term\"><span class=\"tt\">EPC<\/span><span class=\"td\">アフィリエイトで、1クリックあたりの平均収益（総報酬÷クリック数）。記事や媒体の効率を比べる物差し。<\/span><span class=\"tm\">候補4の数字の見方。<\/span><\/li><li class=\"term\"><span class=\"tt\">CAC（顧客獲得コスト）<\/span><span class=\"td\">顧客1人を得るのにかける費用。広告費や紹介料がこれにあたる。<\/span><\/li><li class=\"term\"><span class=\"tt\">LTV（顧客生涯価値）<\/span><span class=\"td\">顧客1人が取引の全期間で払う合計額。CACより大きければ商売が回る。<\/span><span class=\"tm\">Semrushが1件$200を払える理由。<\/span><\/li><li class=\"term\"><span class=\"tt\">ロイヤリティ<\/span><span class=\"td\">権利や看板を使わせる対価として受け取る使用料。売上などの一定割合で払われることが多い。<\/span><span class=\"tm\">ライセンス収入の受け取り方の一つ。<\/span><\/li><\/ul><\/div><div class=\"dgroup\"><div class=\"dgroup-h\">会社と取引<\/div><ul class=\"terms\"><li class=\"term\"><span class=\"tt\">M&amp;A<\/span><span class=\"td\">会社や事業の売買。買う側は時間と実績を買い、売る側は出口（現金化）になる。<\/span><\/li><li class=\"term\"><span class=\"tt\">IPO（新規公開株）<\/span><span class=\"td\">会社が株式を証券取引所に上場し、誰でも株を買えるようにすること。大きな資金調達と信用につながる。<\/span><\/li><li class=\"term\"><span class=\"tt\">資金調達<\/span><span class=\"td\">事業に必要なお金を外部から集めること。借入、出資（株を渡す）、補助金などの形がある。<\/span><\/li><li class=\"term\"><span class=\"tt\">ベンチャーキャピタル<\/span><span class=\"td\">成長しそうな未上場企業に出資する専門の投資会社。将来の大きな値上がりで回収する。<\/span><\/li><li class=\"term\"><span class=\"tt\">エンジェル投資家<\/span><span class=\"td\">創業初期の小さな会社に、個人のお金で出資する投資家。<\/span><\/li><li class=\"term\"><span class=\"tt\">バリュエーション（企業価値評価）<\/span><span class=\"td\">会社全体の値段の見積もり。資金調達やM&amp;Aの交渉の土台になる。<\/span><\/li><li class=\"term\"><span class=\"tt\">デューデリジェンス<\/span><span class=\"td\">買収や出資の前に、相手の財務・法務・事業を詳しく調べること。値段とリスクの確認作業。<\/span><\/li><li class=\"term\"><span class=\"tt\">シナジー<\/span><span class=\"td\">2つの事業が合わさることで、単独の合計を超える効果が出ること。<\/span><\/li><li class=\"term\"><span class=\"tt\">子会社・持株会社<\/span><span class=\"td\">子会社は他社に経営を支配されている会社、持株会社は他社の株を持つことでグループ全体を支配する会社。<\/span><\/li><\/ul><\/div><div class=\"dgroup\"><div class=\"dgroup-h\">集客と商品<\/div><ul class=\"terms\"><li class=\"term\"><span class=\"tt\">アフィリエイト<\/span><span class=\"td\">成果報酬型の広告。紹介した商品が売れたら紹介料が入る。<\/span><span class=\"tm\">テスト候補4の本体。<\/span><\/li><li class=\"term\"><span class=\"tt\">ASP<\/span><span class=\"td\">広告主と媒体の間に入り、計測・集計・支払いを代行する仲介会社。日本ではA8.netなど、海外ではImpactなど。<\/span><\/li><li class=\"term\"><span class=\"tt\">成果承認と否認<\/span><span class=\"td\">発生した成果を広告主が認めれば承認（報酬が確定）、キャンセルや規約違反などで認めなければ否認（報酬なし）。画面の発生額は確定収入ではない。<\/span><\/li><li class=\"term\"><span class=\"tt\">クッキー期間<\/span><span class=\"td\">読者がリンクを踏んでから、その期間内に買えば紹介者の成果になる計測の有効期間。プログラムごとに数日から120日超まで差がある。<\/span><\/li><li class=\"term\"><span class=\"tt\">ラストクリック<\/span><span class=\"td\">複数の紹介リンクを踏んだ場合、最後に踏んだリンクの媒体に成果が付く方式。購入直前に別の媒体に踏まれると成果を取られる。<\/span><\/li><li class=\"term\"><span class=\"tt\">ステマ規制<\/span><span class=\"td\">広告なのに広告と分からない宣伝を禁じる日本の規制（景品表示法、2023年10月施行）。アフィリエイト記事には「広告」「PR」の表示が要る。<\/span><span class=\"tm\">候補4とSNS運用の禁止ライン。<\/span><\/li><li class=\"term\"><span class=\"tt\">E-E-A-T<\/span><span class=\"td\">Googleがコンテンツの信頼性を測る考え方。経験・専門性・権威性・信頼性の頭文字。実際に使った経験と情報の正確さが問われる。<\/span><\/li><li class=\"term\"><span class=\"tt\">ブルーオーシャン<\/span><span class=\"td\">競争相手のいない未開拓の市場。逆に競争の激しい市場はレッドオーシャン。<\/span><span class=\"tm\">物差し②「取った位置が資産になるか」とセットで見る。<\/span><\/li><li class=\"term\"><span class=\"tt\">集客<\/span><span class=\"td\">お客さんを連れてくること全般。<\/span><span class=\"tm\">主にSNSや検索からの流入を指す。<\/span><\/li><li class=\"term\"><span class=\"tt\">コンバージョン<\/span><span class=\"td\">サイトや記事に来た人が、購入・申込など狙った行動をすること。その割合がコンバージョン率。<\/span><\/li><li class=\"term\"><span class=\"tt\">痛み止め／ビタミン<\/span><span class=\"td\">痛み止めは「今の困りごとを消す」商品で買われやすく、ビタミンは「あったら良い」商品で買われにくい、という商品の性格の例え。<\/span><span class=\"tm\">テスト候補を選ぶ時の物差し。<\/span><\/li><li class=\"term\"><span class=\"tt\">ブランディング<\/span><span class=\"td\">作り手や商品の「らしさ」を人の頭の中に作り、選ばれる理由にすること。<\/span><\/li><li class=\"term\"><span class=\"tt\">マーケティング<\/span><span class=\"td\">売れる仕組みづくり全体のこと。集客・価格・見せ方・届け方を含む広い言葉。<\/span><\/li><li class=\"term\"><span class=\"tt\">クラウドファンディング<\/span><span class=\"td\">ネットで不特定多数から少しずつ資金を集める方法。支援＝予約購入の形が多く、需要の確認にも使える。<\/span><\/li><\/ul><\/div><div class=\"firststep\"><span class=\"fs-k\">最初の一歩<\/span>分からない言葉に出会ったら、まずここで引く<span class=\"fs-sep\">／<\/span><span class=\"fs-k\">時期<\/span>随時（新しい用語は都度追加する）<\/div><div class=\"src\">出典：アプリ内の既存の記述と学習資料（アフィリエイトの仕組み／個人アートビジネス全体設計）をもとに作成（2026-11-20）<\/div>",
+   "updated_at": "2026-11-20T14:48:41+09:00"
+  },
+  {
+   "id": "art",
+   "tab": "art",
+   "num": "03",
+   "char": "画",
+   "tag": "管の6部品",
+   "themeClass": "t-art",
+   "title": "アートビジネス計画",
+   "meta": "設計原則、ビジネスの管、価格の階段、フェーズ0〜3、現実の数字",
+   "badgeClass": "decided",
+   "badgeText": "設計済み",
+   "html": "<div class=\"detail-head\"><h2>アートビジネス計画<\/h2><span class=\"badge decided\">設計済み<\/span><\/div>\n        <p class=\"sec-lead\">天才の偶然売れではなく、計画的にいく。ただし計画は表に見せない——表に出るのは作品と物語だけ。<\/p>\n        <h3>設計原則（4つ）<\/h3>\n        <ol class=\"rules\">\n          <li><strong>計画は裏、表は作品と物語だけ<\/strong>——計算・検証・価格の設計は裏側に置く。名前を守る構造でもある<\/li>\n          <li><strong>関係は柔らかく、条件は硬く<\/strong>——値段・エディション数・権利の条件は先に固定し、その場の交渉に性格を持ち込まない<\/li>\n          <li><strong>視覚言語の同一性<\/strong>——集客の動画も、売る物も、本命の絵画も、同じモチーフ・同じ世界で通す<\/li>\n          <li><strong>reveal-ready<\/strong>——原画・日付・制作記録を残し、将来本名に接続できる来歴を最初から作る<\/li>\n        <\/ol>\n        <h3>ビジネスの管（6つの部品）<\/h3>\n        <div class=\"flow\"><span>制作<\/span><i>→<\/i><span>提示<\/span><i>→<\/i><span>取引<\/span><i>→<\/i><span>記録・認証<\/span><i>→<\/i><span>評価<\/span><i>→<\/i><span>次の制作<\/span><\/div>\n        <p>「作品を作って売る」だけでは金にならない。管のどれが欠けても止まる。いまの不足は <strong>3・4・5<\/strong> で、ここがビジネスの実体部分。<\/p>\n        <ul class=\"parts\">\n          <li><span class=\"pn\">1<\/span><div class=\"pb\"><span class=\"pt\">作品（質）<\/span><span class=\"pd\">個人でしか生み出せない質の高いもの。全ての前提<\/span><\/div><span class=\"status\">制作中<\/span><\/li>\n          <li><span class=\"pn\">2<\/span><div class=\"pb\"><span class=\"pt\">物語<\/span><span class=\"pd\">作家と世界の物語。買い手は絵と一緒に物語を買う<\/span><\/div><span class=\"status\">設計中（顔のない男）<\/span><\/li>\n          <li><span class=\"pn\">3<\/span><div class=\"pb\"><span class=\"pt\">価格の階段<\/span><span class=\"pd\">「買える層」の設計。高額一点だけでは取引が発生しない<\/span><\/div><span class=\"status gap\">未設計<\/span><\/li>\n          <li><span class=\"pn\">4<\/span><div class=\"pb\"><span class=\"pt\">最初の買い手<\/span><span class=\"pd\">「市場」ではなく具体的な少数。SNSの蓄積＋身近な評価者<\/span><\/div><span class=\"status gap\">未着手<\/span><\/li>\n          <li><span class=\"pn\">5<\/span><div class=\"pb\"><span class=\"pt\">記録・認証<\/span><span class=\"pd\">エディション番号、制作年、原画データ、販売記録。来歴が将来の価格の土台になる<\/span><\/div><span class=\"status gap\">仕組み化が課題<\/span><\/li>\n          <li><span class=\"pn\">6<\/span><div class=\"pb\"><span class=\"pt\">見せる場と頻度<\/span><span class=\"pd\">作品が人の目に触れる回数と場所。質×露出でしか評価は生まれない<\/span><\/div><span class=\"status\">TikTok設計中<\/span><\/li>\n        <\/ul>\n        <p class=\"firststep\"><strong>最初の一歩：<\/strong>不足している3つ（価格の階段・最初の買い手・記録と認証）のうち、まず記録の型をフェーズ0で決める。残り2つはフェーズ1で作る<br><strong>時期：<\/strong>記録の型は今（フェーズ0）。価格の階段と最初の買い手は受験後（フェーズ1）<\/p>\n        <h3>価格の階段<\/h3>\n        <p>一点ものの高額作品だけを置くと、欲しい人の99%が買えずに去る。階段を作ると、各段が次の段の買い手を育てる。<strong>原則：値段は下げない。<\/strong>下の段を増やして買える人を増やすのであって、同じ物の値段を割って売らない。<\/p>\n        <div class=\"pstairs\">\n          <div class=\"ps-row\" style=\"--i:0\"><span class=\"ps-n\">段0<\/span><span class=\"ps-price\">無料<\/span><span class=\"ps-b\"><span class=\"ps-f\">動画・投稿（世界観の提示）<\/span><span class=\"ps-r\">集客と物語の蓄積<\/span><\/span><\/div>\n          <div class=\"ps-row\" style=\"--i:1\"><span class=\"ps-n\">段1<\/span><span class=\"ps-price\">数百〜数千円<\/span><span class=\"ps-b\"><span class=\"ps-f\">デジタル素材、描き文字、小プリント<\/span><span class=\"ps-r\">最初の取引。買う体験を作る<\/span><\/span><\/div>\n          <div class=\"ps-row\" style=\"--i:2\"><span class=\"ps-n\">段2<\/span><span class=\"ps-price\">1万〜5万円<\/span><span class=\"ps-b\"><span class=\"ps-f\">エディション作品（番号・記録つき）<\/span><span class=\"ps-r\">本命の入口。来歴が始まる<\/span><\/span><\/div>\n          <div class=\"ps-row\" style=\"--i:3\"><span class=\"ps-n\">段3<\/span><span class=\"ps-price\">10万円〜<\/span><span class=\"ps-b\"><span class=\"ps-f\">原画、大判エディション<\/span><span class=\"ps-r\">評価と価格の頂点。供給は絞る<\/span><\/span><\/div>\n          <div class=\"ps-row\" style=\"--i:4\"><span class=\"ps-n\">段4<\/span><span class=\"ps-price\">契約<\/span><span class=\"ps-b\"><span class=\"ps-f\">ライセンス（グッズ・コラボ）<\/span><span class=\"ps-r\">自分の手を離れて回る層。権利は渡さず貸す<\/span><\/span><\/div>\n        <\/div>\n        <p class=\"firststep\"><strong>最初の一歩：<\/strong>段1の品目を1つ決め、既存のドローイングからエディションにする1点を選ぶ<br><strong>時期：<\/strong>受験後（フェーズ1と並行）<\/p>\n        <h3>フェーズ<\/h3>\n        <ol class=\"steps\">\n          <li data-n=\"0\"><span class=\"st\">土台（今ここ）<\/span><span class=\"sd\">制作ラインを維持する（受験制作がそのまま作品蓄積になる）。世界観と視覚言語を1つに絞る。記録の型を決める：作品ごとに原画ファイル／制作日／タイトル／技法を残す。<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>記録の型を1枚に決めて、次に仕上がる作品からその型で残し始める<br><strong>時期：<\/strong>今すぐ（受験制作と一体で進める）<\/p><\/li>\n          <li data-n=\"1\"><span class=\"st\">提示と最初の取引<\/span><span class=\"sd\">投稿001（v3）を出し、30本検証で「提示の型」を1つ当てる。並行して既存ドローイングからエディション1点をBOOTHに受注生産で出す。<\/span><span class=\"done-when\">最初の1件の取引（金額は問わない）と、提示の型の当たり1つ<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>投稿001（v3）のカットを Kling で生成・選別する（未決・保留にもある、本人の作業待ちの続き）<br><strong>時期：<\/strong>受験後（2027年3月以降）<\/p><\/li>\n          <li data-n=\"2\"><span class=\"st\">階段を組む<\/span><span class=\"sd\">当たった型を連載化し、フォロワーの蓄積を始める。エディションの点数を増やし段2を常設にする。売上の実績に応じてバイトを段階的に減らす。<\/span><span class=\"done-when\">月10万円の売上ラインが見えること<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>フェーズ1で当たった型の2本目を出す<br><strong>時期：<\/strong>フェーズ1が終わってから<\/p><\/li>\n          <li data-n=\"3\"><span class=\"st\">権利の層<\/span><span class=\"sd\">ライセンス・コラボの打診を受ける側に立つ（自分から売り込まない。条件はこちらが決める）。原画の価格帯を上げる。供給は絞ったまま。<\/span><span class=\"done-when\">年600万円ペース（第1チェックポイント）<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>ライセンスの条件（権利は渡さず貸す、条件はこちらが決める）を1枚に書き出す<br><strong>時期：<\/strong>フェーズ2で売上の実績が立ってから<\/p><\/li>\n        <\/ol>\n        <h3>現実の数字<\/h3>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">4,000〜5,000<small>円\/号<\/small><\/div><div class=\"k\">号単価（学生・無名）。実績が積めれば8,000〜15,000円\/号<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">50 : 50<\/div><div class=\"k\">画廊委託の標準的な取り分<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">約239<small>万円<\/small><\/div><div class=\"k\">美術家の平均年収。半数が200万円未満<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">上限360<small>万円<\/small><\/div><div class=\"k\">ポーラの在外研修助成。募集は毎年10〜11月<\/div><\/div>\n        <\/div>\n        <p>数字が示す標準形は「安定した枠 ＋ 作品販売 ＋ 公募・助成」の複合。作品販売一本では立たない。<\/p>\n        <h3>画家の集客の実態<\/h3>\n        <ul>\n          <li>決定的なのはフォロワー数ではなく、<strong>一貫した作風の継続投稿<\/strong>と、著名な作家・コレクターの購入と推薦による<strong>信用の橋渡し<\/strong><\/li>\n          <li>SNSは発見と身辺調査の道具。価格は非公開・問い合わせ制が原則で、直販は入口に限定する<\/li>\n          <li>失敗側の教訓：投機バブルは崩壊した（若手市場は2021年比で約3分の1に縮小）<\/li>\n        <\/ul>\n        <h3>時間の設計<\/h3>\n        <ul>\n          <li><strong>制作と集客を分けない<\/strong>。制作過程そのものが集客素材になる<\/li>\n          <li>販売は受注生産＋プラットフォームに寄せ、在庫・発送・交渉の時間を消す<\/li>\n          <li>運営時間に上限を置く。順番は制作 → 運営。制作時間が残り物にならないようにする<\/li>\n          <li>Phase 2で売上が立つまで、事業に生活費を背負わせない（焦りが作風と価格を壊すため）<\/li>\n        <\/ul>",
+   "updated_at": "2026-11-20T14:42:01+09:00"
+  },
+  {
+   "id": "zukan",
+   "tab": "art",
+   "num": "04",
+   "char": "鑑",
+   "tag": "受託／横展開",
+   "themeClass": "t-zukan",
+   "title": "図鑑事業",
+   "meta": "美術＝受託／他ジャンル＝横展開。キット販売はしない。特許の結論",
+   "badgeClass": "decided",
+   "badgeText": "2026-11-19 決定",
+   "html": "<div class=\"detail-head\"><h2>図鑑事業<\/h2><span class=\"badge decided\">2026-11-19 決定<\/span><\/div>\n        <p class=\"sec-lead\">図鑑アプリの仕組み（エンジン）は分野を選ばない。金の変え方は、分野によって2つに分けることが決まった。<\/p>\n        <div class=\"branch2\">\n          <div class=\"b-src\">図鑑の仕組み（エンジン）<\/div>\n          <div class=\"b-stem\"><\/div>\n          <div class=\"b-bar\"><\/div>\n          <div class=\"b-cols\">\n            <div class=\"b-col art\"><span class=\"b-t\">美術分野<\/span><span class=\"b-v\">受託<\/span><span class=\"b-d\">画廊・画家・美術団体から構築を受ける<\/span><\/div>\n            <div class=\"b-col other\"><span class=\"b-t\">他ジャンル<\/span><span class=\"b-v\">横展開<\/span><span class=\"b-d\">自前アプリとして売り出す<\/span><\/div>\n          <\/div>\n        <\/div>\n        <div class=\"lanes\">\n          <div class=\"lane art\">\n            <h3>美術分野 ＝ 受託<\/h3>\n            <p>画廊・画家・美術団体などの「自分たちの図鑑が欲しいけど作れない」側から、構築を受ける。狙いは<strong>金＋美術界との縁＋実績<\/strong>の3つ同時。<\/p>\n            <ul>\n              <li><strong>客の像<\/strong>：自分の全作品のアーカイブが欲しい画家本人／小さい画廊・美術団体／ファンコミュニティ／専門店／小さい博物館・資料館／コレクター<\/li>\n              <li><strong>売る物の3段<\/strong>：構築一式（データ整形込み）／点数単位のデータ化／月額の運用代行<\/li>\n              <li><strong>条件<\/strong>：渡すのは完成したアプリだけ。エンジンの権利は翔万に残す。データの権利は発注側に置く<\/li>\n              <li><strong>始動<\/strong>：納期のある他人の仕事なので、本格始動は受験後<\/li>\n            <\/ul>\n            <p class=\"firststep\"><strong>最初の一歩：<\/strong>受託の受け皿（何を・いくらで・どのくらいで作れるかの一枚）を作る<br><strong>時期：<\/strong>受験後（2027年3月以降）に本格始動<\/p>\n          <\/div>\n          <div class=\"lane other\">\n            <h3>他ジャンル ＝ 横展開<\/h3>\n            <p>ジャンルごとの図鑑を自前アプリとして売り出し、アプリ収入の階段に乗せる。名前のリスクがない分野で、匿名のまま展開できる。<\/p>\n            <ul>\n              <li><strong>実装済みの証明<\/strong>：音楽／映画／食材<\/li>\n              <li><strong>効く分野の条件<\/strong>：「人と作品と記録」の蓄積型で、ファンが深く調べたくて、既存の情報が散らかっている場所<\/li>\n              <li><strong>候補<\/strong>：スポーツ記録（野球選手・力士）／声優・アイドル／漫画／名車／時計／スニーカー<\/li>\n            <\/ul>\n            <p class=\"firststep\"><strong>最初の一歩：<\/strong>候補の中から、最初に出す分野を1つ決める<br><strong>時期：<\/strong>受験後（2027年3月以降）<\/p>\n          <\/div>\n        <\/div>\n        <h3>決まっている線引き<\/h3>\n        <ul>\n          <li><strong>エンジンのキット販売はしない<\/strong>。仕組みを公開することになるため。売るのは完成品であって、作り方ではない<\/li>\n          <li><strong>アプリは動く時にAIを呼ばない<\/strong>。AIが働くのは作る時とデータを揃える時だけ。だから他人が使っても自分のAIアカウントは減らず、運営費もゼロのまま渡せる<\/li>\n          <li><strong>唯一無二性の堀は3つ<\/strong>：データの深さと正確さ／本人の目による選定／元々の文章（ガイド・調査）。コードは真似できても、この3つは年月がかかる<\/li>\n        <\/ul>\n        <div class=\"note\">\n          <h3 style=\"margin-top:0\">特許についての結論<\/h3>\n          <p>今のアプリ群の大半は特許化が難しい。理由は3つ——進歩性の壁（既存技術の組み合わせと判断されやすい）、既に公開済み（救済は本人の公開から1年以内）、ソフトウェア単体では対象になりにくい。日記アプリのTodo（金額と写真の自動回収）も、ほしい物リスト等の先行例が大きく単体では厳しい見立て。<\/p>\n          <p>図鑑の独自性は仕組みの新しさではなく、データの量・編集・選定の蓄積にある。守りは著作権と「真似に同じ年月がかかる」という事実の側。特許の正しい出番は、自分の商品・仕組みを外に出す時に、<strong>公開する前に<\/strong>中核だけ検討すること。<\/p>\n          <p class=\"firststep\"><strong>最初の一歩：<\/strong>自分の商品・仕組みを次に外に出す時、公開前に特許の検討を1回挟む<br><strong>時期：<\/strong>公開の直前、その都度<\/p>\n        <\/div>",
+   "updated_at": "2026-11-20T14:42:01+09:00"
   },
   {
    "id": "ideas",
@@ -856,8 +1007,8 @@ var SEED = {
    "meta": "評価の物差し2つ、禁止ライン8つ、やらないこと",
    "badgeClass": "decided",
    "badgeText": "決定済み",
-   "html": "<div class=\"detail-head\"><h2>ルール<\/h2><span class=\"badge decided\">決定済み<\/span><\/div>\n        <h3>評価の物差し（2つ）<\/h3>\n        <p>機会は「平均的な参加者の期待値」では測らない。上位を取る側として設計する。その上で問うのは2つ。<\/p>\n        <ol class=\"rules\">\n          <li>その上位は、自分たちの実力で実際に取れる構造か（参加者数と、審査が「質」か「最適化の削り合い」か）<\/li>\n          <li>取った位置が、資産として残るか（勝っても次の案件でゼロからなら、椅子は残らない）<\/li>\n        <\/ol>\n        <h3>禁止ライン（8つ）<\/h3>\n        <p>判定は「バレるか」ではない。<strong>revealテスト<\/strong>——将来、本名と顔を出して同じ売り方を説明できるか——を通らないものはやらない。<\/p>\n        <ol class=\"rules\">\n          <li>裏付けのない／水増しした収入・実績・効果の数字を広告に使う<\/li>\n          <li>「絶対稼げる」等の断定的な表現で情報商材・スクール・コンサルを売る<\/li>\n          <li>ステマ（PRを隠す／広告主に隠させる）<\/li>\n          <li>無許可の反復継続転売、資格を偽った仕入れ、定価超チケット転売<\/li>\n          <li>わいせつ物の頒布・陳列にあたる成人向け販売<\/li>\n          <li>収益の無申告・過少申告<\/li>\n          <li>他人の著作物・商標・キャラ・肖像を無断で使った商品販売<\/li>\n          <li>買い手の不安・借金・焦りを煽る高額勧誘<\/li>\n        <\/ol>\n        <h3>やらないこと<\/h3>\n        <ul>\n          <li>株・FX（元手がない段階では再現性なし）<\/li>\n          <li>スクール事業（実績ができるまで封印）<\/li>\n          <li>アダルト（匿名でも最低優先。原則やらない）<\/li>\n          <li>生活費を事業の成果に賭けること<\/li>\n          <li>図鑑エンジンのキット販売（仕組みの公開になるため）<\/li>\n        <\/ul>\n        <h3>実現のルール（2026-11-20）<\/h3>\n        <ol class=\"rules\">\n          <li>計画には最初の一歩と時期を付ける。実現したかどうかは、文書ができたかではなく、世の中の側が変わったか（出荷・出品・応募・最初の取引）で数える<\/li>\n        <\/ol>",
-   "updated_at": "2026-11-20T13:49:32+09:00"
+   "html": "<div class=\"detail-head\"><h2>ルール<\/h2><span class=\"badge decided\">決定済み<\/span><\/div>\n        <h3>評価の物差し（2つ）<\/h3>\n        <p>機会は「平均的な参加者の期待値」では測らない。上位を取る側として設計する。その上で問うのは2つ。<\/p>\n        <div class=\"judge\">\n          <div class=\"jq\"><span class=\"qn\">問い1<\/span><span><span class=\"qt\">その上位は、自分たちの実力で実際に取れる構造か<\/span><span class=\"qd\">参加者数と、審査が「質」か「最適化の削り合い」か<\/span><\/span><\/div>\n          <div class=\"jarrow\">↓<\/div>\n          <div class=\"jq\"><span class=\"qn\">問い2<\/span><span><span class=\"qt\">取った位置が、資産として残るか<\/span><span class=\"qd\">勝っても次の案件でゼロからなら、椅子は残らない<\/span><\/span><\/div>\n          <div class=\"jarrow\">↓<\/div>\n          <div class=\"jout\"><span class=\"jok\">2つとも通る → 上位を取りに行く<\/span><span class=\"jng\">1つでも欠ける → やらない<\/span><\/div>\n        <\/div>\n        <h3>禁止ライン（8つ）<\/h3>\n        <p>判定は「バレるか」ではない。<strong>revealテスト<\/strong>——将来、本名と顔を出して同じ売り方を説明できるか——を通らないものはやらない。<\/p>\n        <ul class=\"checklist\">\n          <li>裏付けのない／水増しした収入・実績・効果の数字を広告に使う<\/li>\n          <li>「絶対稼げる」等の断定的な表現で情報商材・スクール・コンサルを売る<\/li>\n          <li>ステマ（PRを隠す／広告主に隠させる）<\/li>\n          <li>無許可の反復継続転売、資格を偽った仕入れ、定価超チケット転売<\/li>\n          <li>わいせつ物の頒布・陳列にあたる成人向け販売<\/li>\n          <li>収益の無申告・過少申告<\/li>\n          <li>他人の著作物・商標・キャラ・肖像を無断で使った商品販売<\/li>\n          <li>買い手の不安・借金・焦りを煽る高額勧誘<\/li>\n        <\/ul>\n        <h3>やらないこと<\/h3>\n        <ul>\n          <li>株・FX（元手がない段階では再現性なし）<\/li>\n          <li>スクール事業（実績ができるまで封印）<\/li>\n          <li>アダルト（匿名でも最低優先。原則やらない）<\/li>\n          <li>生活費を事業の成果に賭けること<\/li>\n          <li>図鑑エンジンのキット販売（仕組みの公開になるため）<\/li>\n        <\/ul>\n        <h3>実現のルール（2026-11-20）<\/h3>\n        <ol class=\"rules\">\n          <li>計画には最初の一歩と時期を付ける。実現したかどうかは、文書ができたかではなく、世の中の側が変わったか（出荷・出品・応募・最初の取引）で数える<\/li>\n        <\/ol>",
+   "updated_at": "2026-11-20T14:42:01+09:00"
   }
  ]
 };
@@ -903,13 +1054,23 @@ function saveSettings(){ try{ localStorage.setItem(LS_SET, JSON.stringify(settin
 /* ---------- rendering (zukan card grid) ---------- */
 function renderHome(){
   $('homeTheme').textContent = DATA.home.theme || '';
-  var g = '';
-  (DATA.home.goals || []).forEach(function(goal, i){
-    if(i > 0) g += '<span class="hs-sep"></span>';
-    g += '<span class="hs-goal"><span class="hs-gl">' + esc(goal.label) +
-      '</span><span class="hs-gn">' + (goal.numHtml || '') + '</span></span>';
-  });
-  $('homeGoals').innerHTML = g;
+  /* v3.0.7 (his call): the strip's left side is no longer the
+     fixed 「第1チェックポイント 年600万円」 — that name collided
+     with the ladder's own first step. The strip shows the goal
+     checkpoint he picked in the theme detail (amount + what
+     changes), defaulting to the ladder's first step; the
+     年600万円 goal is a 節目 and lives in the detail. The right
+     side keeps 最終目標 年1,000万円, which is the ladder's own
+     final step. updateStripGoal() fills the left block. */
+  var fin = (DATA.home.goals || [])[1] || { label: '最終目標', numHtml: '' };
+  $('homeGoals').innerHTML =
+    '<span class="hs-goal hs-goal-g"><span class="hs-gl">目標</span>' +
+    '<span class="hs-gn" id="hsGoalAmt"></span>' +
+    '<span class="hs-gw" id="hsGoalWhat"></span></span>' +
+    '<span class="hs-sep"></span>' +
+    '<span class="hs-goal"><span class="hs-gl">' + esc(fin.label) +
+    '</span><span class="hs-gn">' + (fin.numHtml || '') + '</span></span>';
+  updateStripGoal();
   var c = '';
   (DATA.home.chips || []).forEach(function(chip){ c += '<span class="chip">' + esc(chip) + '</span>'; });
   $('homeChips').innerHTML = c;
@@ -929,9 +1090,9 @@ function renderHome(){
    アートビジネス with the rest of the plan — his call: the plan's
    scaffolding is not "other". その他 itself now holds no sections
    at all; it is the settings screen (sync / relay / data / about). */
-var TABS = ['art', 'business', 'other'];
-var TAB_NAMES = { art: 'アートビジネス', business: 'ビジネス', other: 'その他' };
-var TAB_BY_ID = { art: 'art', zukan: 'art', business: 'business', schedule: 'art', ideas: 'art', pending: 'art', rules: 'art' };
+var TABS = ['art', 'business', 'money', 'dict', 'other'];
+var TAB_NAMES = { art: 'アートビジネス', business: 'ビジネス', money: 'お金', dict: '用語辞典', other: 'その他' };
+var TAB_BY_ID = { art: 'art', zukan: 'art', business: 'business', schedule: 'art', ideas: 'art', pending: 'art', rules: 'art', money: 'money', moneymap: 'money', dict: 'dict' };
 var currentTab = 'art';
 function secTab(sec){
   if(sec && TABS.indexOf(sec.tab) >= 0) return sec.tab;
@@ -947,7 +1108,7 @@ function renderCount(){
   $('topcount').textContent = '全' + DATA.sections.length + '件 ・ ' + TAB_NAMES[currentTab] + ' ' + tabSections().length + '件';
 }
 function applyPill(){
-  var map = { art: 'pnArt', business: 'pnBusiness', other: 'pnOther' };
+  var map = { art: 'pnArt', business: 'pnBusiness', money: 'pnMoney', dict: 'pnDict', other: 'pnOther' };
   for(var k in map){ var b = $(map[k]); if(b) b.classList.toggle('on', k === currentTab); }
 }
 /* ---------- home full texts (the strip's detail) ----------
@@ -967,6 +1128,7 @@ function homeCardHTML(){
   h += '<div class="orow-chips">';
   (DATA.home.chips || []).forEach(function(chip){ h += '<span class="chip">' + esc(chip) + '</span>'; });
   h += '</div></div>';
+  h += goalPickHTML();
   return h;
 }
 function renderGrid(){
@@ -1114,7 +1276,7 @@ document.addEventListener('visibilitychange', function(){ if(!document.hidden) e
    the pill itself walks the tabs */
 (function(){
   var nav = $('pillnav'); if(!nav) return;
-  var order = ['art', 'business', 'other'];
+  var order = ['art', 'business', 'money', 'dict', 'other'];
   var sx = null, sy = null, suppressClick = false;
   nav.addEventListener('touchstart', function(e){ var t = e.touches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
   nav.addEventListener('touchend', function(e){
@@ -1205,7 +1367,7 @@ function openDetail(id, push){
   current = id;
   detailOpen = true;
   $('detailBody').innerHTML = sec.html;
-  decorateLadder();
+  decorateLadder(); decorateGoalPick();
   listScrollY = window.scrollY || 0;
   if(push){ try{ history.pushState({ view: id }, '', '#/' + id); }catch(e){} }
   if(reducedMotion()){
@@ -1291,16 +1453,81 @@ function cpNowSave(v){ try{ if(v) localStorage.setItem(LS_CPNOW, v); else localS
 function decorateLadder(){
   var lis = Array.prototype.slice.call(document.querySelectorAll('#detailBody ul.ladder > li'));
   if(!lis.length) return;
-  var now = cpNowLoad(), nowIdx = -1;
+  var now = cpNowLoad(), nowIdx = -1, goal = cpGoalLoad();
   lis.forEach(function(li, i){
+    li.style.setProperty('--i', i);
     var a = li.querySelector('.amt');
     if(now && a && a.textContent.trim() === now) nowIdx = i;
   });
   lis.forEach(function(li, i){
     li.classList.toggle('cp-now', nowIdx >= 0 && i === nowIdx);
     li.classList.toggle('cp-done', nowIdx >= 0 && i < nowIdx);
+    /* the picked goal rides on the same row (v3.0.7): a 目標
+       tag right after the amount, independent of 現在地 */
+    var a = li.querySelector('.amt');
+    var old = li.querySelector('.cpgoal-tag');
+    if(old) old.remove();
+    if(goal && a && a.textContent.trim() === goal){
+      var tag = document.createElement('span');
+      tag.className = 'cpgoal-tag'; tag.textContent = '目標';
+      a.after(tag);
+    }
   });
 }
+/* ---------- goal checkpoint (v3.0.7) ----------
+   His call: the ladder's steps were subdivided precisely so
+   one of them can be chosen as THE goal. The theme detail
+   carries the picker (framed compact rows, one per step);
+   the home strip's left block shows the picked step — amount
+   plus what changes there — and defaults to the first step
+   while unset. The choice is device-only and lives under its
+   own key, separate from 現在地 (bizplan.cpNow). Steps are
+   read out of the schedule section's own ladder markup, so
+   the picker, the strip and the ladder can never disagree. */
+var LS_CPGOAL = 'bizplan.cpGoal';
+function cpGoalLoad(){ try{ return localStorage.getItem(LS_CPGOAL) || ''; }catch(e){ return ''; } }
+function cpGoalSave(v){ try{ if(v) localStorage.setItem(LS_CPGOAL, v); else localStorage.removeItem(LS_CPGOAL); }catch(e){} }
+function ladderData(){
+  var sec = sectionById('schedule');
+  if(!sec) return [];
+  var doc = new DOMParser().parseFromString(sec.html, 'text/html');
+  return Array.prototype.map.call(doc.querySelectorAll('ul.ladder > li'), function(li){
+    var a = li.querySelector('.amt'), w = li.querySelector('.what');
+    return { amt: a ? a.textContent.trim() : '', what: w ? w.textContent.trim() : '' };
+  }).filter(function(x){ return x.amt; });
+}
+function goalPickHTML(){
+  var steps = ladderData();
+  if(!steps.length) return '';
+  var rows = steps.map(function(s){
+    return '<li data-amt="' + esc(s.amt) + '"><span class="amt">' + esc(s.amt) + '</span><span class="what">' + esc(s.what) + '</span></li>';
+  }).join('');
+  return '<div class="gp-head">目標のチェックポイント（押して設定）</div><ul class="goalpick">' + rows + '</ul>';
+}
+function decorateGoalPick(){
+  var goal = cpGoalLoad();
+  Array.prototype.forEach.call(document.querySelectorAll('#detailBody .goalpick li'), function(li){
+    li.classList.toggle('gp-on', !!goal && li.getAttribute('data-amt') === goal);
+  });
+}
+function updateStripGoal(){
+  var amtEl = $('hsGoalAmt'), whatEl = $('hsGoalWhat');
+  if(!amtEl) return;
+  var steps = ladderData(), goal = cpGoalLoad(), sel = null;
+  steps.forEach(function(s){ if(goal && s.amt === goal) sel = s; });
+  if(!sel) sel = steps[0] || { amt: '', what: '' };
+  amtEl.textContent = sel.amt;
+  if(whatEl) whatEl.textContent = sel.what;
+}
+$('detailBody').addEventListener('click', function(e){
+  var li = (e.target && e.target.closest) ? e.target.closest('.goalpick li') : null;
+  if(!li || !$('detailBody').contains(li)) return;
+  var amt = li.getAttribute('data-amt') || '';
+  if(!amt) return;
+  cpGoalSave(cpGoalLoad() === amt ? '' : amt);
+  decorateGoalPick();
+  updateStripGoal();
+});
 $('detailBody').addEventListener('click', function(e){
   var li = (e.target && e.target.closest) ? e.target.closest('ul.ladder > li') : null;
   if(!li || !$('detailBody').contains(li)) return;
@@ -1308,7 +1535,7 @@ $('detailBody').addEventListener('click', function(e){
   var key = a ? a.textContent.trim() : '';
   if(!key) return;
   cpNowSave(cpNowLoad() === key ? '' : key);
-  decorateLadder();
+  decorateLadder(); decorateGoalPick();
 });
 window.addEventListener('popstate', function(){
   var m = (location.hash || '').match(/^#\/(\w+)$/);
@@ -1925,7 +2152,7 @@ function closeNotif(){
   if(back && (sectionById(back) || back === HOME_ID)){
     current = back; detailOpen = true;
     $('detailBody').innerHTML = (back === HOME_ID) ? homeDetailHTML() : sectionById(back).html;
-    decorateLadder();
+    decorateLadder(); decorateGoalPick();
     detailView.classList.remove('hidden');
     window.scrollTo(0, 0);
   } else {
@@ -2057,7 +2284,7 @@ async function syncOnce(){
 function adoptMerged(m){
   if(m.changed){
     DATA = m.data; saveCache(); renderHome();
-    if(current && detailOpen){ $('detailBody').innerHTML = (current === HOME_ID) ? homeDetailHTML() : ((sectionById(current) || {}).html || ''); decorateLadder(); }
+    if(current && detailOpen){ $('detailBody').innerHTML = (current === HOME_ID) ? homeDetailHTML() : ((sectionById(current) || {}).html || ''); decorateLadder(); decorateGoalPick(); }
     detectPlanChanges(DATA);
   }
   pendingCount = m.pending;
@@ -2182,7 +2409,7 @@ var initial = (location.hash || '').match(/^#\/(\w+)$/);
 if(initial && sectionById(initial[1])){
   setTab(secTab(sectionById(initial[1])));
   $('detailBody').innerHTML = sectionById(initial[1]).html;
-  decorateLadder();
+  decorateLadder(); decorateGoalPick();
   listView.classList.add('hidden');
   detailView.classList.remove('hidden');
   detailOpen = true; current = initial[1];
