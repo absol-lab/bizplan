@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.0.7">
+<meta name="app-version" content="3.1.0">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -675,6 +675,17 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
    the list screens — the data keeps it, the lists do not
    show it, and no new home is made for it */
 #homeSources{display:none;}
+/* v3.1.0 (his call): a detail page no longer runs down the
+   screen as one long sheet — its body is split at heading
+   boundaries into groups, one pill subtab bar sits under the
+   head, and only the chosen group shows. The bar sticks under
+   the back bar while the group scrolls; grouping itself is
+   render-side only (see groupDetail), the data is untouched */
+.subtabs{display:flex; gap:7px; overflow-x:auto; padding:9px 1px 10px; margin:2px -1px 5px; scrollbar-width:none; -webkit-overflow-scrolling:touch; position:sticky; top:calc(var(--hdrh, 56px) + 59px); z-index:20; background:var(--card);}
+.subtabs::-webkit-scrollbar{display:none;}
+.subtab{flex:none; font-family:var(--sans); font-size:12.5px; font-weight:700; letter-spacing:.03em; color:var(--muted); background:var(--card2); border:1px solid var(--line); border-radius:999px; padding:6px 13px; cursor:pointer; white-space:nowrap;}
+.subtab.on{color:var(--bg); background:var(--accent); border-color:var(--accent);}
+.dpanel[hidden]{display:none;}
 /* dictionary （用語辞典）: framed groups, one framed row per
    term — name, plain definition, and where it sits in this
    plan when that applies */
@@ -835,12 +846,12 @@ body.notifopen #pillnav{opacity:0; pointer-events:none;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.0.7';
+var APP_VERSION = '3.1.0';
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
  "version": 1,
- "updatedAt": "2026-11-20T14:48:41+09:00",
+ "updatedAt": "2026-11-20T15:24:18+09:00",
  "home": {
   "theme": "一文無しから富を築く",
   "themeSubHtml": "最初に築くのは金ではなく、金に変わる資産。順番は固定されている——<strong>労働 → 種銭 → 小さな仕組み → 仕組みの複利<\/strong>。いまは「労働→種銭」の段を登り切り、仕組みの設計図が引けた段階にある。",
@@ -951,8 +962,8 @@ var SEED = {
    "meta": "設計原則、ビジネスの管、価格の階段、フェーズ0〜3、現実の数字",
    "badgeClass": "decided",
    "badgeText": "設計済み",
-   "html": "<div class=\"detail-head\"><h2>アートビジネス計画<\/h2><span class=\"badge decided\">設計済み<\/span><\/div>\n        <p class=\"sec-lead\">天才の偶然売れではなく、計画的にいく。ただし計画は表に見せない——表に出るのは作品と物語だけ。<\/p>\n        <h3>設計原則（4つ）<\/h3>\n        <ol class=\"rules\">\n          <li><strong>計画は裏、表は作品と物語だけ<\/strong>——計算・検証・価格の設計は裏側に置く。名前を守る構造でもある<\/li>\n          <li><strong>関係は柔らかく、条件は硬く<\/strong>——値段・エディション数・権利の条件は先に固定し、その場の交渉に性格を持ち込まない<\/li>\n          <li><strong>視覚言語の同一性<\/strong>——集客の動画も、売る物も、本命の絵画も、同じモチーフ・同じ世界で通す<\/li>\n          <li><strong>reveal-ready<\/strong>——原画・日付・制作記録を残し、将来本名に接続できる来歴を最初から作る<\/li>\n        <\/ol>\n        <h3>ビジネスの管（6つの部品）<\/h3>\n        <div class=\"flow\"><span>制作<\/span><i>→<\/i><span>提示<\/span><i>→<\/i><span>取引<\/span><i>→<\/i><span>記録・認証<\/span><i>→<\/i><span>評価<\/span><i>→<\/i><span>次の制作<\/span><\/div>\n        <p>「作品を作って売る」だけでは金にならない。管のどれが欠けても止まる。いまの不足は <strong>3・4・5<\/strong> で、ここがビジネスの実体部分。<\/p>\n        <ul class=\"parts\">\n          <li><span class=\"pn\">1<\/span><div class=\"pb\"><span class=\"pt\">作品（質）<\/span><span class=\"pd\">個人でしか生み出せない質の高いもの。全ての前提<\/span><\/div><span class=\"status\">制作中<\/span><\/li>\n          <li><span class=\"pn\">2<\/span><div class=\"pb\"><span class=\"pt\">物語<\/span><span class=\"pd\">作家と世界の物語。買い手は絵と一緒に物語を買う<\/span><\/div><span class=\"status\">設計中（顔のない男）<\/span><\/li>\n          <li><span class=\"pn\">3<\/span><div class=\"pb\"><span class=\"pt\">価格の階段<\/span><span class=\"pd\">「買える層」の設計。高額一点だけでは取引が発生しない<\/span><\/div><span class=\"status gap\">未設計<\/span><\/li>\n          <li><span class=\"pn\">4<\/span><div class=\"pb\"><span class=\"pt\">最初の買い手<\/span><span class=\"pd\">「市場」ではなく具体的な少数。SNSの蓄積＋身近な評価者<\/span><\/div><span class=\"status gap\">未着手<\/span><\/li>\n          <li><span class=\"pn\">5<\/span><div class=\"pb\"><span class=\"pt\">記録・認証<\/span><span class=\"pd\">エディション番号、制作年、原画データ、販売記録。来歴が将来の価格の土台になる<\/span><\/div><span class=\"status gap\">仕組み化が課題<\/span><\/li>\n          <li><span class=\"pn\">6<\/span><div class=\"pb\"><span class=\"pt\">見せる場と頻度<\/span><span class=\"pd\">作品が人の目に触れる回数と場所。質×露出でしか評価は生まれない<\/span><\/div><span class=\"status\">TikTok設計中<\/span><\/li>\n        <\/ul>\n        <p class=\"firststep\"><strong>最初の一歩：<\/strong>不足している3つ（価格の階段・最初の買い手・記録と認証）のうち、まず記録の型をフェーズ0で決める。残り2つはフェーズ1で作る<br><strong>時期：<\/strong>記録の型は今（フェーズ0）。価格の階段と最初の買い手は受験後（フェーズ1）<\/p>\n        <h3>価格の階段<\/h3>\n        <p>一点ものの高額作品だけを置くと、欲しい人の99%が買えずに去る。階段を作ると、各段が次の段の買い手を育てる。<strong>原則：値段は下げない。<\/strong>下の段を増やして買える人を増やすのであって、同じ物の値段を割って売らない。<\/p>\n        <div class=\"pstairs\">\n          <div class=\"ps-row\" style=\"--i:0\"><span class=\"ps-n\">段0<\/span><span class=\"ps-price\">無料<\/span><span class=\"ps-b\"><span class=\"ps-f\">動画・投稿（世界観の提示）<\/span><span class=\"ps-r\">集客と物語の蓄積<\/span><\/span><\/div>\n          <div class=\"ps-row\" style=\"--i:1\"><span class=\"ps-n\">段1<\/span><span class=\"ps-price\">数百〜数千円<\/span><span class=\"ps-b\"><span class=\"ps-f\">デジタル素材、描き文字、小プリント<\/span><span class=\"ps-r\">最初の取引。買う体験を作る<\/span><\/span><\/div>\n          <div class=\"ps-row\" style=\"--i:2\"><span class=\"ps-n\">段2<\/span><span class=\"ps-price\">1万〜5万円<\/span><span class=\"ps-b\"><span class=\"ps-f\">エディション作品（番号・記録つき）<\/span><span class=\"ps-r\">本命の入口。来歴が始まる<\/span><\/span><\/div>\n          <div class=\"ps-row\" style=\"--i:3\"><span class=\"ps-n\">段3<\/span><span class=\"ps-price\">10万円〜<\/span><span class=\"ps-b\"><span class=\"ps-f\">原画、大判エディション<\/span><span class=\"ps-r\">評価と価格の頂点。供給は絞る<\/span><\/span><\/div>\n          <div class=\"ps-row\" style=\"--i:4\"><span class=\"ps-n\">段4<\/span><span class=\"ps-price\">契約<\/span><span class=\"ps-b\"><span class=\"ps-f\">ライセンス（グッズ・コラボ）<\/span><span class=\"ps-r\">自分の手を離れて回る層。権利は渡さず貸す<\/span><\/span><\/div>\n        <\/div>\n        <p class=\"firststep\"><strong>最初の一歩：<\/strong>段1の品目を1つ決め、既存のドローイングからエディションにする1点を選ぶ<br><strong>時期：<\/strong>受験後（フェーズ1と並行）<\/p>\n        <h3>フェーズ<\/h3>\n        <ol class=\"steps\">\n          <li data-n=\"0\"><span class=\"st\">土台（今ここ）<\/span><span class=\"sd\">制作ラインを維持する（受験制作がそのまま作品蓄積になる）。世界観と視覚言語を1つに絞る。記録の型を決める：作品ごとに原画ファイル／制作日／タイトル／技法を残す。<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>記録の型を1枚に決めて、次に仕上がる作品からその型で残し始める<br><strong>時期：<\/strong>今すぐ（受験制作と一体で進める）<\/p><\/li>\n          <li data-n=\"1\"><span class=\"st\">提示と最初の取引<\/span><span class=\"sd\">投稿001（v3）を出し、30本検証で「提示の型」を1つ当てる。並行して既存ドローイングからエディション1点をBOOTHに受注生産で出す。<\/span><span class=\"done-when\">最初の1件の取引（金額は問わない）と、提示の型の当たり1つ<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>投稿001（v3）のカットを Kling で生成・選別する（未決・保留にもある、本人の作業待ちの続き）<br><strong>時期：<\/strong>受験後（2027年3月以降）<\/p><\/li>\n          <li data-n=\"2\"><span class=\"st\">階段を組む<\/span><span class=\"sd\">当たった型を連載化し、フォロワーの蓄積を始める。エディションの点数を増やし段2を常設にする。売上の実績に応じてバイトを段階的に減らす。<\/span><span class=\"done-when\">月10万円の売上ラインが見えること<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>フェーズ1で当たった型の2本目を出す<br><strong>時期：<\/strong>フェーズ1が終わってから<\/p><\/li>\n          <li data-n=\"3\"><span class=\"st\">権利の層<\/span><span class=\"sd\">ライセンス・コラボの打診を受ける側に立つ（自分から売り込まない。条件はこちらが決める）。原画の価格帯を上げる。供給は絞ったまま。<\/span><span class=\"done-when\">年600万円ペース（第1チェックポイント）<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>ライセンスの条件（権利は渡さず貸す、条件はこちらが決める）を1枚に書き出す<br><strong>時期：<\/strong>フェーズ2で売上の実績が立ってから<\/p><\/li>\n        <\/ol>\n        <h3>現実の数字<\/h3>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">4,000〜5,000<small>円\/号<\/small><\/div><div class=\"k\">号単価（学生・無名）。実績が積めれば8,000〜15,000円\/号<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">50 : 50<\/div><div class=\"k\">画廊委託の標準的な取り分<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">約239<small>万円<\/small><\/div><div class=\"k\">美術家の平均年収。半数が200万円未満<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">上限360<small>万円<\/small><\/div><div class=\"k\">ポーラの在外研修助成。募集は毎年10〜11月<\/div><\/div>\n        <\/div>\n        <p>数字が示す標準形は「安定した枠 ＋ 作品販売 ＋ 公募・助成」の複合。作品販売一本では立たない。<\/p>\n        <h3>画家の集客の実態<\/h3>\n        <ul>\n          <li>決定的なのはフォロワー数ではなく、<strong>一貫した作風の継続投稿<\/strong>と、著名な作家・コレクターの購入と推薦による<strong>信用の橋渡し<\/strong><\/li>\n          <li>SNSは発見と身辺調査の道具。価格は非公開・問い合わせ制が原則で、直販は入口に限定する<\/li>\n          <li>失敗側の教訓：投機バブルは崩壊した（若手市場は2021年比で約3分の1に縮小）<\/li>\n        <\/ul>\n        <h3>時間の設計<\/h3>\n        <ul>\n          <li><strong>制作と集客を分けない<\/strong>。制作過程そのものが集客素材になる<\/li>\n          <li>販売は受注生産＋プラットフォームに寄せ、在庫・発送・交渉の時間を消す<\/li>\n          <li>運営時間に上限を置く。順番は制作 → 運営。制作時間が残り物にならないようにする<\/li>\n          <li>Phase 2で売上が立つまで、事業に生活費を背負わせない（焦りが作風と価格を壊すため）<\/li>\n        <\/ul>",
-   "updated_at": "2026-11-20T14:42:01+09:00"
+   "html": "<div class=\"detail-head\"><h2>アートビジネス計画<\/h2><span class=\"badge decided\">設計済み<\/span><\/div>\n        <p class=\"sec-lead\">天才の偶然売れではなく、計画的にいく。ただし計画は表に見せない——表に出るのは作品と物語だけ。<\/p>\n        <h3>設計原則（4つ）<\/h3>\n        <ol class=\"rules\">\n          <li><strong>計画は裏、表は作品と物語だけ<\/strong>——計算・検証・価格の設計は裏側に置く。名前を守る構造でもある<\/li>\n          <li><strong>関係は柔らかく、条件は硬く<\/strong>——値段・エディション数・権利の条件は先に固定し、その場の交渉に性格を持ち込まない<\/li>\n          <li><strong>視覚言語の同一性<\/strong>——集客の動画も、売る物も、本命の絵画も、同じモチーフ・同じ世界で通す<\/li>\n          <li><strong>reveal-ready<\/strong>——原画・日付・制作記録を残し、将来本名に接続できる来歴を最初から作る<\/li>\n        <\/ol>\n        <h3>ビジネスの管（6つの部品）<\/h3>\n        <div class=\"flow\"><span>制作<\/span><i>→<\/i><span>提示<\/span><i>→<\/i><span>取引<\/span><i>→<\/i><span>記録・認証<\/span><i>→<\/i><span>評価<\/span><i>→<\/i><span>次の制作<\/span><\/div>\n        <p>「作品を作って売る」だけでは金にならない。管のどれが欠けても止まる。いまの不足は <strong>3・4・5<\/strong> で、ここがビジネスの実体部分。<\/p>\n        <ul class=\"parts\">\n          <li><span class=\"pn\">1<\/span><div class=\"pb\"><span class=\"pt\">作品（質）<\/span><span class=\"pd\">個人でしか生み出せない質の高いもの。全ての前提<\/span><\/div><span class=\"status\">制作中<\/span><\/li>\n          <li><span class=\"pn\">2<\/span><div class=\"pb\"><span class=\"pt\">物語<\/span><span class=\"pd\">作家と世界の物語。買い手は絵と一緒に物語を買う<\/span><\/div><span class=\"status\">設計中（顔のない男）<\/span><\/li>\n          <li><span class=\"pn\">3<\/span><div class=\"pb\"><span class=\"pt\">価格の階段<\/span><span class=\"pd\">「買える層」の設計。高額一点だけでは取引が発生しない<\/span><\/div><span class=\"status gap\">未設計<\/span><\/li>\n          <li><span class=\"pn\">4<\/span><div class=\"pb\"><span class=\"pt\">最初の買い手<\/span><span class=\"pd\">「市場」ではなく具体的な少数。SNSの蓄積＋身近な評価者<\/span><\/div><span class=\"status gap\">未着手<\/span><\/li>\n          <li><span class=\"pn\">5<\/span><div class=\"pb\"><span class=\"pt\">記録・認証<\/span><span class=\"pd\">エディション番号、制作年、原画データ、販売記録。来歴が将来の価格の土台になる<\/span><\/div><span class=\"status gap\">仕組み化が課題<\/span><\/li>\n          <li><span class=\"pn\">6<\/span><div class=\"pb\"><span class=\"pt\">見せる場と頻度<\/span><span class=\"pd\">作品が人の目に触れる回数と場所。質×露出でしか評価は生まれない<\/span><\/div><span class=\"status\">TikTok設計中<\/span><\/li>\n        <\/ul>\n        <p class=\"firststep\"><strong>最初の一歩：<\/strong>不足している3つ（価格の階段・最初の買い手・記録と認証）のうち、まず記録の型をフェーズ0で決める。残り2つはフェーズ1で作る<br><strong>時期：<\/strong>記録の型は今（フェーズ0）。価格の階段と最初の買い手は受験後（フェーズ1）<\/p>\n        <h3>価格の階段<\/h3>\n        <p>一点ものの高額作品だけを置くと、欲しい人の99%が買えずに去る。階段を作ると、各段が次の段の買い手を育てる。<strong>原則：値段は下げない。<\/strong>下の段を増やして買える人を増やすのであって、同じ物の値段を割って売らない。<\/p>\n        <div class=\"pstairs\">\n          <div class=\"ps-row\" style=\"--i:0\"><span class=\"ps-n\">段0<\/span><span class=\"ps-price\">無料<\/span><span class=\"ps-b\"><span class=\"ps-f\">動画・投稿（世界観の提示）<\/span><span class=\"ps-r\">集客と物語の蓄積<\/span><\/span><\/div>\n          <div class=\"ps-row\" style=\"--i:1\"><span class=\"ps-n\">段1<\/span><span class=\"ps-price\">数百〜数千円<\/span><span class=\"ps-b\"><span class=\"ps-f\">デジタル素材、描き文字、小プリント<\/span><span class=\"ps-r\">最初の取引。買う体験を作る<\/span><\/span><\/div>\n          <div class=\"ps-row\" style=\"--i:2\"><span class=\"ps-n\">段2<\/span><span class=\"ps-price\">1万〜5万円<\/span><span class=\"ps-b\"><span class=\"ps-f\">エディション作品（番号・記録つき）<\/span><span class=\"ps-r\">本命の入口。来歴が始まる<\/span><\/span><\/div>\n          <div class=\"ps-row\" style=\"--i:3\"><span class=\"ps-n\">段3<\/span><span class=\"ps-price\">10万円〜<\/span><span class=\"ps-b\"><span class=\"ps-f\">原画、大判エディション<\/span><span class=\"ps-r\">評価と価格の頂点。供給は絞る<\/span><\/span><\/div>\n          <div class=\"ps-row\" style=\"--i:4\"><span class=\"ps-n\">段4<\/span><span class=\"ps-price\">契約<\/span><span class=\"ps-b\"><span class=\"ps-f\">ライセンス（グッズ・コラボ）<\/span><span class=\"ps-r\">自分の手を離れて回る層。権利は渡さず貸す<\/span><\/span><\/div>\n        <\/div>\n        <p class=\"firststep\"><strong>最初の一歩：<\/strong>段1の品目を1つ決め、既存のドローイングからエディションにする1点を選ぶ<br><strong>時期：<\/strong>受験後（フェーズ1と並行）<\/p>\n        <h3>フェーズ<\/h3>\n        <ol class=\"steps\">\n          <li data-n=\"0\"><span class=\"st\">土台（今ここ）<\/span><span class=\"sd\">制作ラインを維持する（受験制作がそのまま作品蓄積になる）。世界観と視覚言語を1つに絞る。記録の型を決める：作品ごとに原画ファイル／制作日／タイトル／技法を残す。<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>記録の型を1枚に決めて、次に仕上がる作品からその型で残し始める<br><strong>時期：<\/strong>今すぐ（受験制作と一体で進める）<\/p><\/li>\n          <li data-n=\"1\"><span class=\"st\">提示と最初の取引<\/span><span class=\"sd\">投稿001（v3）を出し、30本検証で「提示の型」を1つ当てる。並行して既存ドローイングからエディション1点をBOOTHに受注生産で出す。<\/span><span class=\"done-when\">最初の1件の取引（金額は問わない）と、提示の型の当たり1つ<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>投稿001（v3）のカットを Kling で生成・選別する（未決・保留にもある、本人の作業待ちの続き）<br><strong>時期：<\/strong>受験後（2027年3月以降）<\/p><\/li>\n          <li data-n=\"2\"><span class=\"st\">階段を組む<\/span><span class=\"sd\">当たった型を連載化し、フォロワーの蓄積を始める。エディションの点数を増やし段2を常設にする。売上の実績に応じてバイトを段階的に減らす。<\/span><span class=\"done-when\">月10万円の売上ラインが見えること<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>フェーズ1で当たった型の2本目を出す<br><strong>時期：<\/strong>フェーズ1が終わってから<\/p><\/li>\n          <li data-n=\"3\"><span class=\"st\">権利の層<\/span><span class=\"sd\">ライセンス・コラボの打診を受ける側に立つ（自分から売り込まない。条件はこちらが決める）。原画の価格帯を上げる。供給は絞ったまま。<\/span><span class=\"done-when\">年600万円ペース（節目）<\/span>\n<p class=\"firststep\"><strong>最初の一歩：<\/strong>ライセンスの条件（権利は渡さず貸す、条件はこちらが決める）を1枚に書き出す<br><strong>時期：<\/strong>フェーズ2で売上の実績が立ってから<\/p><\/li>\n        <\/ol>\n        <h3>現実の数字<\/h3>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">4,000〜5,000<small>円\/号<\/small><\/div><div class=\"k\">号単価（学生・無名）。実績が積めれば8,000〜15,000円\/号<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">50 : 50<\/div><div class=\"k\">画廊委託の標準的な取り分<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">約239<small>万円<\/small><\/div><div class=\"k\">美術家の平均年収。半数が200万円未満<\/div><\/div>\n          <div class=\"stat\"><div class=\"v\">上限360<small>万円<\/small><\/div><div class=\"k\">ポーラの在外研修助成。募集は毎年10〜11月<\/div><\/div>\n        <\/div>\n        <p>数字が示す標準形は「安定した枠 ＋ 作品販売 ＋ 公募・助成」の複合。作品販売一本では立たない。<\/p>\n        <h3>画家の集客の実態<\/h3>\n        <ul>\n          <li>決定的なのはフォロワー数ではなく、<strong>一貫した作風の継続投稿<\/strong>と、著名な作家・コレクターの購入と推薦による<strong>信用の橋渡し<\/strong><\/li>\n          <li>SNSは発見と身辺調査の道具。価格は非公開・問い合わせ制が原則で、直販は入口に限定する<\/li>\n          <li>失敗側の教訓：投機バブルは崩壊した（若手市場は2021年比で約3分の1に縮小）<\/li>\n        <\/ul>\n        <h3>時間の設計<\/h3>\n        <ul>\n          <li><strong>制作と集客を分けない<\/strong>。制作過程そのものが集客素材になる<\/li>\n          <li>販売は受注生産＋プラットフォームに寄せ、在庫・発送・交渉の時間を消す<\/li>\n          <li>運営時間に上限を置く。順番は制作 → 運営。制作時間が残り物にならないようにする<\/li>\n          <li>Phase 2で売上が立つまで、事業に生活費を背負わせない（焦りが作風と価格を壊すため）<\/li>\n        <\/ul>",
+   "updated_at": "2026-11-20T15:24:18+09:00"
   },
   {
    "id": "zukan",
@@ -1367,7 +1378,7 @@ function openDetail(id, push){
   current = id;
   detailOpen = true;
   $('detailBody').innerHTML = sec.html;
-  decorateLadder(); decorateGoalPick();
+  decorateDetail();
   listScrollY = window.scrollY || 0;
   if(push){ try{ history.pushState({ view: id }, '', '#/' + id); }catch(e){} }
   if(reducedMotion()){
@@ -1426,6 +1437,7 @@ function openHomeDetail(push){
   current = HOME_ID;
   detailOpen = true;
   $('detailBody').innerHTML = homeDetailHTML();
+  decorateDetail();
   listScrollY = window.scrollY || 0;
   if(push){ try{ history.pushState({ view: HOME_ID }, '', '#/'); }catch(e){} }
   if(reducedMotion()){ listView.classList.add('hidden'); detailView.classList.remove('hidden'); window.scrollTo(0,0); return; }
@@ -1537,6 +1549,132 @@ $('detailBody').addEventListener('click', function(e){
   cpNowSave(cpNowLoad() === key ? '' : key);
   decorateLadder(); decorateGoalPick();
 });
+/* ---------- detail subtabs (v3.1.0) ----------
+   His call: a detail's body ran down the screen as one long
+   sheet, so the insides get tab groups of their own. The
+   renderer splits the body at its heading boundaries and
+   puts a pill subtab bar under the head; only the chosen
+   group shows. Boundaries: top-level h3s, the dictionary's
+   .dgroup blocks, and framed blocks carrying their own h3
+   (the business .card candidates, zukan's .note on patents).
+   Comparison figures (.lanes) and the idea cards (.idea —
+   one net, tied together by in-page scroll links) stay whole
+   inside their group. The head and the lead stay above the
+   bar. Data is never touched: labels are derived here from
+   the headings, and the grouping is rebuilt from the raw
+   section HTML on every render. The chosen group is kept
+   per section for the session, so a sync landing mid-read
+   does not throw the reader back to the first group. */
+var SUBTAB_SHORT = {
+  '収入の階段（チェックポイント）': 'チェックポイント',
+  '候補は3つともやる。順番だけ固定': '候補の進め方',
+  'B. シェアされる結果画面型の小ツール': 'B 結果画面型ツール',
+  'AIバウンティ（make.fun）': 'make.fun',
+  '海外アフィリエイト比較記事（AI自動）': '海外アフィリ',
+  '起点——既にある資産': '起点の資産',
+  '特許についての結論': '特許'
+};
+var SUBTAB_FIRST = { schedule: '順番', business: '市場の現実', zukan: '受託と横展開' };
+var detailGroupSel = {};
+function subtabIsBoundary(el){
+  if(el.tagName === 'H3') return true;
+  if(el.classList.contains('dgroup')) return true;
+  if((el.classList.contains('card') || el.classList.contains('note')) && el.querySelector('h3')) return true;
+  return false;
+}
+function subtabHeadingText(h3){
+  if(!h3) return '';
+  var t = '';
+  Array.prototype.forEach.call(h3.childNodes, function(n){
+    if(n.nodeType === 3) t += n.textContent;
+    else if(n.nodeType === 1 && !(n.classList && n.classList.contains('badge'))) t += n.textContent;
+  });
+  return t.replace(/\s+/g, ' ').trim();
+}
+function subtabLabel(els, sid, isFirst){
+  var dg = null, h3 = null;
+  els.forEach(function(el){
+    if(!dg && el.classList && el.classList.contains('dgroup')) dg = el;
+    if(!h3){
+      if(el.tagName === 'H3') h3 = el;
+      /* only a boundary block's own heading names the group —
+         headings inside comparison figures (.lanes) or idea
+         cards are content, not group names */
+      else if((el.classList.contains('card') || el.classList.contains('note')) && el.querySelector) h3 = el.querySelector('h3');
+    }
+  });
+  if(dg){ var dh = dg.querySelector('.dgroup-h'); if(dh) return dh.textContent.replace(/\s+/g, ' ').trim(); }
+  var t = subtabHeadingText(h3);
+  if(!t) return isFirst ? (SUBTAB_FIRST[sid] || '概要') : 'つづき';
+  if(SUBTAB_SHORT[t]) return SUBTAB_SHORT[t];
+  var s = t.replace(/（[^）]*）\s*$/, '').replace(/\([^)]*\)\s*$/, '').trim();
+  if(s.indexOf('——') >= 0){ var p = s.split('——')[0].trim(); if(p.length >= 2) s = p; }
+  if(s.length > 11) s = s.slice(0, 11);
+  return s || t;
+}
+function groupDetail(sid){
+  var db = $('detailBody');
+  if(!db || db.querySelector('.subtabs')) return;
+  sid = sid || current || '';
+  var groups = [], cur = null, seenContent = false, lastFixed = null;
+  Array.prototype.slice.call(db.children).forEach(function(el){
+    if(el.classList.contains('detail-head')){ lastFixed = el; return; }
+    if(!seenContent && !cur && el.classList.contains('sec-lead')){ lastFixed = el; return; }
+    seenContent = true;
+    if(subtabIsBoundary(el) || !cur){ cur = []; groups.push(cur); }
+    cur.push(el);
+  });
+  if(groups.length < 2) return;
+  var active = detailGroupSel[sid] || 0;
+  if(active >= groups.length) active = 0;
+  var bar = document.createElement('div');
+  bar.className = 'subtabs';
+  groups.forEach(function(g, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'subtab' + (i === active ? ' on' : '');
+    b.setAttribute('data-gi', i);
+    b.textContent = subtabLabel(g, sid, i === 0);
+    bar.appendChild(b);
+  });
+  if(lastFixed && lastFixed.nextSibling) db.insertBefore(bar, lastFixed.nextSibling);
+  else if(lastFixed) db.appendChild(bar);
+  else db.insertBefore(bar, db.firstChild);
+  groups.forEach(function(g, i){
+    var panel = document.createElement('div');
+    panel.className = 'dpanel';
+    if(i !== active) panel.hidden = true;
+    g.forEach(function(el){ panel.appendChild(el); });
+    db.appendChild(panel);
+  });
+}
+function setDetailGroup(gi){
+  var db = $('detailBody');
+  var panels = db.querySelectorAll('.dpanel');
+  if(!panels.length || gi < 0 || gi >= panels.length) return;
+  var prev = -1;
+  Array.prototype.forEach.call(db.querySelectorAll('.subtab'), function(b, i){
+    if(b.classList.contains('on')) prev = i;
+    b.classList.toggle('on', i === gi);
+  });
+  Array.prototype.forEach.call(panels, function(p, i){ p.hidden = i !== gi; });
+  if(current) detailGroupSel[current] = gi;
+  var panel = panels[gi];
+  if(panel && !reducedMotion() && panel.animate){
+    var dir = prev >= 0 && gi < prev ? -1 : 1;
+    panel.animate([{ opacity: 0, transform: 'translateX(' + (14 * dir) + 'px)' }, { opacity: 1, transform: 'translateX(0)' }], { duration: 180, easing: 'ease-out' });
+  }
+  window.scrollTo(0, 0);
+}
+$('detailBody').addEventListener('click', function(e){
+  var b = (e.target && e.target.closest) ? e.target.closest('.subtab') : null;
+  if(!b || !$('detailBody').contains(b)) return;
+  setDetailGroup(+b.getAttribute('data-gi'));
+});
+function decorateDetail(sid){
+  groupDetail(sid);
+  decorateLadder(); decorateGoalPick();
+}
 window.addEventListener('popstate', function(){
   var m = (location.hash || '').match(/^#\/(\w+)$/);
   if(m && sectionById(m[1])){ if(!(detailOpen && current === m[1])) openDetail(m[1], false); }
@@ -1548,7 +1686,7 @@ window.addEventListener('popstate', function(){
   var st = null;
   document.addEventListener('touchstart', function(e){
     if(!detailOpen || vtBusy || st || e.touches.length !== 1) return;
-    if(e.target && e.target.closest && e.target.closest('#pillnav')) return; /* pill drags belong to the pill itself */
+    if(e.target && e.target.closest && (e.target.closest('#pillnav') || e.target.closest('.subtabs'))) return; /* pill and subtab drags belong to those rails themselves */
     var t = e.touches[0];
     st = { sx: t.clientX, sy: t.clientY, dx: 0, dy: 0, engaged: false, lastX: t.clientX, lastT: Date.now(), vx: 0, y: window.scrollY || 0 };
   }, { passive: true });
@@ -2152,7 +2290,7 @@ function closeNotif(){
   if(back && (sectionById(back) || back === HOME_ID)){
     current = back; detailOpen = true;
     $('detailBody').innerHTML = (back === HOME_ID) ? homeDetailHTML() : sectionById(back).html;
-    decorateLadder(); decorateGoalPick();
+    decorateDetail();
     detailView.classList.remove('hidden');
     window.scrollTo(0, 0);
   } else {
@@ -2284,7 +2422,7 @@ async function syncOnce(){
 function adoptMerged(m){
   if(m.changed){
     DATA = m.data; saveCache(); renderHome();
-    if(current && detailOpen){ $('detailBody').innerHTML = (current === HOME_ID) ? homeDetailHTML() : ((sectionById(current) || {}).html || ''); decorateLadder(); decorateGoalPick(); }
+    if(current && detailOpen){ $('detailBody').innerHTML = (current === HOME_ID) ? homeDetailHTML() : ((sectionById(current) || {}).html || ''); decorateDetail(); }
     detectPlanChanges(DATA);
   }
   pendingCount = m.pending;
@@ -2409,7 +2547,7 @@ var initial = (location.hash || '').match(/^#\/(\w+)$/);
 if(initial && sectionById(initial[1])){
   setTab(secTab(sectionById(initial[1])));
   $('detailBody').innerHTML = sectionById(initial[1]).html;
-  decorateLadder(); decorateGoalPick();
+  decorateDetail(initial[1]);
   listView.classList.add('hidden');
   detailView.classList.remove('hidden');
   detailOpen = true; current = initial[1];
