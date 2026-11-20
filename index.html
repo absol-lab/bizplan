@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.0.3">
+<meta name="app-version" content="3.0.4">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -422,8 +422,10 @@ button.srow:active{opacity:.6;}
 .pillrow .val{color:var(--muted); font-size:calc(var(--fs) * .95);}
 .srow .chev, .pillrow .chev{color:var(--muted); font-size:22px; line-height:1;}
 .srow.danger .lb{color:var(--danger);}
-/* full-text block inside その他: theme paragraph, goal notes,
-   premise chips — everything the compact home strip abbreviates */
+/* full-text block: theme paragraph, goal notes, premise chips —
+   everything the compact home strip abbreviates. Until v3.0.3 it
+   sat at the bottom of その他; v3.0.4 moves it to the head of the
+   アートビジネス tab, where the strip reads as its summary. */
 .orow-text{padding:14px 0 12px; border-bottom:1px solid var(--line);}
 .oth-theme{font-family:var(--headfont); font-size:16px; font-weight:700; letter-spacing:.04em; margin-bottom:5px;}
 .oth-sub{font-size:13.5px; line-height:1.75;}
@@ -434,6 +436,11 @@ button.srow:active{opacity:.6;}
 .orow-goal .ogv{font-family:var(--headfont); font-weight:700; font-size:18px; white-space:nowrap;}
 .orow-goal .ogv small{font-size:12px; font-weight:600;}
 .orow-chips{display:flex; flex-wrap:wrap; gap:7px; padding:13px 0 10px;}
+/* v3.0.4: the lead card at the top of the アートビジネス tab —
+   a breath of space under the sticky toolbar, then the card,
+   then the section grid */
+#leadCard:empty{display:none;}
+#leadCard .groupcard{margin-top:6px; margin-bottom:20px;}
 /* v2.1.2: extra bottom room so the last group card clears the
    fixed pill nav with margin to spare at max scroll (the body's
    108px reserve alone leaves only a few px on Face ID phones). */
@@ -654,6 +661,7 @@ body.notifopen #pillnav{opacity:0; pointer-events:none;}
     </div>
   </div>
   <div id="listbody">
+    <div id="leadCard"></div>
     <div class="grid def" id="cardGrid"></div>
   </div>
   <div id="viewOther" hidden>
@@ -693,7 +701,7 @@ body.notifopen #pillnav{opacity:0; pointer-events:none;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.0.3';
+var APP_VERSION = '3.0.4';
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
@@ -913,7 +921,31 @@ function applyPill(){
   var map = { art: 'pnArt', business: 'pnBusiness', other: 'pnOther' };
   for(var k in map){ var b = $(map[k]); if(b) b.classList.toggle('on', k === currentTab); }
 }
+/* ---------- lead card (v3.0.4) ----------
+   The plan's face — theme paragraph, the two goals with their
+   notes, and the premise chips, in full — leads the アートビジネス
+   tab above the section cards. The slim strip at the top of the
+   screen stays as the summary; this card is the complete text.
+   Until v3.0.3 the same card sat at the bottom of その他, where
+   it read as miscellany; his call (2026-11-20) moved it here.
+   Data is unchanged: everything comes from DATA.home. */
+function homeCardHTML(){
+  var h = '<div class="groupcard">';
+  h += '<div class="orow-text"><div class="oth-theme">' + esc(DATA.home.theme || '') + '</div><div class="oth-sub">' + (DATA.home.themeSubHtml || '') + '</div></div>';
+  (DATA.home.goals || []).forEach(function(goal){
+    h += '<div class="orow-goal"><span class="lb"><span class="ogl">' + esc(goal.label) + '</span><span class="ogn">' + esc(goal.note) + '</span></span><span class="ogv">' + (goal.numHtml || '') + '</span></div>';
+  });
+  h += '<div class="orow-chips">';
+  (DATA.home.chips || []).forEach(function(chip){ h += '<span class="chip">' + esc(chip) + '</span>'; });
+  h += '</div></div>';
+  return h;
+}
+function renderLead(){
+  var el = $('leadCard'); if(!el) return;
+  el.innerHTML = (currentTab === 'art') ? homeCardHTML() : '';
+}
 function renderGrid(){
+  renderLead();
   var html = '';
   tabSections().forEach(function(sec){
     html += '<figure class="work" data-open="' + esc(sec.id) + '" tabindex="0" role="button" aria-label="' + esc(sec.title) + '">' +
@@ -932,9 +964,11 @@ function renderGrid(){
    is open the header renames itself to その他 with the count
    blanked. Busilabo's その他 follows the same system: the four
    sections that live here are rows, and the app information (sync
-   state, version, data file, disconnect) sits in rows too. The
-   full home texts the compact strip abbreviates (theme paragraph,
-   goal notes, premises) are kept readable in a group card here. */
+   state, version, data file, disconnect) sits in rows too. (The
+   full home texts the compact strip abbreviates — theme
+   paragraph, goal notes, premises — led this screen until
+   v3.0.3; v3.0.4 moves them to the head of the アートビジネス
+   tab, see renderLead.) */
 var SICON = {
   cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.8 18.5a4.3 4.3 0 01-.4-8.57 6.2 6.2 0 0111.94 1.6A3.9 3.9 0 0117.6 18.5H6.8z"/></svg>',
   db: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="5.8" rx="7.5" ry="2.9"/><path d="M4.5 5.8v12.4c0 1.6 3.4 2.9 7.5 2.9s7.5-1.3 7.5-2.9V5.8"/><path d="M4.5 12c0 1.6 3.4 2.9 7.5 2.9s7.5-1.3 7.5-2.9"/></svg>',
@@ -973,14 +1007,6 @@ function renderOther(){
     h += '<button class="srow" data-open="' + esc(sec.id) + '"><span class="ic">' + ic + '</span><span class="lb">' + esc(sec.title) + '</span><span class="val">' + esc(sec.tag) + '</span><span class="chev">›</span></button>';
   });
   h += '</div>';
-  h += '<div class="groupcard">';
-  h += '<div class="orow-text"><div class="oth-theme">' + esc(DATA.home.theme || '') + '</div><div class="oth-sub">' + (DATA.home.themeSubHtml || '') + '</div></div>';
-  (DATA.home.goals || []).forEach(function(goal){
-    h += '<div class="orow-goal"><span class="lb"><span class="ogl">' + esc(goal.label) + '</span><span class="ogn">' + esc(goal.note) + '</span></span><span class="ogv">' + (goal.numHtml || '') + '</span></div>';
-  });
-  h += '<div class="orow-chips">';
-  (DATA.home.chips || []).forEach(function(chip){ h += '<span class="chip">' + esc(chip) + '</span>'; });
-  h += '</div></div>';
   h += relayGroupHTML();
   h += '<div class="groupcard">';
   h += '<div class="srow"><span class="ic">' + SICON.info + '</span><span class="lb">このアプリについて</span><span class="val">Busilabo v' + APP_VERSION + '</span></div>';
