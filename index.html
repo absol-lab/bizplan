@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.1.1">
+<meta name="app-version" content="3.1.2">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -832,37 +832,11 @@ body.notifopen #pillnav{opacity:0; pointer-events:none;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.1.1';
+var APP_VERSION = '3.1.2';
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
  "home": {
-  "chips": [
-   "匿名（実写・顔出し・実名なし）",
-   "スマホのみで回す",
-   "再現性と持続性が最優先",
-   "生活費はバイト、事業は資産形成",
-   "学習2：行動8",
-   "テストは最大3つまで並行"
-  ],
-  "goals": [
-   {
-    "label": "節目",
-    "main": true,
-    "note": "父親の年収を超えるライン。階段では月50万円の地点",
-    "numHtml": "年600<small>万円</small>"
-   },
-   {
-    "label": "最終目標",
-    "main": false,
-    "note": "画家として活動し、金の不安がない状態",
-    "numHtml": "年1,000<small>万円</small>"
-   }
-  ],
-  "sources": "出典：個人アートビジネス全体設計（2026-11-08）／稼ぎプロジェクト全体の流れ（2026-11-04）／将来逆算マップ（2026-11-08）／調査統合 結論まとめ（2026-11-11）／アプリ収益ノウハウ 翔万版リスト（2026-11-11）／図鑑事業と特許 決定事項（2026-11-19）／物語のある物 物販テスト 決定事項（2026-11-19）",
-  "theme": "一文無しから富を築く",
-  "themeSubHtml": "最初に築くのは金ではなく、金に変わる資産。順番は固定されている——<strong>労働 → 種銭 → 小さな仕組み → 仕組みの複利</strong>。いまは「労働→種銭」の段を登り切り、仕組みの設計図が引けた段階にある。",
-  "updated_at": "2026-11-20T16:15:49+09:00",
   "checkpoints": [
    {
     "amt": "月1,000円",
@@ -904,22 +878,48 @@ var SEED = {
     "amt": "月83万円",
     "what": "年換算で約1,000万円＝最終目標。拠点を東京か京都に置く選択が現実になる"
    }
-  ]
+  ],
+  "chips": [
+   "匿名（実写・顔出し・実名なし）",
+   "スマホのみで回す",
+   "再現性と持続性が最優先",
+   "生活費はバイト、事業は資産形成",
+   "学習2：行動8",
+   "テストは最大3つまで並行"
+  ],
+  "goals": [
+   {
+    "label": "節目",
+    "main": true,
+    "note": "父親の年収を超えるライン。階段では月50万円の地点",
+    "numHtml": "年600<small>万円</small>"
+   },
+   {
+    "label": "最終目標",
+    "main": false,
+    "note": "画家として活動し、金の不安がない状態",
+    "numHtml": "年1,000<small>万円</small>"
+   }
+  ],
+  "sources": "出典：個人アートビジネス全体設計（2026-11-08）／稼ぎプロジェクト全体の流れ（2026-11-04）／将来逆算マップ（2026-11-08）／調査統合 結論まとめ（2026-11-11）／アプリ収益ノウハウ 翔万版リスト（2026-11-11）／図鑑事業と特許 決定事項（2026-11-19）／物語のある物 物販テスト 決定事項（2026-11-19）",
+  "theme": "一文無しから富を築く",
+  "themeSubHtml": "最初に築くのは金ではなく、金に変わる資産。順番は固定されている——<strong>労働 → 種銭 → 小さな仕組み → 仕組みの複利</strong>。いまは「労働→種銭」の段を登り切り、仕組みの設計図が引けた段階にある。",
+  "updated_at": "2026-11-20T16:15:49+09:00"
  },
  "sections": [
   {
    "badgeClass": "decided",
-   "badgeText": "決定済み",
-   "char": "時",
-   "html": "<div class=\"detail-head\"><h2>時期と順番</h2><span class=\"badge decided\">決定済み</span></div>\n        <p class=\"sec-lead\">受験を軸に、やる順番は固定されている。並行開発はしない。</p>\n        <ol class=\"steps\">\n          <li data-n=\"1\"><span class=\"st\">今 〜 共通テスト（2027年1月16・17日）</span><span class=\"sd\">進めるのは候補Cの題材決定（段0）まで。</span></li>\n          <li data-n=\"2\"><span class=\"st\">共通テスト後 〜 2月</span><span class=\"sd\">候補C×B（現場の不便解消 × シェアされる出力）の最小版を公開し、集客テスト30日。</span></li>\n          <li data-n=\"3\"><span class=\"st\">受験後</span><span class=\"sd\">図鑑事業の受託を本格始動させる。</span></li>\n        </ol>\n        <div class=\"note\">\n          <p>補足として、知識の蓄積だけは受験前から進めてよい（アフィリエイトの仕組みを学ぶ学習編など）。応募・出品・公開といった実践は、すべて受験後の段に置く。</p>\n        </div>\n        <h3>資産フェーズ（年1,000万円の先）</h3>\n        <div class=\"note\">\n          <p>木の家の購入／イギリス拠点／人を常勤で雇う／大金の貯金——この4つは、年1,000万円の収入があってもまだ先の話で、「収入」ではなく「資産」のフェーズに属する。収入の階段の外ではなく、最後のチェックポイントの先に置く。</p>\n          <p class=\"firststep\"><strong>最初の一歩：</strong>収入のうち資産に回す割合を決め、積立を始める<br><strong>時期：</strong>年1,000万円に届いてから</p>\n        </div>\n        <h3>夢と理想（2026-11-20 の棚卸し）</h3>\n        <p>チェックポイントの根拠。2026-11-20に本人が語った内容を、短い一覧で残す。</p>\n        <ul>\n          <li>絵を描き続ける。大きい絵も描く</li>\n          <li>広めの部屋に住む（狭いと壁やら何やらにぶつかる）</li>\n          <li>工場跡地のような広い場所をアトリエにする（井田幸昌のアトリエのような）</li>\n          <li>服や香水などファッションアイテムを買うお金に困らない。高いものも</li>\n          <li>旅行は取材という名目ですぐ行けるくらいになる</li>\n          <li>木の家に住む</li>\n          <li>相棒となる犬がほしい</li>\n          <li>豊かな生活。バーにも通う</li>\n          <li>バイトはしない。画材は値段を見ずに買う</li>\n          <li>親族に恩返しをする</li>\n          <li>貯金は大金を</li>\n          <li>拠点は東京か京都かイギリス。ただし不利な土地は選ばない</li>\n          <li>人は雇ってみたい</li>\n        </ul>",
-   "id": "schedule",
-   "meta": "受験を軸に固定された順番。資産フェーズと夢と理想",
+   "badgeText": "設計済み",
+   "char": "画",
+   "html": "<div class=\"detail-head\"><h2>アートビジネス計画</h2><span class=\"badge decided\">設計済み</span></div>\n        <p class=\"sec-lead\">天才の偶然売れではなく、計画的にいく。ただし計画は表に見せない——表に出るのは作品と物語だけ。</p>\n        <h3>設計原則（4つ）</h3>\n        <ol class=\"rules\">\n          <li><strong>計画は裏、表は作品と物語だけ</strong>——計算・検証・価格の設計は裏側に置く。名前を守る構造でもある</li>\n          <li><strong>関係は柔らかく、条件は硬く</strong>——値段・エディション数・権利の条件は先に固定し、その場の交渉に性格を持ち込まない</li>\n          <li><strong>視覚言語の同一性</strong>——集客の動画も、売る物も、本命の絵画も、同じモチーフ・同じ世界で通す</li>\n          <li><strong>reveal-ready</strong>——原画・日付・制作記録を残し、将来本名に接続できる来歴を最初から作る</li>\n        </ol>\n        <h3>ビジネスの管（6つの部品）</h3>\n        <div class=\"flow\"><span>制作</span><i>→</i><span>提示</span><i>→</i><span>取引</span><i>→</i><span>記録・認証</span><i>→</i><span>評価</span><i>→</i><span>次の制作</span></div>\n        <p>「作品を作って売る」だけでは金にならない。管のどれが欠けても止まる。いまの不足は <strong>3・4・5</strong> で、ここがビジネスの実体部分。</p>\n        <ul class=\"parts\">\n          <li><span class=\"pn\">1</span><div class=\"pb\"><span class=\"pt\">作品（質）</span><span class=\"pd\">個人でしか生み出せない質の高いもの。全ての前提</span></div><span class=\"status\">制作中</span></li>\n          <li><span class=\"pn\">2</span><div class=\"pb\"><span class=\"pt\">物語</span><span class=\"pd\">作家と世界の物語。買い手は絵と一緒に物語を買う</span></div><span class=\"status\">設計中（顔のない男）</span></li>\n          <li><span class=\"pn\">3</span><div class=\"pb\"><span class=\"pt\">価格の階段</span><span class=\"pd\">「買える層」の設計。高額一点だけでは取引が発生しない</span></div><span class=\"status gap\">未設計</span></li>\n          <li><span class=\"pn\">4</span><div class=\"pb\"><span class=\"pt\">最初の買い手</span><span class=\"pd\">「市場」ではなく具体的な少数。SNSの蓄積＋身近な評価者</span></div><span class=\"status gap\">未着手</span></li>\n          <li><span class=\"pn\">5</span><div class=\"pb\"><span class=\"pt\">記録・認証</span><span class=\"pd\">エディション番号、制作年、原画データ、販売記録。来歴が将来の価格の土台になる</span></div><span class=\"status gap\">仕組み化が課題</span></li>\n          <li><span class=\"pn\">6</span><div class=\"pb\"><span class=\"pt\">見せる場と頻度</span><span class=\"pd\">作品が人の目に触れる回数と場所。質×露出でしか評価は生まれない</span></div><span class=\"status\">TikTok設計中</span></li>\n        </ul>\n        <p class=\"firststep\"><strong>最初の一歩：</strong>不足している3つ（価格の階段・最初の買い手・記録と認証）のうち、まず記録の型をフェーズ0で決める。残り2つはフェーズ1で作る<br><strong>時期：</strong>記録の型は今（フェーズ0）。価格の階段と最初の買い手は受験後（フェーズ1）</p>\n        <h3>価格の階段</h3>\n        <p>一点ものの高額作品だけを置くと、欲しい人の99%が買えずに去る。階段を作ると、各段が次の段の買い手を育てる。<strong>原則：値段は下げない。</strong>下の段を増やして買える人を増やすのであって、同じ物の値段を割って売らない。</p>\n        <div class=\"pstairs\">\n          <div class=\"ps-row\" style=\"--i:0\"><span class=\"ps-n\">段0</span><span class=\"ps-price\">無料</span><span class=\"ps-b\"><span class=\"ps-f\">動画・投稿（世界観の提示）</span><span class=\"ps-r\">集客と物語の蓄積</span></span></div>\n          <div class=\"ps-row\" style=\"--i:1\"><span class=\"ps-n\">段1</span><span class=\"ps-price\">数百〜数千円</span><span class=\"ps-b\"><span class=\"ps-f\">デジタル素材、描き文字、小プリント</span><span class=\"ps-r\">最初の取引。買う体験を作る</span></span></div>\n          <div class=\"ps-row\" style=\"--i:2\"><span class=\"ps-n\">段2</span><span class=\"ps-price\">1万〜5万円</span><span class=\"ps-b\"><span class=\"ps-f\">エディション作品（番号・記録つき）</span><span class=\"ps-r\">本命の入口。来歴が始まる</span></span></div>\n          <div class=\"ps-row\" style=\"--i:3\"><span class=\"ps-n\">段3</span><span class=\"ps-price\">10万円〜</span><span class=\"ps-b\"><span class=\"ps-f\">原画、大判エディション</span><span class=\"ps-r\">評価と価格の頂点。供給は絞る</span></span></div>\n          <div class=\"ps-row\" style=\"--i:4\"><span class=\"ps-n\">段4</span><span class=\"ps-price\">契約</span><span class=\"ps-b\"><span class=\"ps-f\">ライセンス（グッズ・コラボ）</span><span class=\"ps-r\">自分の手を離れて回る層。権利は渡さず貸す</span></span></div>\n        </div>\n        <p class=\"firststep\"><strong>最初の一歩：</strong>段1の品目を1つ決め、既存のドローイングからエディションにする1点を選ぶ<br><strong>時期：</strong>受験後（フェーズ1と並行）</p>\n        <h3>取引の実務（号単価と価格の決め方）</h3>\n        <p>原画の価格は、日本の画廊市場では<strong>号単価（1号あたりの価格）×号数</strong>で置く慣行が一般的だ。価格はオークション式ではなく、作家と画廊が話し合って決める。</p>\n        <ul>\n          <li><strong>号単価を動かす要素</strong>：知名度、美術館での展示歴、受賞歴、個展実績、市場での取引実績、評論家の評価。『美術市場』『美術年鑑』には作家ごとの標準価格（号単価）が掲載される</li>\n          <li><strong>慣行上の調整</strong>：4号以下の小品は手間を考えて号計算より高めに、12〜15号を超える大作は号計算より抑えめに置かれることが多い</li>\n          <li><strong>販売実績がない段階の置き方</strong>：号単価の相場だけで決めず、「材料費＋制作時間＋売る場所の相場」の3点で下限と上限を挟んで決めるのが現実的</li>\n          <li><strong>値上げの仕方</strong>：完売の継続、重要な展覧会、美術館収蔵、需要超過といった実績の裏付けに連動させて、少しずつ段階を刻む。実績の伴わない急な跳ね上げはしない</li>\n          <li><strong>値下げが禁忌の理由</strong>：一度付けた値段を下げると、前に定価で買ってくれた人の絵の値打ちまで下がってしまう。売れない時の処方箋は値下げではなく、見せる場所・相手を変えること</li>\n          <li><strong>売る場所ごとの一貫性</strong>：画廊では高く直販では安く売る「アンダーカット」は、パートナーシップと市場そのものを壊す。直販でも同じ価格基準を守る</li>\n        </ul>\n        <h3>流通と取り分</h3>\n        <p>同じ1点でも、売る場所で手元に残る割合がまったく違う。画廊の取り分は「集客・信用・価格維持」の対価で、手数料の安さだけで売り場を選ばない。</p>\n        <ul>\n          <li><strong>画廊委託</strong>：作家：画廊＝50：50 が一次市場の標準的な目安。固定ルールではなく交渉と条件で動き、画廊の取り分が60%になるケースや、非営利・協同スペースでは作家側60%の例もある。日本の実務では、作家の手取りは概ね4〜6割が中心帯</li>\n          <li><strong>形態による違い</strong>：委託販売専門の画廊では手数料30%（作家70%）の例、公募展・団体展の会場で売れた場合は下代（画料）が上代の2〜4割程度という例もある</li>\n          <li><strong>貸画廊</strong>：賃貸料は立地・広さ・時期で週10万円程度〜100万円近くまで。賃貸料を払うため売上は100%作家のものになるが、集客と販売は自己責任</li>\n          <li><strong>新人の始まり方</strong>：まず委託販売（売れた分だけ報酬、契約なしが多い）から始まるのが通例。買い取り（卸）は画廊のリスクが高いため、新人には少ない</li>\n        </ul>\n        <p>オンライン直販は手数料が1桁台〜1割強で、手取り比率は圧倒的に高い。代わりに集客は全て自分でやる。</p>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">約6.6<small>%＋40円</small></div><div class=\"k\">BASE（スタンダードプラン）：決済3.6%＋40円＋サービス利用料3%</div></div>\n          <div class=\"stat\"><div class=\"v\">5.5<small>%〜</small></div><div class=\"k\">STORES（フリープラン）の決済手数料</div></div>\n          <div class=\"stat\"><div class=\"v\">10.89<small>%</small></div><div class=\"k\">minne の販売手数料（税込）。ほかに振込手数料220円</div></div>\n          <div class=\"stat\"><div class=\"v\">10.67<small>%</small></div><div class=\"k\">Creema の手数料（税込、決済総額に対して）</div></div>\n        </div>\n        <div class=\"note\">\n          <p>注意：手数料は「送料込みの総額」にかかる場合があり、額装・送料の実費は別途自分持ちになる。価格は「売値＝手取り＋手数料＋送料負担」で逆算して置く。</p>\n        </div>\n        <h3>フェーズ</h3>\n        <ol class=\"steps\">\n          <li data-n=\"0\"><span class=\"st\">土台（今ここ）</span><span class=\"sd\">制作ラインを維持する（受験制作がそのまま作品蓄積になる）。世界観と視覚言語を1つに絞る。記録の型を決める：作品ごとに原画ファイル／制作日／タイトル／技法を残す。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>記録の型を1枚に決めて、次に仕上がる作品からその型で残し始める<br><strong>時期：</strong>今すぐ（受験制作と一体で進める）</p></li>\n          <li data-n=\"1\"><span class=\"st\">提示と最初の取引</span><span class=\"sd\">投稿001（v3）を出し、30本検証で「提示の型」を1つ当てる。並行して既存ドローイングからエディション1点をBOOTHに受注生産で出す。</span><span class=\"done-when\">最初の1件の取引（金額は問わない）と、提示の型の当たり1つ</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>投稿001（v3）のカットを Kling で生成・選別する（未決・保留にもある、本人の作業待ちの続き）<br><strong>時期：</strong>受験後（2027年3月以降）</p></li>\n          <li data-n=\"2\"><span class=\"st\">階段を組む</span><span class=\"sd\">当たった型を連載化し、フォロワーの蓄積を始める。エディションの点数を増やし段2を常設にする。売上の実績に応じてバイトを段階的に減らす。</span><span class=\"done-when\">月10万円の売上ラインが見えること</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>フェーズ1で当たった型の2本目を出す<br><strong>時期：</strong>フェーズ1が終わってから</p></li>\n          <li data-n=\"3\"><span class=\"st\">権利の層</span><span class=\"sd\">ライセンス・コラボの打診を受ける側に立つ（自分から売り込まない。条件はこちらが決める）。原画の価格帯を上げる。供給は絞ったまま。</span><span class=\"done-when\">年600万円ペース（節目）</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>ライセンスの条件（権利は渡さず貸す、条件はこちらが決める）を1枚に書き出す<br><strong>時期：</strong>フェーズ2で売上の実績が立ってから</p></li>\n        </ol>\n        <h3>現実の数字</h3>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">4,000〜5,000<small>円/号</small></div><div class=\"k\">号単価（学生・無名）。実績が積めれば8,000〜15,000円/号</div></div>\n          <div class=\"stat\"><div class=\"v\">50 : 50</div><div class=\"k\">画廊委託の標準的な取り分</div></div>\n          <div class=\"stat\"><div class=\"v\">約239<small>万円</small></div><div class=\"k\">美術家の平均年収。半数が200万円未満</div></div>\n          <div class=\"stat\"><div class=\"v\">上限360<small>万円</small></div><div class=\"k\">ポーラの在外研修助成。募集は毎年10〜11月</div></div>\n        </div>\n        <p>数字が示す標準形は「安定した枠 ＋ 作品販売 ＋ 公募・助成」の複合。作品販売一本では立たない。</p>\n        <h3>画家の集客の実態</h3>\n        <ul>\n          <li>決定的なのはフォロワー数ではなく、<strong>一貫した作風の継続投稿</strong>と、著名な作家・コレクターの購入と推薦による<strong>信用の橋渡し</strong></li>\n          <li>SNSの役割は2つに限られる。<strong>発見される場</strong>であることと、関心が発生した後に<strong>裏付け確認に耐える記録</strong>であること。評価の確定は、人の推薦と展示歴というオフラインの回路で起きる</li>\n          <li><strong>価格の出し方</strong>：画廊接続を目指すなら、価格は非公開・問い合わせ制が原則。価格をフィードに明示すると画廊の価格管理と衝突し、将来の所属の障害になりうる</li>\n          <li><strong>直販の置き場所</strong>：入口の検証に限定する。無所属期はDM・オンライン直販で最初の買い手と需要を確認し、画廊と組んだ後は価格と顧客管理の管を画廊に移す（画廊所属後に直販をやめたレイ・クラインの段階設計）</li>\n          <li><strong>日本の現実</strong>：画廊のスカウトは作家同士の推薦・紹介が今も本線で、Instagramは推薦された作家の裏付け確認のために精査される道具。公募も接続の入口として有効。順序は「継続投稿でアーカイブを作る→公募・グループ展で展示実績と接点を作る→推薦が発生する→画廊接続」</li>\n          <li><strong>失敗側の教訓</strong>：投機バブルは崩壊した（若手市場は2021年比で約3分の1に縮小）。投機マネーが作る価格は作家の評価ではない。急な値上げと安易な値下げの両方が、価格という信頼の信号を毀損する</li>\n        </ul>\n        <h3>公募・助成のカレンダー</h3>\n        <p>若手画家に関係の深い制度は、季節で回っている。金額の大きいものから押さえる。</p>\n        <ul>\n          <li><strong>春（4〜6月）</strong>：野村財団「芸術文化助成」（美術部門・個人、上限100万円）の下期分の窓。神山財団「芸術支援プログラム」（年30万円×2年）は大学院生が対象で、学部生のうちは射程外</li>\n          <li><strong>夏（7月）</strong>：文化庁「新進芸術家海外研修制度」（締切は7月末頃）。Idemitsu Art Award（40歳以下・平面、グランプリ300万円、締切は7月末頃、25歳以下は出品料無料）</li>\n          <li><strong>秋（10〜11月）</strong>：ポーラ美術振興財団「若手芸術家の在外研修助成」（1名あたり上限360万円、この規模では最大級）。野村財団の上期分の窓。日展など団体展の搬入・締切も秋</li>\n          <li><strong>冬〜春</strong>：レジデンス（滞在制作）の公募。神山アーティスト・イン・レジデンスは1〜2月の募集が例年のリズム</li>\n          <li><strong>VOCA展は公募ではない</strong>：学芸員・評論家等の推薦制（VOCA賞300万円）。「応募する賞」ではなく「推薦される側」になることが目標になるタイプ</li>\n        </ul>\n        <div class=\"note\">\n          <p>公募展は出品料1点1万〜1.5万円に図録掲載料・搬送費が乗り、1展あたり実費2万〜5万円規模。収入源ではなく、経歴（価格の裏付け）への投資として置く。若手割引（25歳・30歳・35歳以下）のある賞を優先するとコストが下がる。金額・締切は年度で変わるため、応募時は必ず当年度の公式要項で確認する。</p>\n        </div>\n        <h3>時間の設計</h3>\n        <ul>\n          <li><strong>制作と集客を分けない</strong>。制作過程そのものが集客素材になる</li>\n          <li>販売は受注生産＋プラットフォームに寄せ、在庫・発送・交渉の時間を消す</li>\n          <li>運営時間に上限を置く。順番は制作 → 運営。制作時間が残り物にならないようにする</li>\n          <li>Phase 2で売上が立つまで、事業に生活費を背負わせない（焦りが作風と価格を壊すため）</li>\n        </ul>\n        <p class=\"sources\">出典：個人アートビジネス全体設計（2026-11-08）／アートビジネス実務 調査（2026-11-11。号単価・取り分・制度の数字は調査内で出典を確認したもの）／画家の集客 事例（2026-11-11）</p>",
+   "id": "art",
+   "meta": "設計原則、ビジネスの管、価格の階段、フェーズ0〜3、現実の数字",
    "num": "01",
    "tab": "art",
-   "tag": "3期間",
-   "themeClass": "t-schedule",
-   "title": "時期と順番",
-   "updated_at": "2026-11-20T16:15:49+09:00"
+   "tag": "管の6部品",
+   "themeClass": "t-art",
+   "title": "アートビジネス計画",
+   "updated_at": "2026-11-20T16:22:47+09:00"
   },
   {
    "badgeClass": "decided",
@@ -937,31 +937,31 @@ var SEED = {
   },
   {
    "badgeClass": "decided",
-   "badgeText": "設計済み",
-   "char": "画",
-   "html": "<div class=\"detail-head\"><h2>アートビジネス計画</h2><span class=\"badge decided\">設計済み</span></div>\n        <p class=\"sec-lead\">天才の偶然売れではなく、計画的にいく。ただし計画は表に見せない——表に出るのは作品と物語だけ。</p>\n        <h3>設計原則（4つ）</h3>\n        <ol class=\"rules\">\n          <li><strong>計画は裏、表は作品と物語だけ</strong>——計算・検証・価格の設計は裏側に置く。名前を守る構造でもある</li>\n          <li><strong>関係は柔らかく、条件は硬く</strong>——値段・エディション数・権利の条件は先に固定し、その場の交渉に性格を持ち込まない</li>\n          <li><strong>視覚言語の同一性</strong>——集客の動画も、売る物も、本命の絵画も、同じモチーフ・同じ世界で通す</li>\n          <li><strong>reveal-ready</strong>——原画・日付・制作記録を残し、将来本名に接続できる来歴を最初から作る</li>\n        </ol>\n        <h3>ビジネスの管（6つの部品）</h3>\n        <div class=\"flow\"><span>制作</span><i>→</i><span>提示</span><i>→</i><span>取引</span><i>→</i><span>記録・認証</span><i>→</i><span>評価</span><i>→</i><span>次の制作</span></div>\n        <p>「作品を作って売る」だけでは金にならない。管のどれが欠けても止まる。いまの不足は <strong>3・4・5</strong> で、ここがビジネスの実体部分。</p>\n        <ul class=\"parts\">\n          <li><span class=\"pn\">1</span><div class=\"pb\"><span class=\"pt\">作品（質）</span><span class=\"pd\">個人でしか生み出せない質の高いもの。全ての前提</span></div><span class=\"status\">制作中</span></li>\n          <li><span class=\"pn\">2</span><div class=\"pb\"><span class=\"pt\">物語</span><span class=\"pd\">作家と世界の物語。買い手は絵と一緒に物語を買う</span></div><span class=\"status\">設計中（顔のない男）</span></li>\n          <li><span class=\"pn\">3</span><div class=\"pb\"><span class=\"pt\">価格の階段</span><span class=\"pd\">「買える層」の設計。高額一点だけでは取引が発生しない</span></div><span class=\"status gap\">未設計</span></li>\n          <li><span class=\"pn\">4</span><div class=\"pb\"><span class=\"pt\">最初の買い手</span><span class=\"pd\">「市場」ではなく具体的な少数。SNSの蓄積＋身近な評価者</span></div><span class=\"status gap\">未着手</span></li>\n          <li><span class=\"pn\">5</span><div class=\"pb\"><span class=\"pt\">記録・認証</span><span class=\"pd\">エディション番号、制作年、原画データ、販売記録。来歴が将来の価格の土台になる</span></div><span class=\"status gap\">仕組み化が課題</span></li>\n          <li><span class=\"pn\">6</span><div class=\"pb\"><span class=\"pt\">見せる場と頻度</span><span class=\"pd\">作品が人の目に触れる回数と場所。質×露出でしか評価は生まれない</span></div><span class=\"status\">TikTok設計中</span></li>\n        </ul>\n        <p class=\"firststep\"><strong>最初の一歩：</strong>不足している3つ（価格の階段・最初の買い手・記録と認証）のうち、まず記録の型をフェーズ0で決める。残り2つはフェーズ1で作る<br><strong>時期：</strong>記録の型は今（フェーズ0）。価格の階段と最初の買い手は受験後（フェーズ1）</p>\n        <h3>価格の階段</h3>\n        <p>一点ものの高額作品だけを置くと、欲しい人の99%が買えずに去る。階段を作ると、各段が次の段の買い手を育てる。<strong>原則：値段は下げない。</strong>下の段を増やして買える人を増やすのであって、同じ物の値段を割って売らない。</p>\n        <div class=\"pstairs\">\n          <div class=\"ps-row\" style=\"--i:0\"><span class=\"ps-n\">段0</span><span class=\"ps-price\">無料</span><span class=\"ps-b\"><span class=\"ps-f\">動画・投稿（世界観の提示）</span><span class=\"ps-r\">集客と物語の蓄積</span></span></div>\n          <div class=\"ps-row\" style=\"--i:1\"><span class=\"ps-n\">段1</span><span class=\"ps-price\">数百〜数千円</span><span class=\"ps-b\"><span class=\"ps-f\">デジタル素材、描き文字、小プリント</span><span class=\"ps-r\">最初の取引。買う体験を作る</span></span></div>\n          <div class=\"ps-row\" style=\"--i:2\"><span class=\"ps-n\">段2</span><span class=\"ps-price\">1万〜5万円</span><span class=\"ps-b\"><span class=\"ps-f\">エディション作品（番号・記録つき）</span><span class=\"ps-r\">本命の入口。来歴が始まる</span></span></div>\n          <div class=\"ps-row\" style=\"--i:3\"><span class=\"ps-n\">段3</span><span class=\"ps-price\">10万円〜</span><span class=\"ps-b\"><span class=\"ps-f\">原画、大判エディション</span><span class=\"ps-r\">評価と価格の頂点。供給は絞る</span></span></div>\n          <div class=\"ps-row\" style=\"--i:4\"><span class=\"ps-n\">段4</span><span class=\"ps-price\">契約</span><span class=\"ps-b\"><span class=\"ps-f\">ライセンス（グッズ・コラボ）</span><span class=\"ps-r\">自分の手を離れて回る層。権利は渡さず貸す</span></span></div>\n        </div>\n        <p class=\"firststep\"><strong>最初の一歩：</strong>段1の品目を1つ決め、既存のドローイングからエディションにする1点を選ぶ<br><strong>時期：</strong>受験後（フェーズ1と並行）</p>\n        <h3>取引の実務（号単価と価格の決め方）</h3>\n        <p>原画の価格は、日本の画廊市場では<strong>号単価（1号あたりの価格）×号数</strong>で置く慣行が一般的だ。価格はオークション式ではなく、作家と画廊が話し合って決める。</p>\n        <ul>\n          <li><strong>号単価を動かす要素</strong>：知名度、美術館での展示歴、受賞歴、個展実績、市場での取引実績、評論家の評価。『美術市場』『美術年鑑』には作家ごとの標準価格（号単価）が掲載される</li>\n          <li><strong>慣行上の調整</strong>：4号以下の小品は手間を考えて号計算より高めに、12〜15号を超える大作は号計算より抑えめに置かれることが多い</li>\n          <li><strong>販売実績がない段階の置き方</strong>：号単価の相場だけで決めず、「材料費＋制作時間＋売る場所の相場」の3点で下限と上限を挟んで決めるのが現実的</li>\n          <li><strong>値上げの仕方</strong>：完売の継続、重要な展覧会、美術館収蔵、需要超過といった実績の裏付けに連動させて、少しずつ段階を刻む。実績の伴わない急な跳ね上げはしない</li>\n          <li><strong>値下げが禁忌の理由</strong>：一度付けた値段を下げると、前に定価で買ってくれた人の絵の値打ちまで下がってしまう。売れない時の処方箋は値下げではなく、見せる場所・相手を変えること</li>\n          <li><strong>売る場所ごとの一貫性</strong>：画廊では高く直販では安く売る「アンダーカット」は、パートナーシップと市場そのものを壊す。直販でも同じ価格基準を守る</li>\n        </ul>\n        <h3>流通と取り分</h3>\n        <p>同じ1点でも、売る場所で手元に残る割合がまったく違う。画廊の取り分は「集客・信用・価格維持」の対価で、手数料の安さだけで売り場を選ばない。</p>\n        <ul>\n          <li><strong>画廊委託</strong>：作家：画廊＝50：50 が一次市場の標準的な目安。固定ルールではなく交渉と条件で動き、画廊の取り分が60%になるケースや、非営利・協同スペースでは作家側60%の例もある。日本の実務では、作家の手取りは概ね4〜6割が中心帯</li>\n          <li><strong>形態による違い</strong>：委託販売専門の画廊では手数料30%（作家70%）の例、公募展・団体展の会場で売れた場合は下代（画料）が上代の2〜4割程度という例もある</li>\n          <li><strong>貸画廊</strong>：賃貸料は立地・広さ・時期で週10万円程度〜100万円近くまで。賃貸料を払うため売上は100%作家のものになるが、集客と販売は自己責任</li>\n          <li><strong>新人の始まり方</strong>：まず委託販売（売れた分だけ報酬、契約なしが多い）から始まるのが通例。買い取り（卸）は画廊のリスクが高いため、新人には少ない</li>\n        </ul>\n        <p>オンライン直販は手数料が1桁台〜1割強で、手取り比率は圧倒的に高い。代わりに集客は全て自分でやる。</p>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">約6.6<small>%＋40円</small></div><div class=\"k\">BASE（スタンダードプラン）：決済3.6%＋40円＋サービス利用料3%</div></div>\n          <div class=\"stat\"><div class=\"v\">5.5<small>%〜</small></div><div class=\"k\">STORES（フリープラン）の決済手数料</div></div>\n          <div class=\"stat\"><div class=\"v\">10.89<small>%</small></div><div class=\"k\">minne の販売手数料（税込）。ほかに振込手数料220円</div></div>\n          <div class=\"stat\"><div class=\"v\">10.67<small>%</small></div><div class=\"k\">Creema の手数料（税込、決済総額に対して）</div></div>\n        </div>\n        <div class=\"note\">\n          <p>注意：手数料は「送料込みの総額」にかかる場合があり、額装・送料の実費は別途自分持ちになる。価格は「売値＝手取り＋手数料＋送料負担」で逆算して置く。</p>\n        </div>\n        <h3>フェーズ</h3>\n        <ol class=\"steps\">\n          <li data-n=\"0\"><span class=\"st\">土台（今ここ）</span><span class=\"sd\">制作ラインを維持する（受験制作がそのまま作品蓄積になる）。世界観と視覚言語を1つに絞る。記録の型を決める：作品ごとに原画ファイル／制作日／タイトル／技法を残す。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>記録の型を1枚に決めて、次に仕上がる作品からその型で残し始める<br><strong>時期：</strong>今すぐ（受験制作と一体で進める）</p></li>\n          <li data-n=\"1\"><span class=\"st\">提示と最初の取引</span><span class=\"sd\">投稿001（v3）を出し、30本検証で「提示の型」を1つ当てる。並行して既存ドローイングからエディション1点をBOOTHに受注生産で出す。</span><span class=\"done-when\">最初の1件の取引（金額は問わない）と、提示の型の当たり1つ</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>投稿001（v3）のカットを Kling で生成・選別する（未決・保留にもある、本人の作業待ちの続き）<br><strong>時期：</strong>受験後（2027年3月以降）</p></li>\n          <li data-n=\"2\"><span class=\"st\">階段を組む</span><span class=\"sd\">当たった型を連載化し、フォロワーの蓄積を始める。エディションの点数を増やし段2を常設にする。売上の実績に応じてバイトを段階的に減らす。</span><span class=\"done-when\">月10万円の売上ラインが見えること</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>フェーズ1で当たった型の2本目を出す<br><strong>時期：</strong>フェーズ1が終わってから</p></li>\n          <li data-n=\"3\"><span class=\"st\">権利の層</span><span class=\"sd\">ライセンス・コラボの打診を受ける側に立つ（自分から売り込まない。条件はこちらが決める）。原画の価格帯を上げる。供給は絞ったまま。</span><span class=\"done-when\">年600万円ペース（節目）</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>ライセンスの条件（権利は渡さず貸す、条件はこちらが決める）を1枚に書き出す<br><strong>時期：</strong>フェーズ2で売上の実績が立ってから</p></li>\n        </ol>\n        <h3>現実の数字</h3>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">4,000〜5,000<small>円/号</small></div><div class=\"k\">号単価（学生・無名）。実績が積めれば8,000〜15,000円/号</div></div>\n          <div class=\"stat\"><div class=\"v\">50 : 50</div><div class=\"k\">画廊委託の標準的な取り分</div></div>\n          <div class=\"stat\"><div class=\"v\">約239<small>万円</small></div><div class=\"k\">美術家の平均年収。半数が200万円未満</div></div>\n          <div class=\"stat\"><div class=\"v\">上限360<small>万円</small></div><div class=\"k\">ポーラの在外研修助成。募集は毎年10〜11月</div></div>\n        </div>\n        <p>数字が示す標準形は「安定した枠 ＋ 作品販売 ＋ 公募・助成」の複合。作品販売一本では立たない。</p>\n        <h3>画家の集客の実態</h3>\n        <ul>\n          <li>決定的なのはフォロワー数ではなく、<strong>一貫した作風の継続投稿</strong>と、著名な作家・コレクターの購入と推薦による<strong>信用の橋渡し</strong></li>\n          <li>SNSの役割は2つに限られる。<strong>発見される場</strong>であることと、関心が発生した後に<strong>裏付け確認に耐える記録</strong>であること。評価の確定は、人の推薦と展示歴というオフラインの回路で起きる</li>\n          <li><strong>価格の出し方</strong>：画廊接続を目指すなら、価格は非公開・問い合わせ制が原則。価格をフィードに明示すると画廊の価格管理と衝突し、将来の所属の障害になりうる</li>\n          <li><strong>直販の置き場所</strong>：入口の検証に限定する。無所属期はDM・オンライン直販で最初の買い手と需要を確認し、画廊と組んだ後は価格と顧客管理の管を画廊に移す（画廊所属後に直販をやめたレイ・クラインの段階設計）</li>\n          <li><strong>日本の現実</strong>：画廊のスカウトは作家同士の推薦・紹介が今も本線で、Instagramは推薦された作家の裏付け確認のために精査される道具。公募も接続の入口として有効。順序は「継続投稿でアーカイブを作る→公募・グループ展で展示実績と接点を作る→推薦が発生する→画廊接続」</li>\n          <li><strong>失敗側の教訓</strong>：投機バブルは崩壊した（若手市場は2021年比で約3分の1に縮小）。投機マネーが作る価格は作家の評価ではない。急な値上げと安易な値下げの両方が、価格という信頼の信号を毀損する</li>\n        </ul>\n        <h3>公募・助成のカレンダー</h3>\n        <p>若手画家に関係の深い制度は、季節で回っている。金額の大きいものから押さえる。</p>\n        <ul>\n          <li><strong>春（4〜6月）</strong>：野村財団「芸術文化助成」（美術部門・個人、上限100万円）の下期分の窓。神山財団「芸術支援プログラム」（年30万円×2年）は大学院生が対象で、学部生のうちは射程外</li>\n          <li><strong>夏（7月）</strong>：文化庁「新進芸術家海外研修制度」（締切は7月末頃）。Idemitsu Art Award（40歳以下・平面、グランプリ300万円、締切は7月末頃、25歳以下は出品料無料）</li>\n          <li><strong>秋（10〜11月）</strong>：ポーラ美術振興財団「若手芸術家の在外研修助成」（1名あたり上限360万円、この規模では最大級）。野村財団の上期分の窓。日展など団体展の搬入・締切も秋</li>\n          <li><strong>冬〜春</strong>：レジデンス（滞在制作）の公募。神山アーティスト・イン・レジデンスは1〜2月の募集が例年のリズム</li>\n          <li><strong>VOCA展は公募ではない</strong>：学芸員・評論家等の推薦制（VOCA賞300万円）。「応募する賞」ではなく「推薦される側」になることが目標になるタイプ</li>\n        </ul>\n        <div class=\"note\">\n          <p>公募展は出品料1点1万〜1.5万円に図録掲載料・搬送費が乗り、1展あたり実費2万〜5万円規模。収入源ではなく、経歴（価格の裏付け）への投資として置く。若手割引（25歳・30歳・35歳以下）のある賞を優先するとコストが下がる。金額・締切は年度で変わるため、応募時は必ず当年度の公式要項で確認する。</p>\n        </div>\n        <h3>時間の設計</h3>\n        <ul>\n          <li><strong>制作と集客を分けない</strong>。制作過程そのものが集客素材になる</li>\n          <li>販売は受注生産＋プラットフォームに寄せ、在庫・発送・交渉の時間を消す</li>\n          <li>運営時間に上限を置く。順番は制作 → 運営。制作時間が残り物にならないようにする</li>\n          <li>Phase 2で売上が立つまで、事業に生活費を背負わせない（焦りが作風と価格を壊すため）</li>\n        </ul>\n        <p class=\"sources\">出典：個人アートビジネス全体設計（2026-11-08）／アートビジネス実務 調査（2026-11-11。号単価・取り分・制度の数字は調査内で出典を確認したもの）／画家の集客 事例（2026-11-11）</p>",
-   "id": "art",
-   "meta": "設計原則、ビジネスの管、価格の階段、フェーズ0〜3、現実の数字",
-   "num": "03",
-   "tab": "art",
-   "tag": "管の6部品",
-   "themeClass": "t-art",
-   "title": "アートビジネス計画",
-   "updated_at": "2026-11-20T15:55:51+09:00"
-  },
-  {
-   "badgeClass": "decided",
    "badgeText": "2026-11-19 決定",
    "char": "鑑",
    "html": "<div class=\"detail-head\"><h2>図鑑事業</h2><span class=\"badge decided\">2026-11-19 決定</span></div>\n        <p class=\"sec-lead\">図鑑アプリの仕組み（エンジン）は分野を選ばない。金の変え方は、分野によって2つに分けることが決まった。</p>\n        <div class=\"branch2\">\n          <div class=\"b-src\">図鑑の仕組み（エンジン）</div>\n          <div class=\"b-stem\"></div>\n          <div class=\"b-bar\"></div>\n          <div class=\"b-cols\">\n            <div class=\"b-col art\"><span class=\"b-t\">美術分野</span><span class=\"b-v\">受託</span><span class=\"b-d\">画廊・画家・美術団体から構築を受ける</span></div>\n            <div class=\"b-col other\"><span class=\"b-t\">他ジャンル</span><span class=\"b-v\">横展開</span><span class=\"b-d\">自前アプリとして売り出す</span></div>\n          </div>\n        </div>\n        <div class=\"lanes\">\n          <div class=\"lane art\">\n            <h3>美術分野 ＝ 受託</h3>\n            <p>画廊・画家・美術団体などの「自分たちの図鑑が欲しいけど作れない」側から、構築を受ける。狙いは<strong>金＋美術界との縁＋実績</strong>の3つ同時。</p>\n            <ul>\n              <li><strong>客の像</strong>：自分の全作品のアーカイブが欲しい画家本人／小さい画廊・美術団体／ファンコミュニティ／専門店／小さい博物館・資料館／コレクター</li>\n              <li><strong>売る物の3段</strong>：構築一式（データ整形込み）／点数単位のデータ化／月額の運用代行</li>\n              <li><strong>条件</strong>：渡すのは完成したアプリだけ。エンジンの権利は翔万に残す。データの権利は発注側に置く</li>\n              <li><strong>始動</strong>：納期のある他人の仕事なので、本格始動は受験後</li>\n            </ul>\n            <p class=\"firststep\"><strong>最初の一歩：</strong>受託の受け皿（何を・いくらで・どのくらいで作れるかの一枚）を作る<br><strong>時期：</strong>受験後（2027年3月以降）に本格始動</p>\n          </div>\n          <div class=\"lane other\">\n            <h3>他ジャンル ＝ 横展開</h3>\n            <p>ジャンルごとの図鑑を自前アプリとして売り出し、アプリ収入の階段に乗せる。名前のリスクがない分野で、匿名のまま展開できる。</p>\n            <ul>\n              <li><strong>実装済みの証明</strong>：音楽／映画／食材</li>\n              <li><strong>効く分野の条件</strong>：「人と作品と記録」の蓄積型で、ファンが深く調べたくて、既存の情報が散らかっている場所</li>\n              <li><strong>候補</strong>：スポーツ記録（野球選手・力士）／声優・アイドル／漫画／名車／時計／スニーカー</li>\n            </ul>\n            <p class=\"firststep\"><strong>最初の一歩：</strong>候補の中から、最初に出す分野を1つ決める<br><strong>時期：</strong>受験後（2027年3月以降）</p>\n          </div>\n        </div>\n        <h3>受託の進め方</h3>\n        <ol class=\"steps\">\n          <li data-n=\"1\"><span class=\"st\">受け皿を作る</span><span class=\"sd\">何を・いくらで・どのくらいで作れるかを一枚にまとめる。価格は「安さ」ではなく「この形は他にない」で立てる</span></li>\n          <li data-n=\"2\"><span class=\"st\">見本で示す</span><span class=\"sd\">自分の図鑑アプリ群（作家図鑑、音楽・映画・食材の図鑑）が、そのまま動いている実演になる。説明より先に、完成した物を触ってもらう</span></li>\n          <li data-n=\"3\"><span class=\"st\">条件を先に固定する</span><span class=\"sd\">渡すのは完成したアプリだけ。エンジンの権利は翔万に残し、データの権利は発注側に置く。条件は交渉の場で動かさない</span></li>\n          <li data-n=\"4\"><span class=\"st\">構築する</span><span class=\"sd\">データの収集・整形はこちらで担い、完成したアプリを渡す。発注側の作業は、素材の提供と確認だけに寄せる</span></li>\n          <li data-n=\"5\"><span class=\"st\">運用を続ける</span><span class=\"sd\">月額の運用代行で更新と保守を引き受け、1回で終わらない関係にする</span></li>\n        </ol>\n        <p>狙いは金の額だけではない。画廊・画家・美術団体との<strong>縁</strong>と、美術分野での<strong>実績</strong>が同時に手に入ることが、この形の本体。納期のある他人の仕事なので、本格始動は受験後。</p>\n        <h3>横展開の進め方</h3>\n        <ol class=\"steps\">\n          <li data-n=\"1\"><span class=\"st\">分野を選ぶ</span><span class=\"sd\">条件は3つ。「人と作品と記録」の蓄積型であること／ファンが深く調べたくなる分野であること／既存の情報が散らかっていること</span></li>\n          <li data-n=\"2\"><span class=\"st\">型を移植する</span><span class=\"sd\">エンジン（カード表示・年表・関係図・価格記録・Drive同期）をそのまま使い、作るコストを型で下げる。アプリは動く時にAIを呼ばないので、運営費はゼロのまま出せる</span></li>\n          <li data-n=\"3\"><span class=\"st\">データを集めて選ぶ</span><span class=\"sd\">時間をかけるのはここ。データの深さと正確さ、本人の目による選定、元々の文章（ガイド・調査）——この3つが、コードでは真似できない堀になる</span></li>\n          <li data-n=\"4\"><span class=\"st\">公開して集客する</span><span class=\"sd\">分野ごとに集客は要る。出したら、ビジネス計画のアプリ収入の階段と検証の段に乗せて判定する</span></li>\n          <li data-n=\"5\"><span class=\"st\">積み上げる</span><span class=\"sd\">出た図鑑が増えるほど、データの集計レポートや受託の見本として効く範囲が広がる。1本ごとの弱さが、束になることで強みに変わる</span></li>\n        </ol>\n        <h3>決まっている線引き</h3>\n        <ul>\n          <li><strong>エンジンのキット販売はしない</strong>。仕組みを公開することになるため。売るのは完成品であって、作り方ではない</li>\n          <li><strong>アプリは動く時にAIを呼ばない</strong>。AIが働くのは作る時とデータを揃える時だけ。だから他人が使っても自分のAIアカウントは減らず、運営費もゼロのまま渡せる</li>\n          <li><strong>唯一無二性の堀は3つ</strong>：データの深さと正確さ／本人の目による選定／元々の文章（ガイド・調査）。コードは真似できても、この3つは年月がかかる</li>\n        </ul>\n        <div class=\"note\">\n          <h3 style=\"margin-top:0\">特許についての結論</h3>\n          <p>今のアプリ群の大半は特許化が難しい。理由は3つ——進歩性の壁（既存技術の組み合わせと判断されやすい）、既に公開済み（救済は本人の公開から1年以内）、ソフトウェア単体では対象になりにくい。日記アプリのTodo（金額と写真の自動回収）も、ほしい物リスト等の先行例が大きく単体では厳しい見立て。</p>\n          <p>図鑑の独自性は仕組みの新しさではなく、データの量・編集・選定の蓄積にある。守りは著作権と「真似に同じ年月がかかる」という事実の側。特許の正しい出番は、自分の商品・仕組みを外に出す時に、<strong>公開する前に</strong>中核だけ検討すること。</p>\n          <p class=\"firststep\"><strong>最初の一歩：</strong>自分の商品・仕組みを次に外に出す時、公開前に特許の検討を1回挟む<br><strong>時期：</strong>公開の直前、その都度</p>\n        </div>\n        <p class=\"sources\">出典：図鑑事業と特許 決定事項（2026-11-19）</p>",
    "id": "zukan",
    "meta": "美術＝受託／他ジャンル＝横展開。キット販売はしない。特許の結論",
-   "num": "04",
-   "tab": "art",
+   "num": "03",
+   "tab": "business",
    "tag": "受託／横展開",
    "themeClass": "t-zukan",
    "title": "図鑑事業",
-   "updated_at": "2026-11-20T15:56:08+09:00"
+   "updated_at": "2026-11-20T16:22:47+09:00"
+  },
+  {
+   "badgeClass": "decided",
+   "badgeText": "決定済み",
+   "char": "律",
+   "html": "<div class=\"detail-head\"><h2>ルール</h2><span class=\"badge decided\">決定済み</span></div>\n        <h3>評価の物差し（2つ）</h3>\n        <p>機会は「平均的な参加者の期待値」では測らない。上位を取る側として設計する。その上で問うのは2つ。</p>\n        <div class=\"judge\">\n          <div class=\"jq\"><span class=\"qn\">問い1</span><span><span class=\"qt\">その上位は、自分たちの実力で実際に取れる構造か</span><span class=\"qd\">参加者数と、審査が「質」か「最適化の削り合い」か</span></span></div>\n          <div class=\"jarrow\">↓</div>\n          <div class=\"jq\"><span class=\"qn\">問い2</span><span><span class=\"qt\">取った位置が、資産として残るか</span><span class=\"qd\">勝っても次の案件でゼロからなら、椅子は残らない</span></span></div>\n          <div class=\"jarrow\">↓</div>\n          <div class=\"jout\"><span class=\"jok\">2つとも通る → 上位を取りに行く</span><span class=\"jng\">1つでも欠ける → やらない</span></div>\n        </div>\n        <h3>禁止ライン（8つ）</h3>\n        <p>判定は「バレるか」ではない。<strong>revealテスト</strong>——将来、本名と顔を出して同じ売り方を説明できるか——を通らないものはやらない。</p>\n        <ul class=\"checklist\">\n          <li>裏付けのない／水増しした収入・実績・効果の数字を広告に使う</li>\n          <li>「絶対稼げる」等の断定的な表現で情報商材・スクール・コンサルを売る</li>\n          <li>ステマ（PRを隠す／広告主に隠させる）</li>\n          <li>無許可の反復継続転売、資格を偽った仕入れ、定価超チケット転売</li>\n          <li>わいせつ物の頒布・陳列にあたる成人向け販売</li>\n          <li>収益の無申告・過少申告</li>\n          <li>他人の著作物・商標・キャラ・肖像を無断で使った商品販売</li>\n          <li>買い手の不安・借金・焦りを煽る高額勧誘</li>\n        </ul>\n        <h3>やらないこと</h3>\n        <ul>\n          <li>株・FX（元手がない段階では再現性なし）</li>\n          <li>スクール事業（実績ができるまで封印）</li>\n          <li>アダルト（匿名でも最低優先。原則やらない）</li>\n          <li>生活費を事業の成果に賭けること</li>\n          <li>図鑑エンジンのキット販売（仕組みの公開になるため）</li>\n        </ul>\n        <h3>実現のルール（2026-11-20）</h3>\n        <ol class=\"rules\">\n          <li>計画には最初の一歩と時期を付ける。実現したかどうかは、文書ができたかではなく、世の中の側が変わったか（出荷・出品・応募・最初の取引）で数える</li>\n        </ol>\n        <h3>知識のルール（2026-11-20）</h3>\n        <p><strong>「知識こそ土台であり金だ」</strong>——知識そのものが土台であり、資産だ。このアプリは計画の置き場ではなく、見て動ける知識の基盤として作る。稼ぐのは本人で、Muse の仕事はその知識を備えることにある。</p>\n        <ol class=\"rules\">\n          <li><strong>ノウハウの登録基準</strong>：本体は体系的な知識（手順・判断基準・数字・注意点まで、実行できる詳しさ）で書く。「大まかな流れ」の要約だけでは、登録したことにならない</li>\n          <li><strong>数字の裏付け</strong>：数字と事実は、公式・一次の出典で裏が取れるものだけを置く。裏の取れない収益数字や、煽りの結論は入れない</li>\n          <li><strong>出典の置き場所</strong>：きっかけ・出典は一番下に補足として小さく置く。本文の主役はノウハウのほうにする</li>\n          <li><strong>更新時の棚卸し</strong>：アプリを更新する時は、中身の古さ（過ぎた日付のままの文面、後の決定で置き換わった表現、数字の不整合）も同じ便で点検する。機械的に直せるものはその場で直し、計画の実質に関わる変更は本人の判断に回す</li>\n        </ol>",
+   "id": "rules",
+   "meta": "評価の物差し2つ、禁止ライン8つ、やらないこと",
+   "num": "04",
+   "tab": "business",
+   "tag": "禁止8つ",
+   "themeClass": "t-rules",
+   "title": "ルール",
+   "updated_at": "2026-11-20T16:22:47+09:00"
   },
   {
    "badgeClass": "pending",
@@ -971,11 +971,11 @@ var SEED = {
    "id": "ideas",
    "meta": "資産10件を起点に、派生するアイデア9件をつながりごと並べた場所",
    "num": "05",
-   "tab": "art",
+   "tab": "business",
    "tag": "アイデア9件",
    "themeClass": "t-ideas",
    "title": "アイデアの網",
-   "updated_at": "2026-11-20T13:49:32+09:00"
+   "updated_at": "2026-11-20T16:22:47+09:00"
   },
   {
    "badgeClass": "pending",
@@ -985,25 +985,11 @@ var SEED = {
    "id": "pending",
    "meta": "Cの段0、営業と集客、受託の受け皿など、まだ決まっていない項目の一覧",
    "num": "06",
-   "tab": "art",
+   "tab": "business",
    "tag": "8件",
    "themeClass": "t-pending",
    "title": "未決・保留",
-   "updated_at": "2026-11-20T15:57:42+09:00"
-  },
-  {
-   "badgeClass": "decided",
-   "badgeText": "決定済み",
-   "char": "律",
-   "html": "<div class=\"detail-head\"><h2>ルール</h2><span class=\"badge decided\">決定済み</span></div>\n        <h3>評価の物差し（2つ）</h3>\n        <p>機会は「平均的な参加者の期待値」では測らない。上位を取る側として設計する。その上で問うのは2つ。</p>\n        <div class=\"judge\">\n          <div class=\"jq\"><span class=\"qn\">問い1</span><span><span class=\"qt\">その上位は、自分たちの実力で実際に取れる構造か</span><span class=\"qd\">参加者数と、審査が「質」か「最適化の削り合い」か</span></span></div>\n          <div class=\"jarrow\">↓</div>\n          <div class=\"jq\"><span class=\"qn\">問い2</span><span><span class=\"qt\">取った位置が、資産として残るか</span><span class=\"qd\">勝っても次の案件でゼロからなら、椅子は残らない</span></span></div>\n          <div class=\"jarrow\">↓</div>\n          <div class=\"jout\"><span class=\"jok\">2つとも通る → 上位を取りに行く</span><span class=\"jng\">1つでも欠ける → やらない</span></div>\n        </div>\n        <h3>禁止ライン（8つ）</h3>\n        <p>判定は「バレるか」ではない。<strong>revealテスト</strong>——将来、本名と顔を出して同じ売り方を説明できるか——を通らないものはやらない。</p>\n        <ul class=\"checklist\">\n          <li>裏付けのない／水増しした収入・実績・効果の数字を広告に使う</li>\n          <li>「絶対稼げる」等の断定的な表現で情報商材・スクール・コンサルを売る</li>\n          <li>ステマ（PRを隠す／広告主に隠させる）</li>\n          <li>無許可の反復継続転売、資格を偽った仕入れ、定価超チケット転売</li>\n          <li>わいせつ物の頒布・陳列にあたる成人向け販売</li>\n          <li>収益の無申告・過少申告</li>\n          <li>他人の著作物・商標・キャラ・肖像を無断で使った商品販売</li>\n          <li>買い手の不安・借金・焦りを煽る高額勧誘</li>\n        </ul>\n        <h3>やらないこと</h3>\n        <ul>\n          <li>株・FX（元手がない段階では再現性なし）</li>\n          <li>スクール事業（実績ができるまで封印）</li>\n          <li>アダルト（匿名でも最低優先。原則やらない）</li>\n          <li>生活費を事業の成果に賭けること</li>\n          <li>図鑑エンジンのキット販売（仕組みの公開になるため）</li>\n        </ul>\n        <h3>実現のルール（2026-11-20）</h3>\n        <ol class=\"rules\">\n          <li>計画には最初の一歩と時期を付ける。実現したかどうかは、文書ができたかではなく、世の中の側が変わったか（出荷・出品・応募・最初の取引）で数える</li>\n        </ol>\n        <h3>知識のルール（2026-11-20）</h3>\n        <p><strong>「知識こそ土台であり金だ」</strong>——知識そのものが土台であり、資産だ。このアプリは計画の置き場ではなく、見て動ける知識の基盤として作る。稼ぐのは本人で、Muse の仕事はその知識を備えることにある。</p>\n        <ol class=\"rules\">\n          <li><strong>ノウハウの登録基準</strong>：本体は体系的な知識（手順・判断基準・数字・注意点まで、実行できる詳しさ）で書く。「大まかな流れ」の要約だけでは、登録したことにならない</li>\n          <li><strong>数字の裏付け</strong>：数字と事実は、公式・一次の出典で裏が取れるものだけを置く。裏の取れない収益数字や、煽りの結論は入れない</li>\n          <li><strong>出典の置き場所</strong>：きっかけ・出典は一番下に補足として小さく置く。本文の主役はノウハウのほうにする</li>\n          <li><strong>更新時の棚卸し</strong>：アプリを更新する時は、中身の古さ（過ぎた日付のままの文面、後の決定で置き換わった表現、数字の不整合）も同じ便で点検する。機械的に直せるものはその場で直し、計画の実質に関わる変更は本人の判断に回す</li>\n        </ol>",
-   "id": "rules",
-   "meta": "評価の物差し2つ、禁止ライン8つ、やらないこと",
-   "num": "07",
-   "tab": "art",
-   "tag": "禁止8つ",
-   "themeClass": "t-rules",
-   "title": "ルール",
-   "updated_at": "2026-11-20T15:56:31+09:00"
+   "updated_at": "2026-11-20T16:22:47+09:00"
   },
   {
    "badgeClass": "decided",
@@ -1012,12 +998,26 @@ var SEED = {
    "html": "<div class=\"detail-head\"><h2>お金とは何か</h2><span class=\"badge decided\">学習シリーズ ①</span></div>\n        <p class=\"sec-lead\">お金は、モノじゃない。記録だ。</p>\n        <h3>お金の流れ</h3>\n        <div class=\"flow\"><span>価値を渡す</span><i>→</i><span>認められる</span><i>→</i><span>記録が増える</span></div>\n        <p>お金そのものに価値はない。お金は「誰かに価値を渡した」という記録だ。渡した価値が認められたときだけ、記録が増える。</p>\n        <h3>2つの形</h3>\n        <div class=\"lanes\">\n          <div class=\"lane other\">\n            <h3>バイト（労働）</h3>\n            <p>時間を1回売って、1回分の記録をもらう形。確実だが、記録の量は「時間×時給」で頭打ちになる。</p>\n          </div>\n          <div class=\"lane art\">\n            <h3>仕組み</h3>\n            <p>一度作ったものが、何度も記録を生む形。動画1本、商品1点、顔のコレクション1つが、寝ている間も記録を生み得る。だから天井が違う。</p>\n          </div>\n        </div>\n        <div class=\"note\">\n          <p>逆に、誰の「欲しい」にも当たらなければ記録は0のまま。努力と記録が比例しないのが、この世界のいちばんきついところだ。</p>\n        </div>\n        <h3>翔万の数字で見ると</h3>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">年600<small>万円</small></div><div class=\"k\">「月50万円分の記録を生み続ける状態」と言い換えられる</div></div>\n          <div class=\"stat\"><div class=\"v\">年1,000<small>万円</small></div><div class=\"k\">月83万円分の記録を生み続ける状態</div></div>\n        </div>\n        <p>問いは「頑張れるか」じゃなく「何が、誰の欲しいに当たって、記録を繰り返し生むか」になる。</p>\n        <h3>次のレッスン</h3>\n        <p>順番は「お金の勉強の地図」が背骨になる。ステップ1「ビジネスの管」（集客 → 興味・信頼 → 販売 → 継続）は済みで、次はステップ2。</p>\n        <ul>\n          <li><strong>② 数字の式</strong>（ステップ2・次の学習）：売上＝単価×客数×リピート、利益＝売上−経費、粗利、損益分岐点、手数料の読み方。お金タブ内の「数字の式」に用意してある</li>\n          <li>集客と販売の実務（ステップ3）：渇きの種類、オファー（提案の形）、価格の決め方、ファネルの指標の読み方</li>\n          <li>テストと改善（ステップ4）：仮説→小さく試す→数字で判定→当たった型だけ残す</li>\n          <li>守りの実務（ステップ5）：開業届・青色申告・確定申告／著作権／ステマ規制（PR表記）／特商法</li>\n          <li>仕組みの拡大（ステップ6）：ストック化、外注（お金で手を買う）、ライセンス、蛇口の複数化</li>\n          <li>投資・資産運用（ステップ7）：インデックス投資の基本、リスクと複利、詐欺の見分け方</li>\n        </ul>\n        <p>アフィリエイトの仕組み（誰が誰に、何の対価を払っているのか）は、地図の外の実地編として学習済みで、テスト候補4の中に体系として置いてある。</p>\n        <p class=\"sources\">出典・前提：翔万本人の言葉（2026-11-05）と、同日出た50方法マップの分布。数字の細部はマップ側に譲る。学習シリーズ ①（2026-11-05）、宿題なし</p>",
    "id": "money",
    "meta": "お金は「誰かに価値を渡した」という記録。労働と仕組みで天井が違う理由",
-   "num": "08",
+   "num": "07",
    "tab": "money",
    "tag": "学習シリーズ ①",
    "themeClass": "t-money",
    "title": "お金とは何か",
-   "updated_at": "2026-11-20T15:57:15+09:00"
+   "updated_at": "2026-11-20T16:22:47+09:00"
+  },
+  {
+   "badgeClass": "now",
+   "badgeText": "次の学習",
+   "char": "式",
+   "html": "<div class=\"detail-head\"><h2>数字の式</h2><span class=\"badge now\">次の学習</span></div>\n        <p class=\"sec-lead\">ビジネスの数字は、式で読む。「頑張る」の前に、どの数字を動かせばいいかが見えるようになるための回。学習シリーズ②（お金の勉強の地図のステップ2）。読むだけ、宿題なし。</p>\n        <div class=\"card\">\n          <h3>売上の式</h3>\n          <p>売上は、3つの数の掛け算だ。</p>\n          <div class=\"flow\"><span>単価</span><i>×</i><span>客数</span><i>×</i><span>リピート回数</span><i>＝</i><span>売上</span></div>\n          <ul>\n            <li><strong>単価</strong>：1回の取引でいくらもらうか</li>\n            <li><strong>客数</strong>：何人が買うか。客数はさらに「アクセス×転換率」に分解できる（転換率＝来た人のうち買った人の割合）</li>\n            <li><strong>リピート回数</strong>：同じ人が何回買うか</li>\n          </ul>\n          <p>3つのうち1つでも0なら、売上は0になる。逆に、どれか1つを2倍にできれば売上も2倍。「次にやること」は、この3つのどれを動かすかで決める。</p>\n          <p>月50万円（年600万円のペース）を式に当てはめると、必要な客数が単価でまるで変わる。</p>\n          <div class=\"stats\">\n            <div class=\"stat\"><div class=\"v\">約600<small>冊/月</small></div><div class=\"k\">単価980円のnote（手取り約838円/冊）で月50万円の手取りに届く量。28本あれば1本あたり月21冊ずつ売れ続ける計算</div></div>\n            <div class=\"stat\"><div class=\"v\">250<small>個/月</small></div><div class=\"k\">単価2,000円の自分の商品なら、月250個で同じ月50万円</div></div>\n            <div class=\"stat\"><div class=\"v\">10<small>件/月</small></div><div class=\"k\">単価5万円の仕事なら、月10件で同じ月50万円</div></div>\n          </div>\n          <p>「何をいくらで売るか」は好みの問題ではなく、「何人の客を集めなければならないか」の問題だ。客を集めるのが一番重い部分だから、単価が低いほど集客の負担は重くなる。</p>\n        </div>\n        <div class=\"card\">\n          <h3>利益の式と粗利</h3>\n          <div class=\"flow\"><span>売上</span><i>−</i><span>経費</span><i>＝</i><span>利益</span></div>\n          <p>売上50万円でも、経費が40万円かかっていれば手元に残る利益は10万円。「売れた金額」だけ見て安心するのが落とし穴で、見るべきはいつも引いた後の数字だ。</p>\n          <ul>\n            <li><strong>粗利</strong>＝売上−原価。原価は「商品そのものにかかった直接の費用」（材料費、印刷費、仕入れ値）。粗利率＝粗利÷売上</li>\n            <li><strong>デジタル商品が強い理由</strong>：noteや壁紙は1個作ればコピーの原価がほぼ0で、売上のほとんどが粗利になる。逆に、1個作るたびに時間や材料がかかるものは、売れるほど自分が忙しくなる</li>\n            <li><strong>計算例</strong>（物語のある物をメルカリで¥10,000で売る場合）：原価（石・金具など）¥3,000＋送料・梱包¥700が直接の費用で、粗利は¥6,300（粗利率63%）。ここから販売手数料10%（¥1,000）が引かれ、手元は¥5,300。振込手数料¥200は、売上を引き出す時に別にかかる</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>固定費と変動費</h3>\n          <ul>\n            <li><strong>固定費</strong>：売上に関係なく毎月かかる費用。いまの生活では家賃¥30,000＋MacBookローン¥6,000＝月¥36,000。事業側ではAIツールの月額などがここに入る</li>\n            <li><strong>変動費</strong>：売れるほど増える費用。材料費、送料、手数料、印刷費</li>\n            <li><strong>限界利益</strong>＝売上−変動費。固定費を賄う源泉はこれで、限界利益率＝限界利益÷売上。次の損益分岐点の計算に使う</li>\n          </ul>\n          <p>経費をこの2つに分けて初めて、「いくら売れば元が取れるか」が計算できるようになる。</p>\n        </div>\n        <div class=\"card\">\n          <h3>損益分岐点</h3>\n          <p>損益分岐点は、売上がちょうど費用と等しくなり、儲けがゼロになる地点。式は2つの形で持つ。</p>\n          <ul>\n            <li><strong>金額で</strong>：損益分岐点の売上＝固定費÷限界利益率</li>\n            <li><strong>件数で</strong>：損益分岐点の件数＝固定費÷（単価−1件あたりの変動費）</li>\n          </ul>\n          <p>計算例：固定費¥36,000（家賃＋ローン）を、仕組みの収入だけで賄おうとする場合。</p>\n          <div class=\"stats\">\n            <div class=\"stat\"><div class=\"v\">20<small>件/月</small></div><div class=\"k\">単価¥2,000・1件の変動費¥200（手数料など）の商品なら、¥36,000÷¥1,800＝20件で固定費に届く</div></div>\n            <div class=\"stat\"><div class=\"v\">約43<small>冊/月</small></div><div class=\"k\">単価980円のnote（手取り約838円、変動費ほぼ0）なら、¥36,000÷838≒43冊</div></div>\n          </div>\n          <p>チェックポイントの階段（月3万円＝家賃を仕組みが払う、月7万円＝バイト引退）は、この式で読むと「固定費を仕組みが賄い始める地点」の言い換えになっている。</p>\n        </div>\n        <div class=\"card\">\n          <h3>手数料の読み方</h3>\n          <p>表示価格と手取りは違う。手数料は「率（%）＋固定額（円）」の形が多く、固定額の部分は単価が低いほど重くのしかかる。</p>\n          <div class=\"stats\">\n            <div class=\"stat\"><div class=\"v\">約855<small>円</small></div><div class=\"k\">note：¥1,000の有料記事の手取りの目安（決済＋プラットフォーム手数料を引いた後）。振込の時に¥270が別にかかる</div></div>\n            <div class=\"stat\"><div class=\"v\">899<small>円</small></div><div class=\"k\">BOOTH：¥1,000のダウンロード商品の手取り。手数料は価格の5.6%＋¥45＝¥101</div></div>\n            <div class=\"stat\"><div class=\"v\">10<small>%</small></div><div class=\"k\">メルカリ：販売手数料は販売価格の10%（公式ガイド）。振込手数料は一律¥200</div></div>\n            <div class=\"stat\"><div class=\"v\">約83<small>%</small></div><div class=\"k\">Gumroad：$20の商品の手取りの目安（10%＋$0.50＋カード処理2.9%＋$0.30を引いた後）。$5だと約71%まで落ちる</div></div>\n          </div>\n          <ul>\n            <li><strong>固定額の効き方</strong>：BOOTHで¥500の商品なら手数料は¥28＋¥45＝¥73で手取り¥427（85.4%）。¥3,000なら¥168＋¥45＝¥213で手取り¥2,787（92.9%）。同じ売り場でも、単価で手取り率が変わる</li>\n            <li><strong>価格は手取りから逆算する</strong>：売値は「欲しい手取り＋手数料＋送料負担」で置く。特に、送料込みの総額に手数料がかかる売り場では、送料分にも手数料が乗る</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>キャッシュフローとリピート</h3>\n          <ul>\n            <li><strong>キャッシュフロー</strong>：利益が出ていても、手元の現金がなければ回らない。noteの売上は数週間〜1か月ほど遅れて振り込まれる。集客して、売れて、振り込まれるまでの時間差の間も、AIの月額や生活費は出ていく。「月50万円稼いでいる状態」と「月50万円が手元に入ってくる状態」は同じじゃない。バイトが種銭として残っているのは、この時間差を埋めるためでもある</li>\n            <li><strong>リピートが仕組みと労働を分ける</strong>：1回きりの販売は、客数を取り続けないと売上が止まる（バイトと同じで、やめたら0）。連載・シリーズ商品・月額の場のように同じ人が何度も買う形は、客を1人増やすたびに将来の購入分まで増える。検証で見るべきは再生数だけじゃなく、フォローや保存が増えているか——「次も見に来る人」が増えているかの記録だから</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>まとめ：数字を見る時の見方</h3>\n          <ol class=\"steps\">\n            <li data-n=\"1\"><span class=\"st\">分解する</span><span class=\"sd\">売上は「単価×客数×リピート」で見る。客数は「アクセス×転換率」まで割る</span></li>\n            <li data-n=\"2\"><span class=\"st\">引いた後を見る</span><span class=\"sd\">利益は「売上−経費」。売上だけ見ない。手数料は率＋固定額で読み、手取りから逆算する</span></li>\n            <li data-n=\"3\"><span class=\"st\">分岐点を置く</span><span class=\"sd\">固定費と変動費に分け、「いくら売れば元が取れるか」を件数で言えるようにする</span></li>\n            <li data-n=\"4\"><span class=\"st\">タイミングまで見る</span><span class=\"sd\">手元の現金がいつ入るか（キャッシュフロー）と、リピートがある形かどうかで、仕組みかどうかが決まる</span></li>\n          </ol>\n          <p class=\"firststep\"><strong>最初の一歩：</strong>次に「月いくら稼ぎたい」という数字を見たら、単価×客数×リピートに分解して、必要な客数を出してみる<br><strong>時期：</strong>今（知識の蓄積だけは受験前から進めてよい）</p>\n          <p class=\"sources\">出典：学習シリーズ②「数字の式」（お金の勉強の地図のステップ2）。手数料の数字は、note・BOOTHの確認済みの目安、メルカリ公式ガイド、Gumroad公式ヘルプ（候補3の調査で確認）に拠る</p>\n        </div>",
+   "id": "numbers",
+   "meta": "売上＝単価×客数×リピート／利益＝売上−経費／粗利／固定費と変動費／損益分岐点／手数料の読み方",
+   "num": "08",
+   "tab": "money",
+   "tag": "学習シリーズ ②",
+   "themeClass": "t-money",
+   "title": "数字の式",
+   "updated_at": "2026-11-20T16:22:47+09:00"
   },
   {
    "badgeClass": "now",
@@ -1026,12 +1026,26 @@ var SEED = {
    "html": "<div class=\"detail-head\"><h2>お金の勉強の地図</h2><span class=\"badge now\">次は「数字の式」</span></div>\n        <p class=\"sec-lead\">全部を先に学ばない。「今のステージで必要なものだけ」を、1回3分で読める量で学ぶ。使わない知識は腐るし、勉強が「動けない」の隠れ蓑になる。順番は現在地に合わせてある。</p>\n        <h3>大きな流れ</h3>\n        <div class=\"flow\"><span>作る</span><i>→</i><span>守る</span><i>→</i><span>増やす（再投資）</span><i>→</i><span>運用する（投資）</span></div>\n        <h3>学ぶ順番</h3>\n        <ol class=\"steps\">\n          <li data-n=\"0\"><span class=\"st\">お金とは何か <span class=\"badge decided\">済み</span></span><span class=\"sd\">お金＝価値交換と信用の記録。渇きが止まった時に金が動く（学習シリーズ01）</span></li>\n          <li data-n=\"1\"><span class=\"st\">ビジネスの管 <span class=\"badge decided\">済み</span></span><span class=\"sd\">集客 → 興味・信頼 → 販売 → 継続。金は管のどこかで落ちる（道筋ファイル）</span></li>\n          <li data-n=\"2\"><span class=\"st\">数字の式 <span class=\"badge now\">次の学習</span></span><span class=\"sd\">売上＝単価×客数×リピート／利益＝売上−経費／粗利／キャッシュフロー（手元に現金が残るか）</span></li>\n          <li data-n=\"3\"><span class=\"st\">集客と販売の実務</span><span class=\"sd\">渇きの種類、オファー（提案の形）、価格の決め方、ファネルの指標の読み方。今の主戦場と直結</span></li>\n          <li data-n=\"4\"><span class=\"st\">テストと改善</span><span class=\"sd\">仮説→小さく試す→数字で判定→当たった型だけ残す。30本検証の考え方そのもの。検証と並行</span></li>\n          <li data-n=\"5\"><span class=\"st\">守りの実務</span><span class=\"sd\">開業届・青色申告・確定申告／著作権／ステマ規制（PR表記）／特商法。最初の収益が出たら</span></li>\n          <li data-n=\"6\"><span class=\"st\">仕組みの拡大</span><span class=\"sd\">ストック化、外注（お金で手を買う）、ライセンス、蛇口の複数化。月10万円が見えたら</span></li>\n          <li data-n=\"7\"><span class=\"st\">投資・資産運用</span><span class=\"sd\">インデックス投資の基本、リスクと複利、詐欺の見分け方。最後（余剰資金ができてから）</span></li>\n        </ol>\n        <h3>なぜ投資が最後なのか</h3>\n        <div class=\"note\">\n          <p>投資のリターンは「元本×利率」。元本10万円を年5%で運用しても年5,000円。同じ労力で「月1万円稼ぐ仕組み」を作れば年12万円で、しかも仕組みは育つ。</p>\n          <div class=\"flow\"><span>仕組みで元本を作る</span><i>→</i><span>税金と管理で守る</span><i>→</i><span>仕組みに再投資して増やす</span><i>→</i><span>余った分だけ運用する</span></div>\n          <p>例外として今すぐ必要な投資リテラシーは「守り」だけ：元本保証＋高利回りの話は詐欺、FX・仮想通貨のレバレッジは初心者の入口ではない、という見分け方。</p>\n        </div>\n        <h3>今は学ばなくていいもの</h3>\n        <ul>\n          <li>簿記の細部、法人設立の手続き論（売上が立ってからで間に合う）</li>\n          <li>株のチャート分析・短期売買（今のステージでは再現性がない）</li>\n          <li>節税テクニック（守るべき利益が出てから）</li>\n          <li>広告運用の詳細（集客の型が当たってから）</li>\n        </ul>\n        <p class=\"firststep\"><strong>最初の一歩：</strong>次の学習「数字の式」を読む（お金タブ内の「数字の式」に用意してある。読むだけ）<br><strong>時期：</strong>今（知識の蓄積だけは受験前から進めてよい）</p>",
    "id": "moneymap",
    "meta": "作る→守る→増やす→運用する。8テーマの順番と現在地（次は「数字の式」）",
-   "num": "10",
+   "num": "09",
    "tab": "money",
    "tag": "カリキュラム",
    "themeClass": "t-money",
    "title": "お金の勉強の地図",
-   "updated_at": "2026-11-20T15:57:15+09:00"
+   "updated_at": "2026-11-20T16:22:47+09:00"
+  },
+  {
+   "badgeClass": "decided",
+   "badgeText": "決定済み",
+   "char": "資",
+   "html": "<div class=\"detail-head\"><h2>資産フェーズ</h2><span class=\"badge decided\">決定済み</span></div>\n                <div class=\"note\">\n          <p>木の家の購入／イギリス拠点／人を常勤で雇う／大金の貯金——この4つは、年1,000万円の収入があってもまだ先の話で、「収入」ではなく「資産」のフェーズに属する。収入の階段の外ではなく、最後のチェックポイントの先に置く。</p>\n          <p class=\"firststep\"><strong>最初の一歩：</strong>収入のうち資産に回す割合を決め、積立を始める<br><strong>時期：</strong>年1,000万円に届いてから</p>\n        </div>\n        ",
+   "id": "assets",
+   "meta": "木の家・イギリス拠点・常勤の雇用・大金の貯金は、収入ではなく資産のフェーズに属する",
+   "num": "10",
+   "tab": "money",
+   "tag": "年1,000万円の先",
+   "themeClass": "t-assets",
+   "title": "資産フェーズ",
+   "updated_at": "2026-11-20T16:22:47+09:00"
   },
   {
    "badgeClass": "decided",
@@ -1048,21 +1062,21 @@ var SEED = {
    "updated_at": "2026-11-20T15:57:32+09:00"
   },
   {
-   "badgeClass": "now",
-   "badgeText": "次の学習",
-   "char": "式",
-   "html": "<div class=\"detail-head\"><h2>数字の式</h2><span class=\"badge now\">次の学習</span></div>\n        <p class=\"sec-lead\">ビジネスの数字は、式で読む。「頑張る」の前に、どの数字を動かせばいいかが見えるようになるための回。学習シリーズ②（お金の勉強の地図のステップ2）。読むだけ、宿題なし。</p>\n        <div class=\"card\">\n          <h3>売上の式</h3>\n          <p>売上は、3つの数の掛け算だ。</p>\n          <div class=\"flow\"><span>単価</span><i>×</i><span>客数</span><i>×</i><span>リピート回数</span><i>＝</i><span>売上</span></div>\n          <ul>\n            <li><strong>単価</strong>：1回の取引でいくらもらうか</li>\n            <li><strong>客数</strong>：何人が買うか。客数はさらに「アクセス×転換率」に分解できる（転換率＝来た人のうち買った人の割合）</li>\n            <li><strong>リピート回数</strong>：同じ人が何回買うか</li>\n          </ul>\n          <p>3つのうち1つでも0なら、売上は0になる。逆に、どれか1つを2倍にできれば売上も2倍。「次にやること」は、この3つのどれを動かすかで決める。</p>\n          <p>月50万円（年600万円のペース）を式に当てはめると、必要な客数が単価でまるで変わる。</p>\n          <div class=\"stats\">\n            <div class=\"stat\"><div class=\"v\">約600<small>冊/月</small></div><div class=\"k\">単価980円のnote（手取り約838円/冊）で月50万円の手取りに届く量。28本あれば1本あたり月21冊ずつ売れ続ける計算</div></div>\n            <div class=\"stat\"><div class=\"v\">250<small>個/月</small></div><div class=\"k\">単価2,000円の自分の商品なら、月250個で同じ月50万円</div></div>\n            <div class=\"stat\"><div class=\"v\">10<small>件/月</small></div><div class=\"k\">単価5万円の仕事なら、月10件で同じ月50万円</div></div>\n          </div>\n          <p>「何をいくらで売るか」は好みの問題ではなく、「何人の客を集めなければならないか」の問題だ。客を集めるのが一番重い部分だから、単価が低いほど集客の負担は重くなる。</p>\n        </div>\n        <div class=\"card\">\n          <h3>利益の式と粗利</h3>\n          <div class=\"flow\"><span>売上</span><i>−</i><span>経費</span><i>＝</i><span>利益</span></div>\n          <p>売上50万円でも、経費が40万円かかっていれば手元に残る利益は10万円。「売れた金額」だけ見て安心するのが落とし穴で、見るべきはいつも引いた後の数字だ。</p>\n          <ul>\n            <li><strong>粗利</strong>＝売上−原価。原価は「商品そのものにかかった直接の費用」（材料費、印刷費、仕入れ値）。粗利率＝粗利÷売上</li>\n            <li><strong>デジタル商品が強い理由</strong>：noteや壁紙は1個作ればコピーの原価がほぼ0で、売上のほとんどが粗利になる。逆に、1個作るたびに時間や材料がかかるものは、売れるほど自分が忙しくなる</li>\n            <li><strong>計算例</strong>（物語のある物をメルカリで¥10,000で売る場合）：原価（石・金具など）¥3,000＋送料・梱包¥700が直接の費用で、粗利は¥6,300（粗利率63%）。ここから販売手数料10%（¥1,000）が引かれ、手元は¥5,300。振込手数料¥200は、売上を引き出す時に別にかかる</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>固定費と変動費</h3>\n          <ul>\n            <li><strong>固定費</strong>：売上に関係なく毎月かかる費用。いまの生活では家賃¥30,000＋MacBookローン¥6,000＝月¥36,000。事業側ではAIツールの月額などがここに入る</li>\n            <li><strong>変動費</strong>：売れるほど増える費用。材料費、送料、手数料、印刷費</li>\n            <li><strong>限界利益</strong>＝売上−変動費。固定費を賄う源泉はこれで、限界利益率＝限界利益÷売上。次の損益分岐点の計算に使う</li>\n          </ul>\n          <p>経費をこの2つに分けて初めて、「いくら売れば元が取れるか」が計算できるようになる。</p>\n        </div>\n        <div class=\"card\">\n          <h3>損益分岐点</h3>\n          <p>損益分岐点は、売上がちょうど費用と等しくなり、儲けがゼロになる地点。式は2つの形で持つ。</p>\n          <ul>\n            <li><strong>金額で</strong>：損益分岐点の売上＝固定費÷限界利益率</li>\n            <li><strong>件数で</strong>：損益分岐点の件数＝固定費÷（単価−1件あたりの変動費）</li>\n          </ul>\n          <p>計算例：固定費¥36,000（家賃＋ローン）を、仕組みの収入だけで賄おうとする場合。</p>\n          <div class=\"stats\">\n            <div class=\"stat\"><div class=\"v\">20<small>件/月</small></div><div class=\"k\">単価¥2,000・1件の変動費¥200（手数料など）の商品なら、¥36,000÷¥1,800＝20件で固定費に届く</div></div>\n            <div class=\"stat\"><div class=\"v\">約43<small>冊/月</small></div><div class=\"k\">単価980円のnote（手取り約838円、変動費ほぼ0）なら、¥36,000÷838≒43冊</div></div>\n          </div>\n          <p>チェックポイントの階段（月3万円＝家賃を仕組みが払う、月7万円＝バイト引退）は、この式で読むと「固定費を仕組みが賄い始める地点」の言い換えになっている。</p>\n        </div>\n        <div class=\"card\">\n          <h3>手数料の読み方</h3>\n          <p>表示価格と手取りは違う。手数料は「率（%）＋固定額（円）」の形が多く、固定額の部分は単価が低いほど重くのしかかる。</p>\n          <div class=\"stats\">\n            <div class=\"stat\"><div class=\"v\">約855<small>円</small></div><div class=\"k\">note：¥1,000の有料記事の手取りの目安（決済＋プラットフォーム手数料を引いた後）。振込の時に¥270が別にかかる</div></div>\n            <div class=\"stat\"><div class=\"v\">899<small>円</small></div><div class=\"k\">BOOTH：¥1,000のダウンロード商品の手取り。手数料は価格の5.6%＋¥45＝¥101</div></div>\n            <div class=\"stat\"><div class=\"v\">10<small>%</small></div><div class=\"k\">メルカリ：販売手数料は販売価格の10%（公式ガイド）。振込手数料は一律¥200</div></div>\n            <div class=\"stat\"><div class=\"v\">約83<small>%</small></div><div class=\"k\">Gumroad：$20の商品の手取りの目安（10%＋$0.50＋カード処理2.9%＋$0.30を引いた後）。$5だと約71%まで落ちる</div></div>\n          </div>\n          <ul>\n            <li><strong>固定額の効き方</strong>：BOOTHで¥500の商品なら手数料は¥28＋¥45＝¥73で手取り¥427（85.4%）。¥3,000なら¥168＋¥45＝¥213で手取り¥2,787（92.9%）。同じ売り場でも、単価で手取り率が変わる</li>\n            <li><strong>価格は手取りから逆算する</strong>：売値は「欲しい手取り＋手数料＋送料負担」で置く。特に、送料込みの総額に手数料がかかる売り場では、送料分にも手数料が乗る</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>キャッシュフローとリピート</h3>\n          <ul>\n            <li><strong>キャッシュフロー</strong>：利益が出ていても、手元の現金がなければ回らない。noteの売上は数週間〜1か月ほど遅れて振り込まれる。集客して、売れて、振り込まれるまでの時間差の間も、AIの月額や生活費は出ていく。「月50万円稼いでいる状態」と「月50万円が手元に入ってくる状態」は同じじゃない。バイトが種銭として残っているのは、この時間差を埋めるためでもある</li>\n            <li><strong>リピートが仕組みと労働を分ける</strong>：1回きりの販売は、客数を取り続けないと売上が止まる（バイトと同じで、やめたら0）。連載・シリーズ商品・月額の場のように同じ人が何度も買う形は、客を1人増やすたびに将来の購入分まで増える。検証で見るべきは再生数だけじゃなく、フォローや保存が増えているか——「次も見に来る人」が増えているかの記録だから</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>まとめ：数字を見る時の見方</h3>\n          <ol class=\"steps\">\n            <li data-n=\"1\"><span class=\"st\">分解する</span><span class=\"sd\">売上は「単価×客数×リピート」で見る。客数は「アクセス×転換率」まで割る</span></li>\n            <li data-n=\"2\"><span class=\"st\">引いた後を見る</span><span class=\"sd\">利益は「売上−経費」。売上だけ見ない。手数料は率＋固定額で読み、手取りから逆算する</span></li>\n            <li data-n=\"3\"><span class=\"st\">分岐点を置く</span><span class=\"sd\">固定費と変動費に分け、「いくら売れば元が取れるか」を件数で言えるようにする</span></li>\n            <li data-n=\"4\"><span class=\"st\">タイミングまで見る</span><span class=\"sd\">手元の現金がいつ入るか（キャッシュフロー）と、リピートがある形かどうかで、仕組みかどうかが決まる</span></li>\n          </ol>\n          <p class=\"firststep\"><strong>最初の一歩：</strong>次に「月いくら稼ぎたい」という数字を見たら、単価×客数×リピートに分解して、必要な客数を出してみる<br><strong>時期：</strong>今（知識の蓄積だけは受験前から進めてよい）</p>\n          <p class=\"sources\">出典：学習シリーズ②「数字の式」（お金の勉強の地図のステップ2）。手数料の数字は、note・BOOTHの確認済みの目安、メルカリ公式ガイド、Gumroad公式ヘルプ（候補3の調査で確認）に拠る</p>\n        </div>",
-   "id": "numbers",
-   "meta": "売上＝単価×客数×リピート／利益＝売上−経費／粗利／固定費と変動費／損益分岐点／手数料の読み方",
-   "num": "09",
-   "tab": "money",
-   "tag": "学習シリーズ ②",
-   "themeClass": "t-money",
-   "title": "数字の式",
-   "updated_at": "2026-11-20T15:57:15+09:00"
+   "badgeClass": "decided",
+   "badgeText": "2026-11-20 棚卸し",
+   "char": "夢",
+   "html": "<div class=\"detail-head\"><h2>夢と理想</h2><span class=\"badge decided\">2026-11-20 棚卸し</span></div>\n                <p>チェックポイントの根拠。2026-11-20に本人が語った内容を、短い一覧で残す。</p>\n        <ul>\n          <li>絵を描き続ける。大きい絵も描く</li>\n          <li>広めの部屋に住む（狭いと壁やら何やらにぶつかる）</li>\n          <li>工場跡地のような広い場所をアトリエにする（井田幸昌のアトリエのような）</li>\n          <li>服や香水などファッションアイテムを買うお金に困らない。高いものも</li>\n          <li>旅行は取材という名目ですぐ行けるくらいになる</li>\n          <li>木の家に住む</li>\n          <li>相棒となる犬がほしい</li>\n          <li>豊かな生活。バーにも通う</li>\n          <li>バイトはしない。画材は値段を見ずに買う</li>\n          <li>親族に恩返しをする</li>\n          <li>貯金は大金を</li>\n          <li>拠点は東京か京都かイギリス。ただし不利な土地は選ばない</li>\n          <li>人は雇ってみたい</li>\n        </ul>",
+   "id": "dreams",
+   "meta": "チェックポイントの根拠。2026-11-20に本人が語った夢と理想の一覧",
+   "num": "12",
+   "tab": "other",
+   "tag": "13項目",
+   "themeClass": "t-dreams",
+   "title": "夢と理想",
+   "updated_at": "2026-11-20T16:22:47+09:00"
   }
  ],
- "updatedAt": "2026-11-20T16:15:49+09:00",
+ "updatedAt": "2026-11-20T16:22:47+09:00",
  "version": 1
 };
 
@@ -1138,14 +1152,18 @@ function renderHome(){
    without one, or with an unknown value, falls into その他. Until a
    Drive file written before tabs existed grows tab attributes of its
    own, the founding sections keep their place by id (TAB_BY_ID), so
-   the split is the same on old and new data. Since v3.0.5 the four
-   foundation sections (schedule / ideas / pending / rules) live in
-   アートビジネス with the rest of the plan — his call: the plan's
-   scaffolding is not "other". その他 itself now holds no sections
-   at all; it is the settings screen (sync / relay / data / about). */
+   the split is the same on old and new data. The v3.1.2 arrangement
+   follows his definitions: アートビジネス is the artist's own
+   standpoint only, so it holds アートビジネス計画 alone; the
+   plan's scaffolding (図鑑事業 / ルール / アイデアの網 /
+   未決・保留) lives in ビジネス with ビジネス計画; the money tab
+   adds 資産フェーズ; and 夢と理想 sits in その他, above the
+   settings. 時期と順番 is retired — its 資産フェーズ and
+   夢と理想 became sections of their own, and its 順番 survives
+   as the timing written inside each item. */
 var TABS = ['art', 'business', 'money', 'dict', 'other'];
 var TAB_NAMES = { art: 'アートビジネス', business: 'ビジネス', money: 'お金', dict: '用語辞典', other: 'その他' };
-var TAB_BY_ID = { art: 'art', zukan: 'art', business: 'business', schedule: 'art', ideas: 'art', pending: 'art', rules: 'art', money: 'money', moneymap: 'money', dict: 'dict' };
+var TAB_BY_ID = { art: 'art', business: 'business', zukan: 'business', rules: 'business', ideas: 'business', pending: 'business', money: 'money', numbers: 'money', moneymap: 'money', assets: 'money', dict: 'dict', dreams: 'other' };
 var currentTab = 'art';
 function secTab(sec){
   if(sec && TABS.indexOf(sec.tab) >= 0) return sec.tab;
@@ -1209,7 +1227,13 @@ function renderGrid(){
    and v3.0.5 moved the four
    sections there too — so this screen is settings only: the Drive
    sync row, the relay group, and the app information (version,
-   data file, disconnect). */
+   data file, disconnect). v3.1.2 puts sections back above the
+   settings: any section whose tab is その他 (today only
+   夢と理想, split out of the retired 時期と順番) renders as a
+   tappable row at the top and opens as a normal detail page.
+   The settings groups below are unchanged, and when no such
+   section exists the screen is settings only, exactly as
+   before. */
 var SICON = {
   cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.8 18.5a4.3 4.3 0 01-.4-8.57 6.2 6.2 0 0111.94 1.6A3.9 3.9 0 0117.6 18.5H6.8z"/></svg>',
   db: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="5.8" rx="7.5" ry="2.9"/><path d="M4.5 5.8v12.4c0 1.6 3.4 2.9 7.5 2.9s7.5-1.3 7.5-2.9V5.8"/><path d="M4.5 12c0 1.6 3.4 2.9 7.5 2.9s7.5-1.3 7.5-2.9"/></svg>',
@@ -1218,7 +1242,8 @@ var SICON = {
   web: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.6"/><circle cx="17.5" cy="5.8" r="2.6"/><circle cx="17.5" cy="18.2" r="2.6"/><path d="M8.3 10.8l6.7-3.9M8.3 13.2l6.7 3.9"/></svg>',
   pause: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.7"/><path d="M10 8.8v6.4M14 8.8v6.4"/></svg>',
   list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6.2h10M9.5 12h10M9.5 17.8h10"/><path d="M4 6.4l1.1 1.1L7.3 5.3M4 12.2l1.1 1.1 2.2-2.2M4 18l1.1 1.1 2.2-2.2"/></svg>',
-  dot: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3.4"/></svg>'
+  dot: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3.4"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.5 5.2 5.7.7-4.2 3.9 1.1 5.6L12 16.4l-5.1 2.8L8 13.6 3.8 9.7l5.7-.7z"/></svg>'
 };
 function driveValText(){
   if(syncRunning) return '同期中…';
@@ -1238,6 +1263,14 @@ function onDriveRow(){
 function renderOther(){
   var el = $('otherBody'); if(!el) return;
   var h = '';
+  var others = DATA.sections.filter(function(s){ return secTab(s) === 'other'; });
+  if(others.length){
+    h += '<div class="groupcard">';
+    others.forEach(function(sec){
+      h += '<button class="srow" data-open="' + esc(sec.id) + '"><span class="ic">' + SICON.star + '</span><span class="lb">' + esc(sec.title) + '</span><span class="val">' + esc(sec.tag) + '</span><span class="chev">›</span></button>';
+    });
+    h += '</div>';
+  }
   h += '<button class="pillrow" onclick="onDriveRow()"><span class="ic">' + SICON.cloud + '</span><span class="lb">Google Drive 同期</span><span class="val" id="driveval">' + esc(driveValText()) + '</span><span class="chev">›</span></button>';
   h += '<div id="syncresults">' + syncLinesHTML() + '</div>';
   if(SAVE_FAIL) h += '<div class="syncline err">端末への保存ができませんでした（空き容量を確認してください）</div>';
@@ -1622,7 +1655,7 @@ var SUBTAB_SHORT = {
   '起点——既にある資産': '起点の資産',
   '特許についての結論': '特許'
 };
-var SUBTAB_FIRST = { schedule: '順番', business: '市場の現実', zukan: '受託と横展開' };
+var SUBTAB_FIRST = { business: '市場の現実', zukan: '受託と横展開' };
 var detailGroupSel = {};
 function subtabIsBoundary(el){
   if(el.tagName === 'H3') return true;
