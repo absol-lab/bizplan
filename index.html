@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.4.0">
+<meta name="app-version" content="3.4.1">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -461,19 +461,26 @@ button.tocrow:active{opacity:.6;}
 #viewList{padding-bottom:104px;}
 #viewNotif{padding-bottom:104px;}
 
-/* ===== RESET HOLD (v3.4.0, 2026-11-21) =====
-   一旦リセット：下部のピルバーだけを残し、中身の表示を全て
-   止める。データ（Drive の bizplan.json／seed／内蔵シード）と
-   同期の仕組みには一切触っていない——止めているのは表示だけ。
-   戻し方（SETUP.md にも記載）：
+/* ===== PARTIAL HOLD (v3.4.1, 2026-11-21) =====
+   本人の段階指示で表示範囲を絞った状態。v3.4.0 の RESET HOLD
+   （全表示停止）を置き換える：目次（ホーム/章ビュー）は廃止、
+   ビジネス／アートビジネス／マネーリテラシーの中身は非表示、
+   辞典とその他は従来どおり表示・利用できる。データ（Drive の
+   bizplan.json／seed／内蔵シード）と同期には触っていない。
+   ここではヘッダー等の付随要素を隠すだけに留め、main は出す
+   （中身の出し分けは JS の PARTIAL_HOLD ガードが行う）。
+   タブページの「‹ 目次」バーは、行き先の目次が廃止されたので
+   一緒に隠す。戻し方（SETUP.md にも記載）：
      1. この CSS ブロックを削除する
-     2. <body class="reset-hold"> の class を外す
-     3. JS の RESET_HOLD を false にする（遷移ガードが外れる） */
-body.reset-hold header.top,
-body.reset-hold main,
-body.reset-hold #toast,
-body.reset-hold #verBadge,
-body.reset-hold #veil{display:none !important;}
+     2. <body class="partial-hold"> の class を外す
+     3. JS の PARTIAL_HOLD を false にする（遷移ガードが外れる） */
+body.partial-hold header.top,
+body.partial-hold #toast,
+body.partial-hold #verBadge,
+body.partial-hold #veil{display:none !important;}
+body.partial-hold main{padding-top:env(safe-area-inset-top, 0px);}
+body.partial-hold .bizbackbar{top:env(safe-area-inset-top, 0px);}
+body.partial-hold #tabBody .bizbackbar{display:none !important;}
 
 /* v3.0.0: section cards carry NO image face (his call, 2026-11-19:
    「カードに写真いらない」). The zukan app's own no-photo manner is
@@ -852,7 +859,7 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 </style>
 </head>
-<body class="reset-hold">
+<body class="partial-hold">
 <div id="veil" aria-hidden="true"></div>
 <div id="verBadge"></div>
 <header class="top">
@@ -930,14 +937,18 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.4.0';
-/* RESET HOLD (v3.4.0): true の間は中身を表示しない（ピルバー
-   だけ残る）。遷移系の入口（setChapter / setTab / goTab /
-   openDetail）と boot の初期描画がこのフラグで早期リターン
-   する。データと同期は通常どおり動く。戻すときはこの値を
-   false にし、body の reset-hold class と CSS の RESET HOLD
-   ブロックを外す（SETUP.md 参照）。 */
-var RESET_HOLD = true;
+var APP_VERSION = '3.4.1';
+/* PARTIAL HOLD (v3.4.1): 本人の段階指示で表示範囲を絞った状態。
+   目次（ホーム/章ビュー）は廃止し、HOLD_TABS の中身は出さない。
+   辞典とその他は従来どおり使える。遷移系の入口（setChapter /
+   setTab / openDetail / スワイプ）と boot の初期描画・ディープ
+   リンクがこのフラグで出し分ける。データと同期は通常どおり
+   動く。戻すときはこの値を false にし、body の partial-hold
+   class と CSS の PARTIAL HOLD ブロックを外す（SETUP.md 参照）。 */
+var PARTIAL_HOLD = true;
+var HOLD_TABS = { business: true, art: true, money: true };
+function tabHeld(t){ return PARTIAL_HOLD && !!HOLD_TABS[t]; }
+function secHeld(sec){ return PARTIAL_HOLD && tabHeld(secTab(sec)); }
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
@@ -1401,7 +1412,7 @@ function renderHome(){
   (DATA.home.chips || []).forEach(function(chip){ c += '<span class="chip">' + esc(chip) + '</span>'; });
   $('homeChips').innerHTML = c;
   $('homeSources').textContent = DATA.home.sources || '';
-  renderTOC();
+  if(!PARTIAL_HOLD) renderTOC(); /* PARTIAL HOLD (v3.4.1): 目次は廃止 */
   renderCount();
   if(currentChapter) renderGrid();
   if(currentTab) renderTabGrid();
@@ -1502,6 +1513,7 @@ function gridHTMLFor(t){
   return html;
 }
 function renderGrid(){
+  if(PARTIAL_HOLD) return; /* PARTIAL HOLD (v3.4.1): 章ビューは廃止 */
   if(!currentChapter) return;
   $('cardGrid').innerHTML = gridHTMLFor(currentChapter);
   applyMode();
@@ -1556,6 +1568,7 @@ function renderSettingsInto(el){
 }
 function applyListChrome(){
   var mode = currentTab ? 'tab' : (currentChapter ? 'chapter' : 'toc');
+  if(PARTIAL_HOLD && (mode !== 'tab' || tabHeld(currentTab))) mode = 'blank'; /* PARTIAL HOLD (v3.4.1): 目次・章・非表示タブは空白にする */
   $('tocBody').hidden = mode !== 'toc';
   $('chapterBody').hidden = mode !== 'chapter';
   $('tabBody').hidden = mode !== 'tab';
@@ -1571,7 +1584,7 @@ function applyListChrome(){
   }
 }
 function setChapter(ch){
-  if(RESET_HOLD) return; /* RESET HOLD (v3.4.0) */
+  if(PARTIAL_HOLD) return; /* PARTIAL HOLD (v3.4.1): 章ビュー（目次）は廃止 */
   if(ch && CHAPTERS.indexOf(ch) < 0) ch = null;
   currentChapter = ch;
   currentTab = null;
@@ -1638,6 +1651,7 @@ function gridHTMLForTab(t){
 }
 function renderTabGrid(){
   if(!currentTab) return;
+  if(tabHeld(currentTab)){ $('tabGrid').innerHTML = ''; return; } /* PARTIAL HOLD (v3.4.1): 非表示タブのカードは作らない */
   $('tabGrid').innerHTML = gridHTMLForTab(currentTab);
   if(currentTab === 'other') renderSettings();
 }
@@ -1647,7 +1661,6 @@ function updatePillSel(){
   });
 }
 function setTab(t){
-  if(RESET_HOLD) return; /* RESET HOLD (v3.4.0) */
   currentTab = t;
   currentChapter = null;
   pillSel = t;
@@ -1662,7 +1675,6 @@ function openTab(t){
   goTop();
 }
 function goTab(t){
-  if(RESET_HOLD) return; /* RESET HOLD (v3.4.0): ピルをタップしても中身は出ない */
   if(TABS.indexOf(t) < 0) return;
   if(notifOpen) closeNotif();
   if(detailOpen){
@@ -1795,9 +1807,9 @@ function slideForward(newEl, oldEl){
   setTimeout(finish, 480);
 }
 function openDetail(id, push){
-  if(RESET_HOLD) return; /* RESET HOLD (v3.4.0) */
   var sec = sectionById(id);
   if(!sec || vtBusy) return;
+  if(secHeld(sec)) return; /* PARTIAL HOLD (v3.4.1): 非表示タブの部は開かない */
   /* v3.2.1: the list behind the detail is left exactly as it
      was — a chapter page, a tab page or the TOC — so back
      returns to the side the reader came from. (Until v3.2.0
@@ -1866,6 +1878,7 @@ function homeDetailHTML(){
   return '<div class="detail-head"><h2>テーマと目標</h2></div>' + homeCardHTML();
 }
 function openHomeDetail(push){
+  if(PARTIAL_HOLD) return; /* PARTIAL HOLD (v3.4.1): ホーム（目次）は廃止 */
   if(vtBusy) return;
   if(detailOpen && current === HOME_ID) return;
   current = HOME_ID;
@@ -2790,7 +2803,9 @@ document.addEventListener('click', function(e){
   function neighborFor(dir){
     if(!currentTab) return null;
     var j = TABS.indexOf(currentTab) + dir;
-    return (j < 0 || j >= TABS.length) ? null : TABS[j];
+    if(j < 0 || j >= TABS.length) return null;
+    if(tabHeld(TABS[j])) return null; /* PARTIAL HOLD (v3.4.1): 非表示タブへはスワイプでも覗かせない */
+    return TABS[j];
   }
   function paneFor(t){
     var pane = document.createElement('main');
@@ -3677,12 +3692,26 @@ requestAnimationFrame(fitHdr);
 if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ fitHdr(); });
 if(window.visualViewport) visualViewport.addEventListener('resize', fitHdr);
 var vb = $('verBadge'); if(vb) vb.textContent = 'v' + APP_VERSION;
-if(!RESET_HOLD) renderHome(); /* RESET HOLD (v3.4.0): 初期描画を止める。同期は下で通常どおり起動する */
+renderHome(); /* v3.4.1: PARTIAL HOLD 中は renderHome 内で目次を描かない。同期は下で通常どおり起動する */
 renderSyncStatus();
 refreshBell();
 fetchChangelog();
 var initial = (location.hash || '').match(/^#\/(\w+)$/);
-if(!RESET_HOLD && initial && sectionById(initial[1])){
+if(PARTIAL_HOLD){
+  /* v3.4.1: 開いた画面はビジネス（非表示なので空白）＋ピルバー。
+     辞典・その他へのディープリンクだけは従来どおり開く。 */
+  setTab('business');
+  if(initial && sectionById(initial[1]) && !secHeld(sectionById(initial[1]))){
+    setTab(secTab(sectionById(initial[1])));
+    $('detailBody').innerHTML = sectionById(initial[1]).html;
+    decorateDetail(initial[1]);
+    listView.classList.add('hidden');
+    detailView.classList.remove('hidden');
+    detailOpen = true; current = initial[1];
+    window.scrollTo(0, 0);
+  }
+}
+else if(initial && sectionById(initial[1])){
   setChapter(secChapter(sectionById(initial[1])));
   $('detailBody').innerHTML = sectionById(initial[1]).html;
   decorateDetail(initial[1]);
