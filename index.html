@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.6.1">
+<meta name="app-version" content="3.6.2">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -734,6 +734,8 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 .subtabs::-webkit-scrollbar{display:none;}
 .subtab{flex:none; font-family:var(--sans); font-size:12.5px; font-weight:700; letter-spacing:.03em; color:var(--muted); background:var(--card2); border:1px solid var(--line); border-radius:999px; padding:6px 13px; cursor:pointer; white-space:nowrap;}
 .subtab.on{color:var(--bg); background:var(--accent); border-color:var(--accent);}
+/* v3.6.2: the detail's group card list (replaces the subtab bar) */
+.dgcards{margin:2px 0 16px;}
 .dpanel[hidden]{display:none;}
 /* table of contents (v3.1.6): a detail with many groups opens
    with a TOC group — every group one tappable row away, so a
@@ -870,7 +872,6 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
       <div class="hs-goals" id="homeGoals"></div>
       <span class="hs-chev" aria-hidden="true">›</span>
     </div>
-    <div class="chips" id="homeChips" aria-label="確定した前提"></div>
   </div>
   <div id="tocBody">
     <div class="groupcard" id="chapterList"></div>
@@ -929,7 +930,7 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.6.1';
+var APP_VERSION = '3.6.2';
 /* PARTIAL HOLD (v3.4.1〜、v3.5.0 で範囲を変更): 本人の段階指示で
    表示範囲を絞った状態。目次（ホーム/章ビュー）は廃止のまま。
    v3.5.0 の範囲：ヘッダー（Busilabo＋件数・バージョン・ベル・
@@ -956,7 +957,7 @@ var HOLD_TABS = {};
 function tabHeld(t){ return PARTIAL_HOLD && !!HOLD_TABS[t]; }
 /* v3.6.0: ビジネスの木の葉（6事業の部）は詳細が開く。それ以外
    のビジネス系の部と、マネー／アートの部は引き続き閉じている */
-var BIZ_LEAF = { appbiz: true, affiliate: true, digital: true, story: true, makefun: true, note: true };
+var BIZ_LEAF = { appbiz: true, affiliate: true, digital: true, story: true, makefun: true, note: true, store: true };
 function secHeld(sec){
   if(!PARTIAL_HOLD) return false;
   var t = secTab(sec);
@@ -1154,7 +1155,7 @@ var SEED = {
    "badgeClass": "",
    "badgeText": "",
    "char": "紹",
-   "html": "<div class=\"detail-head\"><h2>アフィリエイト</h2></div>\n        <div class=\"card\">\n          <h3>海外アフィリエイト比較記事（AI自動） <span class=\"badge pending\">テスト枠</span></h3>\n          <p>英語圏向けに、他人の商品（主にSaaS）を<strong>比較記事で紹介して、紹介料を得る</strong>形。海外向けデジタル商品と同じ「言語市場の裁定」の系統だが、海外向けデジタル商品が自分の商品を売る形なのに対して、こちらは商品を持たず「買う直前の読者を連れてくる仕事」を売る。狙うのは「少ない件数×高い単価」の型で、比較記事という中身は資産として積み上がる。</p>\n          <ul>\n            <li><strong>置き場所</strong>：テスト枠の候補（決定ではない）。受験後に回す枠で、実践は受験後。知識の蓄積だけは受験前から進めてよい</li>\n            <li><strong>正直な留保</strong>：きっかけになった原典に収益の実績証拠はない（単価×件数の計算の提示のみ）。記事自体が無料LINE教材への誘導で、投稿者の本当の狙いは見込み客集めと見ている。重い部分は、英語圏での集客とSEOの信頼づくり</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>全体像とお金の流れ</h3>\n          <p>アフィリエイト（成果報酬型広告）は4者で成り立つ。<strong>広告主</strong>（商品を売りたい会社。例：SemrushのようなSaaS企業）、<strong>ASP／ネットワーク</strong>（計測・集計・支払いを代行。海外ではImpact、ShareASaleなど。日本ではA8.netなど）、<strong>媒体</strong>（記事や動画で紹介する側＝自分）、<strong>読者</strong>（リンクを踏んで買う人）。</p>\n          <div class=\"flow\"><span>読者がリンクを踏む</span><i>→</i><span>購入＝成果</span><i>→</i><span>広告主が広告費を払う</span><i>→</i><span>手数料を引いて媒体へ</span></div>\n          <p>媒体は在庫を持たず、商品も作らない。売っているのは「買う直前の読者を連れてくる仕事」で、報酬はその紹介料。単価・否認・リスクの話は全部ここにつながる。</p>\n          <div class=\"lanes\">\n            <div class=\"lane other\">\n              <h3>日本のASP型</h3>\n              <p>A8.net等のASPに登録し、日本語の広告案件を選ぶ。物販・金融・美容など国内商品が中心で、報酬は購入金額の数％か、申込1件の固定額。読者は日本語圏。</p>\n            </div>\n            <div class=\"lane art\">\n              <h3>海外（英語圏）型</h3>\n              <p>広告主の自社プログラムか、Impact等の海外ネットワーク経由。高単価の中心はSaaS（月額ソフト）で、報酬は1件ごとの固定額（バウンティ）が多い。読者は英語圏＝母数が桁違いに大きい。アフィリエイトが狙うのはこちら。</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"card\">\n          <h3>成果の測り方</h3>\n          <p>成果は一発で確定しない。段階を踏む。</p>\n          <ol class=\"steps\">\n            <li data-n=\"1\"><span class=\"st\">クリック</span><span class=\"sd\">読者がリンクを踏む</span></li>\n            <li data-n=\"2\"><span class=\"st\">成果発生（コンバージョン）</span><span class=\"sd\">読者が購入・申込をする。この時点ではまだ「仮」の数字</span></li>\n            <li data-n=\"3\"><span class=\"st\">承認</span><span class=\"sd\">広告主が「正当な成果だ」と認めて、初めて報酬が確定する</span></li>\n            <li data-n=\"4\"><span class=\"st\">支払い</span><span class=\"sd\">ネットワーク経由で振り込まれる（最低支払額や締め・支払いサイクルはプログラムにより異なる）</span></li>\n          </ol>\n          <ul>\n            <li><strong>否認</strong>：発生した成果の一部は広告主に否認される。主な理由は、読者のキャンセル・返金／不正や自己購入などの規約違反／重複計測（他の媒体のリンクが優先）／無料体験だけで終わり有料転換しなかった（条件による）。管理画面の「発生額」は確定収入ではなく、<strong>否認率</strong>を引いたものが実収入になる。否認率はプログラムにより大きく違うので、始める前に規約と条件を読むのが実務の第一歩</li>\n            <li><strong>クッキー期間</strong>：リンクを踏んでから一定期間内に買えば、時間が空いても成果になる計測の有効期間。数日のものから120日超のものまであり、長いほど媒体に有利</li>\n            <li><strong>ラストクリック</strong>：最後に踏んだリンクの媒体に成果が付く方式が一般的（Semrushもこの方式）</li>\n            <li><strong>EPC</strong>（1クリックあたりの収益＝総報酬÷クリック数）：記事同士・媒体同士の効率を比べる物差し。例：1,000クリックで成果5件、1件$200なら総報酬$1,000でEPCは$1。「月いくら」ではなくEPCと否認率で見るのが、仕組みとしての数字の読み方</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>単価の構造</h3>\n          <p>具体例はSemrushの公式アフィリエイトプログラム（Impact経由、ラストクリック、クッキー120日）。</p>\n          <div class=\"stats\">\n            <div class=\"stat\"><div class=\"v\">$200</div><div class=\"k\">SEO Toolkitの新規成約1件（基本ランク）。実績ランクが上がると$250→$300→$350</div></div>\n            <div class=\"stat\"><div class=\"v\">$10</div><div class=\"k\">無料トライアルの有効化1件</div></div>\n            <div class=\"stat\"><div class=\"v\">120<small>日</small></div><div class=\"k\">クッキー期間。この間に買えば成果になる</div></div>\n            <div class=\"stat\"><div class=\"v\">1<small>回払い</small></div><div class=\"k\">継続課金の分配ではない（条件は改定されることがあるため、参加時に公式ページで再確認する）</div></div>\n          </div>\n          <ul>\n            <li><strong>なぜ1件$200を払えるのか</strong>：LTV（顧客1人が契約期間全体で払う合計）とCAC（顧客1人を得る費用）の関係。Semrushの料金は月額約$140〜$500で、顧客が1年続ければLTVは$1,700〜$6,000規模。獲得に$200を払っても元が取れる。「1件$200」は魔法でも好意でもなく、LTVの中からCACとして切り分けているだけ</li>\n            <li><strong>高単価・低頻度型</strong>（SaaS・金融・高額講座）：1件数千円〜数万円。必要なのは「買う直前の読者」を少数、正確に連れてくること。アフィリエイトが狙う型</li>\n            <li><strong>低単価・高頻度型</strong>（日用品・書籍・安い物販）：1件数十円〜数百円。1回しか買わない物はLTVが小さいので紹介料も購入金額の数％にしかならず、大量のアクセスが要る</li>\n            <li><strong>継続分配型</strong>（レベニューシェア）：顧客が払い続ける限り毎月数％〜数十％が入る。Semrushは1回払いだが、継続型は「積み上がる資産」になりやすい代わりに単月の入りは小さい。プログラム選びではこの違いが効く</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>集客の経済学</h3>\n          <ul>\n            <li><strong>検索意図の温度</strong>：検索する言葉には温度がある。「SEOとは」＝調べもので買う気は薄い。「Semrush vs Ahrefs」＝比べている、<strong>買う直前</strong>。「Semrush 割引」「Semrush pricing」＝ほぼ決めている。比較記事が刺さるのは2番目の読者を取るからで、媒体の仕事は「悩みの分析→候補の絞り込み→判断材料の提示」。これは広告主にとっても質の高い送客になる</li>\n            <li><strong>E-E-A-T</strong>：Googleの評価軸で、経験（Experience）・専門性（Expertise）・権威性（Authoritativeness）・信頼性（Trustworthiness）。比較記事では特に「実際に使った経験があるか」と「情報が正確か」が問われる。公式情報ベースの比較は正確さでは戦えるが、経験の部分は偽装できない</li>\n            <li><strong>AI量産へのGoogleの姿勢（公式）</strong>：AIで作ったこと自体は違反ではない（「どう作ったか」ではなく「読者に役立つか」で評価）。一方、検索順位の操作目的で価値の薄いページを大量生成する「スケールド・コンテンツ・アビュース」はスパムポリシー違反で、2024年3月に明文化され、生成AIでの大量生成が代表例に挙がっている。違反すれば順位下落や手動対策の対象。「AIで記事を量産する」こと自体が、公式ポリシー上で最も危険な形に近い。回せるのは制作の補助までで、1記事ごとの独自の価値（正確な比較、判断の軸、実データ）が本体になる</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>ルール</h3>\n          <ul>\n            <li><strong>ステマ規制（日本）</strong>：2023年10月1日施行。景品表示法第5条第3号に基づく告示で、広告と分からない宣伝が不当表示になった。規制の直接の対象は広告主だが、実務上はASPがアフィリエイターに「広告」「PR」等の表示を規約で必須にしていて、表示しないと登録解除・報酬停止の対象になる。日本語の読者向けなら、記事の冒頭など目立つ位置に広告である旨を書くのが基準</li>\n            <li><strong>FTCの開示ガイドライン（米国）</strong>：英語圏向けならこちらが本命。Endorsement Guides（16 CFR Part 255、2023年改訂）で、報酬がかかる関係は読者が分かる言葉で、明確に目立つよう（clear and conspicuous）開示する。「affiliate link」と書くだけでは不十分（読者が「報酬が発生する」と理解できないため）。開示はリンクの近く、記事の早い位置に置く</li>\n            <li><strong>順位は金で売らない</strong>：報酬額でランキングの順位を操作して中立を装う行為は、開示しても欺瞞的とされる。順位は自分の判断で決め、その上で報酬関係を開示するのが正しい形</li>\n            <li><strong>規約違反で起きること</strong>：未払い報酬の没収、提携解除・アカウント停止（ネットワーク全体で共有される場合もある）。典型的な違反は、ブランド名への広告入札、クッキースタッフィング等の不正計測、虚偽の体験談、根拠のない断定表現（「最安」「絶対」など）</li>\n            <li><strong>匿名の範囲</strong>：ネットワークへの登録には本人確認と振込先情報が要る。「匿名」は読者に対してであり、プラットフォームに対してではない。ここを取り違えると設計が崩れる</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>損なうパターン</h3>\n          <ul>\n            <li><strong>否認率</strong>：発生額がそのまま入るわけではない。返金されやすい商品は構造的に否認が増える</li>\n            <li><strong>プログラムの終了・条件改定</strong>：広告主がプログラムを閉じたり単価を下げたりすれば、その記事の収益は消える。Semrush自身、過去に報酬体系を大きく変えている（旧BeRushの継続分配から1回払いへ）。1プログラム依存は構造的な弱さ</li>\n            <li><strong>検索順位の変動</strong>：集客がGoogle検索頼みなら、アップデート1回で流入が激減しうる。スパムポリシー違反はその最たるもの</li>\n            <li><strong>ラストクリックの奪い合い</strong>：購入直前に別の媒体のリンク（クーポンサイト等）を踏まれると、成果はそちらに付く</li>\n            <li><strong>計測の漏れ</strong>：広告ブロッカーやブラウザのトラッキング制限で、成果が計測されないことがある</li>\n          </ul>\n          <p>どれも「頑張り」で消えるリスクではなく、仕組みに組み込まれた前提として織り込むもの。対策は分散（複数プログラム、複数の集客路）と、規約の範囲内で長く続けること。</p>\n        </div>\n        <div class=\"card\">\n          <h3>初歩段階</h3>\n          <p><strong>初歩段階のゴール：</strong>最初の比較記事1本が公開され、アフィリエイトリンクの計測が正しく動いている状態（クリックが記録されるところまで）。成果が出るかどうかは、その先の話。</p>\n          <p><strong>必要なもの</strong></p>\n          <ul>\n            <li><strong>学習編</strong>：先に学習編「アフィリエイトの仕組み」を読む。この候補の各グループ（全体像／成果の測り方／単価の構造／集客の経済学／ルール／損なうパターン）が、その体系に当たる</li>\n            <li><strong>ASP／プログラムへの登録</strong>：海外型は広告主の自社プログラムか、Impact等のネットワーク経由。本人確認と振込先情報が要る（匿名は読者に対してであり、プラットフォームに対してではない）</li>\n            <li><strong>記事を置く場所</strong>：英語の比較記事を公開する場所。具体的な置き場所は開始時に決める</li>\n            <li><strong>費用</strong>：登録と記事の公開は0円で始められる（広告出稿はしない）</li>\n          </ul>\n          <p><strong>手順</strong></p>\n          <ol class=\"steps\">\n            <li data-n=\"1\"><span class=\"st\">仕組みを学ぶ</span><span class=\"sd\">学習編「アフィリエイトの仕組み」を読み、成果の測り方（クリック→成果発生→承認→支払い、否認率、クッキー期間、ラストクリック、EPC）を掴む。知らないまま始めると、発生額を収入と読み違える</span><span class=\"done-when\">終わりの目安：「発生額≠確定収入」ということと、EPCの計算が言える</span></li>\n            <li data-n=\"2\"><span class=\"st\">プログラムに登録する</span><span class=\"sd\">狙う型（高単価・低頻度のSaaS）から最初のプログラムを1つ選び、登録と本人確認を済ませる。規約（否認の条件、クッキー期間、禁止事項）は登録の時点で読む。例：SemrushはImpact経由で、SEO Toolkitの新規成約1件$200・クッキー120日・ラストクリック</span><span class=\"done-when\">終わりの目安：提携が承認され、自分のリンクが発行できる</span></li>\n            <li data-n=\"3\"><span class=\"st\">ターゲットと悩みを決める</span><span class=\"sd\">誰の、どんな悩みに当てるかを決め、検索意図の温度を見て「買う直前」の言葉（比べている・価格を調べている検索）を拾う</span><span class=\"done-when\">終わりの目安：記事が狙う検索の言葉が決まっている</span></li>\n            <li data-n=\"4\"><span class=\"st\">商品3件を公式情報で比べる</span><span class=\"sd\">仕様・価格を公式情報から集めて比較表を作る。順位は報酬額ではなく自分の判断で決める（順位は金で売らない）</span><span class=\"done-when\">終わりの目安：比較表があり、順位の理由が言える</span></li>\n            <li data-n=\"5\"><span class=\"st\">記事を書いて公開する</span><span class=\"sd\">英語の比較記事として書き、報酬関係の開示を記事の早い位置に、読者が「報酬が発生する」と分かる言葉で目立つよう置く（FTCの基準）。使っていない商品を「使った」とは書かない——比較は「公式情報に基づく比較」と正直に位置づける。公開したら、自分のリンクを踏んでクリックが計測されるか確認する</span><span class=\"done-when\">終わりの目安：記事が公開され、クリックの計測が確認できている</span></li>\n            <li data-n=\"6\"><span class=\"st\">成果の出方を見る</span><span class=\"sd\">発生で止めず、承認と否認率まで見る。記事同士の効率はEPCで比べる</span><span class=\"done-when\">終わりの目安：一定期間のクリック・発生・承認が記録されている</span></li>\n          </ol>\n          <ul>\n            <li><strong>Museで回せる部分</strong>：ターゲットと悩みの洗い出し、キーワード候補出し、公式情報の収集と整理、比較表づくり、記事の構成案と下書き、英語への翻訳・推敲、公開後の数字（クリック・成果・EPC）の集計と改善案</li>\n            <li><strong>回せない／やってはいけない部分</strong>：実体験の偽装（使っていない商品を「使った」と書くのは虚偽表示の側に立つ）、開示の省略、推す商品と順位の最終判断、信頼の蓄積。切り分けの原則は1つ——Museは「調べる・比べる・書く・測る」の速度を上げる。判断と責任と信頼は人間側に残す</li>\n          </ul>\n          <p><strong>つまずきどころ</strong></p>\n          <ul>\n            <li><strong>開示を忘れる・薄くする</strong>：開示はリンクの近く、記事の早い位置に。「affiliate link」と書くだけでは、読者が「報酬が発生する」と理解できないため不十分とされる</li>\n            <li><strong>量産に寄る</strong>：検索順位の操作目的で価値の薄いページを大量生成する形は、Googleのスパムポリシー（スケールド・コンテンツ・アビュース）に触れる。回せるのは制作の補助までで、1記事ごとの独自の価値が本体になる</li>\n            <li><strong>発生額を収入と読む</strong>：否認率を引いたものが実収入。返金されやすい商品は構造的に否認が増える</li>\n            <li><strong>1プログラム依存</strong>：広告主がプログラムを閉じたり単価を下げたりすれば、その記事の収益は消える。分散が前提</li>\n          </ul>\n          <p>手順3〜4の前に、自分の立場（武器）を決めておくと、比べる切り口がぶれない。武器の決め方は、第4章の部「<a href=\"#/pioneers\" data-open-link=\"pioneers\">先駆者の型</a>」の「ヒカルの型」に、手順としてまとめてある。</p>\n          <p><strong>時期：</strong>手順1（学習）は受験前から可。実践（手順2以降）は受験後</p>\n          <p class=\"sources\">きっかけ・出典：Xの記事「Muse自動×海外アフィが想像以上に最強だった（プロンプトも公開）」（とら🐯AI副業 @3Imzdo3）。原典の収益数字は実績の証拠がないため採っていない。本文の数字と仕組みは学習編「アフィリエイトの仕組み」（Semrush公式アフィリエイトプログラム、Google Search Central、消費者庁、FTCの公式情報に基づく）の記載に拠る</p>\n        </div>",
+   "html": "<div class=\"detail-head\"><h2>アフィリエイト</h2></div>\n        <div class=\"card\">\n          <h3>海外アフィリエイト比較記事（AI自動） <span class=\"badge pending\">テスト枠</span></h3>\n          <p>英語圏向けに、他人の商品（主にSaaS）を<strong>比較記事で紹介して、紹介料を得る</strong>形。海外向けデジタル商品と同じ「言語市場の裁定」の系統だが、海外向けデジタル商品が自分の商品を売る形なのに対して、こちらは商品を持たず「買う直前の読者を連れてくる仕事」を売る。狙うのは「少ない件数×高い単価」の型で、比較記事という中身は資産として積み上がる。</p>\n          <ul>\n            <li><strong>置き場所</strong>：テスト枠の候補（決定ではない）。受験後に回す枠で、実践は受験後。知識の蓄積だけは受験前から進めてよい</li>\n            <li><strong>正直な留保</strong>：きっかけになった原典に収益の実績証拠はない（単価×件数の計算の提示のみ）。記事自体が無料LINE教材への誘導で、投稿者の本当の狙いは見込み客集めと見ている。重い部分は、英語圏での集客とSEOの信頼づくり</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>全体像とお金の流れ</h3>\n          <p>アフィリエイト（成果報酬型広告）は4者で成り立つ。</p>\n          <ul>\n            <li><strong>広告主</strong>（商品を売りたい会社。例：SemrushのようなSaaS企業）</li>\n            <li><strong>ASP／ネットワーク</strong>（計測・集計・支払いを代行。海外ではImpact、ShareASaleなど。日本ではA8.netなど）</li>\n            <li><strong>媒体</strong>（記事や動画で紹介する側＝自分）</li>\n            <li><strong>読者</strong>（リンクを踏んで買う人）</li>\n          </ul>\n          <div class=\"flow\"><span>読者がリンクを踏む</span><i>→</i><span>購入＝成果</span><i>→</i><span>広告主が広告費を払う</span><i>→</i><span>手数料を引いて媒体へ</span></div>\n          <p>媒体は在庫を持たず、商品も作らない。売っているのは「買う直前の読者を連れてくる仕事」で、報酬はその紹介料。単価・否認・リスクの話は全部ここにつながる。</p>\n          <div class=\"lanes\">\n            <div class=\"lane other\">\n              <h3>日本のASP型</h3>\n              <p>A8.net等のASPに登録し、日本語の広告案件を選ぶ。物販・金融・美容など国内商品が中心で、報酬は購入金額の数％か、申込1件の固定額。読者は日本語圏。</p>\n            </div>\n            <div class=\"lane art\">\n              <h3>海外（英語圏）型</h3>\n              <p>広告主の自社プログラムか、Impact等の海外ネットワーク経由。高単価の中心はSaaS（月額ソフト）で、報酬は1件ごとの固定額（バウンティ）が多い。読者は英語圏＝母数が桁違いに大きい。アフィリエイトが狙うのはこちら。</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"card\">\n          <h3>成果の測り方</h3>\n          <p>成果は一発で確定しない。段階を踏む。</p>\n          <ol class=\"steps\">\n            <li data-n=\"1\"><span class=\"st\">クリック</span><span class=\"sd\">読者がリンクを踏む</span></li>\n            <li data-n=\"2\"><span class=\"st\">成果発生（コンバージョン）</span><span class=\"sd\">読者が購入・申込をする。この時点ではまだ「仮」の数字</span></li>\n            <li data-n=\"3\"><span class=\"st\">承認</span><span class=\"sd\">広告主が「正当な成果だ」と認めて、初めて報酬が確定する</span></li>\n            <li data-n=\"4\"><span class=\"st\">支払い</span><span class=\"sd\">ネットワーク経由で振り込まれる（最低支払額や締め・支払いサイクルはプログラムにより異なる）</span></li>\n          </ol>\n          <ul>\n            <li><strong>否認</strong>：発生した成果の一部は広告主に否認される。主な理由は、読者のキャンセル・返金／不正や自己購入などの規約違反／重複計測（他の媒体のリンクが優先）／無料体験だけで終わり有料転換しなかった（条件による）。管理画面の「発生額」は確定収入ではなく、<strong>否認率</strong>を引いたものが実収入になる。否認率はプログラムにより大きく違うので、始める前に規約と条件を読むのが実務の第一歩</li>\n            <li><strong>クッキー期間</strong>：リンクを踏んでから一定期間内に買えば、時間が空いても成果になる計測の有効期間。数日のものから120日超のものまであり、長いほど媒体に有利</li>\n            <li><strong>ラストクリック</strong>：最後に踏んだリンクの媒体に成果が付く方式が一般的（Semrushもこの方式）</li>\n            <li><strong>EPC</strong>（1クリックあたりの収益＝総報酬÷クリック数）：記事同士・媒体同士の効率を比べる物差し。例：1,000クリックで成果5件、1件$200なら総報酬$1,000でEPCは$1。「月いくら」ではなくEPCと否認率で見るのが、仕組みとしての数字の読み方</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>単価の構造</h3>\n          <p>具体例はSemrushの公式アフィリエイトプログラム（Impact経由、ラストクリック、クッキー120日）。</p>\n          <div class=\"stats\">\n            <div class=\"stat\"><div class=\"v\">$200</div><div class=\"k\">SEO Toolkitの新規成約1件（基本ランク）。実績ランクが上がると$250→$300→$350</div></div>\n            <div class=\"stat\"><div class=\"v\">$10</div><div class=\"k\">無料トライアルの有効化1件</div></div>\n            <div class=\"stat\"><div class=\"v\">120<small>日</small></div><div class=\"k\">クッキー期間。この間に買えば成果になる</div></div>\n            <div class=\"stat\"><div class=\"v\">1<small>回払い</small></div><div class=\"k\">継続課金の分配ではない（条件は改定されることがあるため、参加時に公式ページで再確認する）</div></div>\n          </div>\n          <ul>\n            <li><strong>なぜ1件$200を払えるのか</strong>：LTV（顧客1人が契約期間全体で払う合計）とCAC（顧客1人を得る費用）の関係。Semrushの料金は月額約$140〜$500で、顧客が1年続ければLTVは$1,700〜$6,000規模。獲得に$200を払っても元が取れる。「1件$200」は魔法でも好意でもなく、LTVの中からCACとして切り分けているだけ</li>\n            <li><strong>高単価・低頻度型</strong>（SaaS・金融・高額講座）：1件数千円〜数万円。必要なのは「買う直前の読者」を少数、正確に連れてくること。アフィリエイトが狙う型</li>\n            <li><strong>低単価・高頻度型</strong>（日用品・書籍・安い物販）：1件数十円〜数百円。1回しか買わない物はLTVが小さいので紹介料も購入金額の数％にしかならず、大量のアクセスが要る</li>\n            <li><strong>継続分配型</strong>（レベニューシェア）：顧客が払い続ける限り毎月数％〜数十％が入る。Semrushは1回払いだが、継続型は「積み上がる資産」になりやすい代わりに単月の入りは小さい。プログラム選びではこの違いが効く</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>集客の経済学</h3>\n          <ul>\n            <li><strong>検索意図の温度</strong>：検索する言葉には温度がある。「SEOとは」＝調べもので買う気は薄い。「Semrush vs Ahrefs」＝比べている、<strong>買う直前</strong>。「Semrush 割引」「Semrush pricing」＝ほぼ決めている。比較記事が刺さるのは2番目の読者を取るからで、媒体の仕事は「悩みの分析→候補の絞り込み→判断材料の提示」。これは広告主にとっても質の高い送客になる</li>\n            <li><strong>E-E-A-T</strong>：Googleの評価軸で、経験（Experience）・専門性（Expertise）・権威性（Authoritativeness）・信頼性（Trustworthiness）。比較記事では特に「実際に使った経験があるか」と「情報が正確か」が問われる。公式情報ベースの比較は正確さでは戦えるが、経験の部分は偽装できない</li>\n            <li><strong>AI量産へのGoogleの姿勢（公式）</strong>：AIで作ったこと自体は違反ではない（「どう作ったか」ではなく「読者に役立つか」で評価）。一方、検索順位の操作目的で価値の薄いページを大量生成する「スケールド・コンテンツ・アビュース」はスパムポリシー違反で、2024年3月に明文化され、生成AIでの大量生成が代表例に挙がっている。違反すれば順位下落や手動対策の対象。「AIで記事を量産する」こと自体が、公式ポリシー上で最も危険な形に近い。回せるのは制作の補助までで、1記事ごとの独自の価値（正確な比較、判断の軸、実データ）が本体になる</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>ルール</h3>\n          <ul>\n            <li><strong>ステマ規制（日本）</strong>：2023年10月1日施行。景品表示法第5条第3号に基づく告示で、広告と分からない宣伝が不当表示になった。規制の直接の対象は広告主だが、実務上はASPがアフィリエイターに「広告」「PR」等の表示を規約で必須にしていて、表示しないと登録解除・報酬停止の対象になる。日本語の読者向けなら、記事の冒頭など目立つ位置に広告である旨を書くのが基準</li>\n            <li><strong>FTCの開示ガイドライン（米国）</strong>：英語圏向けならこちらが本命。Endorsement Guides（16 CFR Part 255、2023年改訂）で、報酬がかかる関係は読者が分かる言葉で、明確に目立つよう（clear and conspicuous）開示する。「affiliate link」と書くだけでは不十分（読者が「報酬が発生する」と理解できないため）。開示はリンクの近く、記事の早い位置に置く</li>\n            <li><strong>順位は金で売らない</strong>：報酬額でランキングの順位を操作して中立を装う行為は、開示しても欺瞞的とされる。順位は自分の判断で決め、その上で報酬関係を開示するのが正しい形</li>\n            <li><strong>規約違反で起きること</strong>：未払い報酬の没収、提携解除・アカウント停止（ネットワーク全体で共有される場合もある）。典型的な違反は、ブランド名への広告入札、クッキースタッフィング等の不正計測、虚偽の体験談、根拠のない断定表現（「最安」「絶対」など）</li>\n            <li><strong>匿名の範囲</strong>：ネットワークへの登録には本人確認と振込先情報が要る。「匿名」は読者に対してであり、プラットフォームに対してではない。ここを取り違えると設計が崩れる</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>損なうパターン</h3>\n          <ul>\n            <li><strong>否認率</strong>：発生額がそのまま入るわけではない。返金されやすい商品は構造的に否認が増える</li>\n            <li><strong>プログラムの終了・条件改定</strong>：広告主がプログラムを閉じたり単価を下げたりすれば、その記事の収益は消える。Semrush自身、過去に報酬体系を大きく変えている（旧BeRushの継続分配から1回払いへ）。1プログラム依存は構造的な弱さ</li>\n            <li><strong>検索順位の変動</strong>：集客がGoogle検索頼みなら、アップデート1回で流入が激減しうる。スパムポリシー違反はその最たるもの</li>\n            <li><strong>ラストクリックの奪い合い</strong>：購入直前に別の媒体のリンク（クーポンサイト等）を踏まれると、成果はそちらに付く</li>\n            <li><strong>計測の漏れ</strong>：広告ブロッカーやブラウザのトラッキング制限で、成果が計測されないことがある</li>\n          </ul>\n          <p>どれも「頑張り」で消えるリスクではなく、仕組みに組み込まれた前提として織り込むもの。対策は分散（複数プログラム、複数の集客路）と、規約の範囲内で長く続けること。</p>\n        </div>\n        <div class=\"card\">\n          <h3>初歩段階</h3>\n          <p><strong>初歩段階のゴール：</strong>最初の比較記事1本が公開され、アフィリエイトリンクの計測が正しく動いている状態（クリックが記録されるところまで）。成果が出るかどうかは、その先の話。</p>\n          <p><strong>必要なもの</strong></p>\n          <ul>\n            <li><strong>学習編</strong>：先に学習編「アフィリエイトの仕組み」を読む。この候補の各グループ（全体像／成果の測り方／単価の構造／集客の経済学／ルール／損なうパターン）が、その体系に当たる</li>\n            <li><strong>ASP／プログラムへの登録</strong>：海外型は広告主の自社プログラムか、Impact等のネットワーク経由。本人確認と振込先情報が要る（匿名は読者に対してであり、プラットフォームに対してではない）</li>\n            <li><strong>記事を置く場所</strong>：英語の比較記事を公開する場所。具体的な置き場所は開始時に決める</li>\n            <li><strong>費用</strong>：登録と記事の公開は0円で始められる（広告出稿はしない）</li>\n          </ul>\n          <p><strong>手順</strong></p>\n          <ol class=\"steps\">\n            <li data-n=\"1\"><span class=\"st\">仕組みを学ぶ</span><span class=\"sd\">学習編「アフィリエイトの仕組み」を読み、成果の測り方（クリック→成果発生→承認→支払い、否認率、クッキー期間、ラストクリック、EPC）を掴む。知らないまま始めると、発生額を収入と読み違える</span><span class=\"done-when\">終わりの目安：「発生額≠確定収入」ということと、EPCの計算が言える</span></li>\n            <li data-n=\"2\"><span class=\"st\">プログラムに登録する</span><span class=\"sd\">狙う型（高単価・低頻度のSaaS）から最初のプログラムを1つ選び、登録と本人確認を済ませる。規約（否認の条件、クッキー期間、禁止事項）は登録の時点で読む。例：SemrushはImpact経由で、SEO Toolkitの新規成約1件$200・クッキー120日・ラストクリック</span><span class=\"done-when\">終わりの目安：提携が承認され、自分のリンクが発行できる</span></li>\n            <li data-n=\"3\"><span class=\"st\">ターゲットと悩みを決める</span><span class=\"sd\">誰の、どんな悩みに当てるかを決め、検索意図の温度を見て「買う直前」の言葉（比べている・価格を調べている検索）を拾う</span><span class=\"done-when\">終わりの目安：記事が狙う検索の言葉が決まっている</span></li>\n            <li data-n=\"4\"><span class=\"st\">商品3件を公式情報で比べる</span><span class=\"sd\">仕様・価格を公式情報から集めて比較表を作る。順位は報酬額ではなく自分の判断で決める（順位は金で売らない）</span><span class=\"done-when\">終わりの目安：比較表があり、順位の理由が言える</span></li>\n            <li data-n=\"5\"><span class=\"st\">記事を書いて公開する</span><span class=\"sd\">英語の比較記事として書き、報酬関係の開示を記事の早い位置に、読者が「報酬が発生する」と分かる言葉で目立つよう置く（FTCの基準）。使っていない商品を「使った」とは書かない——比較は「公式情報に基づく比較」と正直に位置づける。公開したら、自分のリンクを踏んでクリックが計測されるか確認する</span><span class=\"done-when\">終わりの目安：記事が公開され、クリックの計測が確認できている</span></li>\n            <li data-n=\"6\"><span class=\"st\">成果の出方を見る</span><span class=\"sd\">発生で止めず、承認と否認率まで見る。記事同士の効率はEPCで比べる</span><span class=\"done-when\">終わりの目安：一定期間のクリック・発生・承認が記録されている</span></li>\n          </ol>\n          <ul>\n            <li><strong>Museで回せる部分</strong>：ターゲットと悩みの洗い出し、キーワード候補出し、公式情報の収集と整理、比較表づくり、記事の構成案と下書き、英語への翻訳・推敲、公開後の数字（クリック・成果・EPC）の集計と改善案</li>\n            <li><strong>回せない／やってはいけない部分</strong>：実体験の偽装（使っていない商品を「使った」と書くのは虚偽表示の側に立つ）、開示の省略、推す商品と順位の最終判断、信頼の蓄積。切り分けの原則は1つ——Museは「調べる・比べる・書く・測る」の速度を上げる。判断と責任と信頼は人間側に残す</li>\n          </ul>\n          <p><strong>つまずきどころ</strong></p>\n          <ul>\n            <li><strong>開示を忘れる・薄くする</strong>：開示はリンクの近く、記事の早い位置に。「affiliate link」と書くだけでは、読者が「報酬が発生する」と理解できないため不十分とされる</li>\n            <li><strong>量産に寄る</strong>：検索順位の操作目的で価値の薄いページを大量生成する形は、Googleのスパムポリシー（スケールド・コンテンツ・アビュース）に触れる。回せるのは制作の補助までで、1記事ごとの独自の価値が本体になる</li>\n            <li><strong>発生額を収入と読む</strong>：否認率を引いたものが実収入。返金されやすい商品は構造的に否認が増える</li>\n            <li><strong>1プログラム依存</strong>：広告主がプログラムを閉じたり単価を下げたりすれば、その記事の収益は消える。分散が前提</li>\n          </ul>\n          <p>手順3〜4の前に、自分の立場（武器）を決めておくと、比べる切り口がぶれない。武器の決め方は、第4章の部「<a href=\"#/pioneers\" data-open-link=\"pioneers\">先駆者の型</a>」の「ヒカルの型」に、手順としてまとめてある。</p>\n          <p><strong>時期：</strong>手順1（学習）は受験前から可。実践（手順2以降）は受験後</p>\n          <p class=\"sources\">きっかけ・出典：Xの記事「Muse自動×海外アフィが想像以上に最強だった（プロンプトも公開）」（とら🐯AI副業 @3Imzdo3）。原典の収益数字は実績の証拠がないため採っていない。本文の数字と仕組みは学習編「アフィリエイトの仕組み」（Semrush公式アフィリエイトプログラム、Google Search Central、消費者庁、FTCの公式情報に基づく）の記載に拠る</p>\n        </div>",
    "id": "affiliate",
    "meta": "英語圏の比較記事で、他人の商品の紹介料を得る。お金の流れ・成果の測り方・単価の構造・集客・初歩段階",
    "num": "09",
@@ -1162,7 +1163,7 @@ var SEED = {
    "tag": "テスト枠",
    "themeClass": "t-business",
    "title": "アフィリエイト",
-   "updated_at": "2026-11-21T16:02:27+09:00"
+   "updated_at": "2026-11-21T17:56:44+09:00"
   },
   {
    "badgeClass": "",
@@ -1415,9 +1416,23 @@ var SEED = {
    "themeClass": "t-art",
    "title": "アートビジネス業界の仕組み",
    "updated_at": "2026-11-21T17:21:58+09:00"
+  },
+  {
+   "badgeClass": "",
+   "badgeText": "",
+   "char": "ス",
+   "html": "<div class=\"detail-head\"><h2>ストア参入</h2></div>",
+   "id": "store",
+   "meta": "",
+   "num": "28",
+   "tab": "ch4",
+   "tag": "",
+   "themeClass": "t-business",
+   "title": "ストア参入",
+   "updated_at": "2026-11-21T17:50:00+09:00"
   }
  ],
- "updatedAt": "2026-11-21T17:21:58+09:00",
+ "updatedAt": "2026-11-21T17:56:44+09:00",
  "version": 1
 };
 
@@ -1480,9 +1495,11 @@ function renderHome(){
     '<span class="hs-goal"><span class="hs-gl">' + esc(fin.label) +
     '</span><span class="hs-gn">' + (fin.numHtml || '') + '</span></span>';
   updateStripGoal();
-  var c = '';
-  (DATA.home.chips || []).forEach(function(chip){ c += '<span class="chip">' + esc(chip) + '</span>'; });
-  $('homeChips').innerHTML = c;
+  /* v3.6.2（本人の指示 2026-11-21 17:51）：一覧画面の前提チップの
+     レールは廃止（「ハンドルで活動やら何やら書いてあるところ消すか
+     その他に移して」）。前提の中身は帯から開く「テーマと目標」の
+     詳細（homeCardHTML の .orow-chips）に一式残っているので、
+     ここではもう描かない。データ（home.chips）には触らない。 */
   $('homeSources').textContent = DATA.home.sources || '';
   if(!PARTIAL_HOLD) renderTOC(); /* PARTIAL HOLD (v3.4.1): 目次は廃止 */
   renderCount();
@@ -1720,8 +1737,8 @@ document.addEventListener('click', function(e){
    re-points the list at the section's chapter. */
 var TABS = ['business', 'art', 'money', 'dict', 'other'];
 var TAB_NAMES = { business: 'ビジネス', art: 'アートビジネス', money: 'マネーリテラシー', dict: '辞典', other: 'その他' };
-var TAB_BY_ID = { bizlist: 'business', appbiz: 'business', affiliate: 'business', digital: 'business', story: 'business', makefun: 'business', note: 'business', lifecycle: 'business', forms: 'business', business: 'business', pipeline: 'business', pioneers: 'business', rules: 'business', ideas: 'business', pending: 'business', art: 'art', artforms: 'art', demand: 'art', narrative: 'art', workforms: 'art', artindustry: 'art', literacy: 'money', money: 'money', numbers: 'money', assets: 'money', dict: 'dict', dreams: 'other' };
-var TAB_ORDER = { business: ['bizlist', 'appbiz', 'affiliate', 'digital', 'story', 'makefun', 'note', 'lifecycle', 'forms', 'business', 'pipeline', 'pioneers', 'rules', 'ideas', 'pending'], art: ['demand', 'narrative', 'workforms', 'artindustry', 'art', 'artforms'], money: ['literacy', 'money', 'numbers', 'assets'], dict: ['dict'], other: ['dreams'] };
+var TAB_BY_ID = { bizlist: 'business', appbiz: 'business', store: 'business', affiliate: 'business', digital: 'business', story: 'business', makefun: 'business', note: 'business', lifecycle: 'business', forms: 'business', business: 'business', pipeline: 'business', pioneers: 'business', rules: 'business', ideas: 'business', pending: 'business', art: 'art', artforms: 'art', demand: 'art', narrative: 'art', workforms: 'art', artindustry: 'art', literacy: 'money', money: 'money', numbers: 'money', assets: 'money', dict: 'dict', dreams: 'other' };
+var TAB_ORDER = { business: ['bizlist', 'appbiz', 'store', 'affiliate', 'digital', 'story', 'makefun', 'note', 'lifecycle', 'forms', 'business', 'pipeline', 'pioneers', 'rules', 'ideas', 'pending'], art: ['demand', 'narrative', 'workforms', 'artindustry', 'art', 'artforms'], money: ['literacy', 'money', 'numbers', 'assets'], dict: ['dict'], other: ['dreams'] };
 function secTab(sec){ return (sec && TAB_BY_ID[sec.id]) || 'other'; }
 function tabSections(t){
   var mine = {};
@@ -1778,7 +1795,7 @@ function bizCardsHTML(){
    木の定義はコード側に持つ（データには触らない）：
      深さ0 … カード「事業リスト」1枚だけ
      深さ1 … 6事業のカード（bizCardsHTML、v3.5.1 の標準カード）
-     深さ2 … アプリ事業の下の単位のカード（今は図鑑アプリだけ）
+     深さ2 … アプリ事業の下の単位のカード（図鑑アプリ／ストア参入）
    潜るカードには data-biznav、葉のカードには data-open を付け
    る。葉の先は各部の詳細（従来のグループ表示）。戻るはピル型
    ボタン（タブ画面の戻るバーをこの木専用に出し直す）と左端
@@ -1790,11 +1807,15 @@ var bizDepth = 0;
 function bizLevelHTML(){
   if(bizDepth === 1) return bizCardsHTML();
   if(bizDepth === 2){
-    /* 図鑑アプリ：アプリ事業の下の単位。今はこれだけ（他の
-       アプリは将来ここに増える）。v3.6.1：木のカードは名前
-       だけ（説明・バッジは描かない） */
+    /* アプリ事業の下の単位：図鑑アプリとストア参入（v3.6.2で
+       追加。本人の指示「図鑑アプリの横に、appストアでの販売の
+       仕方に関することをまとめたタブを作りたい。タイトルは
+       ストア参入で」）。v3.6.1：木のカードは名前だけ（説明・
+       バッジは描かない） */
     return '<figure class="work" data-open="appbiz" tabindex="0" role="button" aria-label="図鑑アプリ">' +
-      '<figcaption><div class="nm">図鑑アプリ</div></figcaption></figure>';
+      '<figcaption><div class="nm">図鑑アプリ</div></figcaption></figure>' +
+      '<figure class="work" data-open="store" tabindex="0" role="button" aria-label="ストア参入">' +
+      '<figcaption><div class="nm">ストア参入</div></figcaption></figure>';
   }
   var sec = sectionById('bizlist');
   if(!sec) return '';
@@ -1820,7 +1841,7 @@ function bizUp(){
 /* 葉の詳細を直接開いたとき（ディープリンク・通知・popstate）、
    戻り先になる親の深さ。葉でない部は -1 */
 function bizParentDepth(id){
-  if(id === 'appbiz') return 2;
+  if(id === 'appbiz' || id === 'store') return 2;
   if(BIZ_LEAF[id]) return 1;
   return -1;
 }
@@ -2018,6 +2039,7 @@ function openDetail(id, push){
   if(id !== 'dict') termReturn = null; /* any fresh navigation drops the one-level term-jump return (v3.1.3) */
   current = id;
   detailOpen = true;
+  detailLevel = 'cards'; /* v3.6.2: a detail opens on its group card list */
   $('detailBody').innerHTML = sec.html;
   decorateDetail();
   listScrollY = window.scrollY || 0;
@@ -2074,6 +2096,7 @@ document.addEventListener('keydown', function(e){
 });
 $('backBtn').addEventListener('click', function(){
   if(termReturn && current === 'dict' && restoreTermReturn()) return;
+  if(detailLevel === 'content' && showGroupCards()) return; /* v3.6.2: 中身の段からは、まずグループのカード一覧へ */
   showHome(true);
 });
 
@@ -2095,6 +2118,7 @@ function openHomeDetail(push){
   if(detailOpen && current === HOME_ID) return;
   current = HOME_ID;
   detailOpen = true;
+  detailLevel = 'cards'; /* v3.6.2: a detail opens on its group card list */
   $('detailBody').innerHTML = homeDetailHTML();
   decorateDetail();
   listScrollY = window.scrollY || 0;
@@ -2282,22 +2306,21 @@ function subtabLabel(els, sid, isFirst){
   if(s.length > 11) s = s.slice(0, 11).replace(/[。・：、（(]$/, '');
   return s || t;
 }
-/* ---------- detail table of contents (v3.1.6) ----------
-   His call: the business plan's pill rail runs to 43 groups —
-   scrolling it end to end just to see the whole page is the
-   friction. A detail with TOC_MIN_GROUPS or more groups gets
-   a 目次 group in front: every group listed as one tappable
-   row, in order, jumping straight there. The TOC is a group
-   like any other (first in the pills, first in the swipe
-   order), built here at render time like the grouping
-   itself — the data never changes. Indices stay in the one
-   currency everything else already uses (panel index, the
-   TOC itself included), so the remembered group and the
-   term-jump return keep agreeing with the screen. A group
-   whose heading carries a テスト枠 badge (the business
-   plan's candidate cards) opens a block: its TOC row reads
-   as a head and the rows under it indent. */
-var TOC_MIN_GROUPS = 8;
+/* ---------- detail groups as cards (v3.6.2) ----------
+   His call (2026-11-21 17:52): 「ていうかこのピルタブもカード
+   に変えて」 — the detail's group pill bar (and with it the
+   auto 目次 group of v3.1.6) is abolished. A detail now opens
+   on a card list of its groups — the same dive-in manner as
+   the business tree: name-only cards, one grid; tapping a
+   card opens that group's content, and back (the pill button
+   or the left-edge swipe) climbs back to the card list first,
+   then out of the detail. Group-to-group swipes inside the
+   content stay as they were. The grouping itself (the split
+   into .dpanel panels) is unchanged and still built at render
+   time — the data never changes. detailLevel tracks which of
+   the two levels the open detail is showing: 'cards' (the
+   group card list) or 'content' (one group open). */
+var detailLevel = 'cards';
 function subtabHeadingEl(els){
   var h3 = null;
   els.forEach(function(el){
@@ -2314,41 +2337,9 @@ function subtabFullLabel(els, sid, isFirst){
   var t = subtabHeadingText(subtabHeadingEl(els));
   return t || subtabLabel(els, sid, isFirst);
 }
-function subtabOpensBlock(els){
-  var h3 = subtabHeadingEl(els);
-  if(!h3) return false;
-  var hit = false;
-  Array.prototype.forEach.call(h3.querySelectorAll('.badge'), function(b){
-    if(b.textContent.indexOf('テスト枠') >= 0) hit = true;
-  });
-  return hit;
-}
-function buildTocPanel(groups, sid){
-  var wrap = document.createElement('div');
-  wrap.className = 'toc';
-  var inBlock = false;
-  groups.forEach(function(g, i){
-    var head = subtabOpensBlock(g);
-    if(head) inBlock = true;
-    var b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'toc-row' + (head ? ' head' : (inBlock ? ' sub' : ''));
-    b.setAttribute('data-gi', i + 1); /* +1: the TOC itself takes index 0 */
-    var num = document.createElement('span');
-    num.className = 'toc-n';
-    num.textContent = i + 1;
-    var lb = document.createElement('span');
-    lb.className = 'toc-t';
-    lb.textContent = subtabFullLabel(g, sid, i === 0);
-    b.appendChild(num);
-    b.appendChild(lb);
-    wrap.appendChild(b);
-  });
-  return wrap;
-}
 function groupDetail(sid, root){
   var db = root || $('detailBody');
-  if(!db || db.querySelector('.subtabs')) return;
+  if(!db || db.querySelector('.dpanel')) return;
   sid = sid || current || '';
   var groups = [], cur = null, seenContent = false, lastFixed = null;
   Array.prototype.slice.call(db.children).forEach(function(el){
@@ -2359,30 +2350,44 @@ function groupDetail(sid, root){
     cur.push(el);
   });
   if(groups.length < 2) return;
-  var labels = groups.map(function(g, i){ return subtabLabel(g, sid, i === 0); });
-  if(groups.length >= TOC_MIN_GROUPS){
-    groups.unshift([buildTocPanel(groups, sid)]);
-    labels.unshift('目次');
-  }
   var active = detailGroupSel[sid] || 0;
   if(active >= groups.length) active = 0;
-  var bar = document.createElement('div');
-  bar.className = 'subtabs';
-  groups.forEach(function(g, i){
-    var b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'subtab' + (i === active ? ' on' : '');
-    b.setAttribute('data-gi', i);
-    b.textContent = labels[i];
-    bar.appendChild(b);
-  });
-  if(lastFixed && lastFixed.nextSibling) db.insertBefore(bar, lastFixed.nextSibling);
-  else if(lastFixed) db.appendChild(bar);
-  else db.insertBefore(bar, db.firstChild);
+  var realRoot = (db === $('detailBody'));
+  if(realRoot){
+    /* v3.6.2: the group card list (name-only cards, the business
+       tree's manner) replaces the pill bar. On a detached copy
+       (the group swipe's target build) no cards are made — only
+       the panels matter there. Which level shows follows the
+       global detailLevel: 'cards' hides every panel, 'content'
+       shows the remembered group. */
+    var grid = document.createElement('div');
+    grid.className = 'grid compact dgcards';
+    groups.forEach(function(g, i){
+      var name = subtabFullLabel(g, sid, i === 0);
+      var f = document.createElement('figure');
+      f.className = 'work';
+      f.setAttribute('data-gi', i);
+      f.setAttribute('tabindex', '0');
+      f.setAttribute('role', 'button');
+      f.setAttribute('aria-label', name);
+      var cap = document.createElement('figcaption');
+      var nm = document.createElement('div');
+      nm.className = 'nm';
+      nm.textContent = name;
+      cap.appendChild(nm);
+      f.appendChild(cap);
+      grid.appendChild(f);
+    });
+    if(detailLevel === 'content') grid.style.display = 'none';
+    if(lastFixed && lastFixed.nextSibling) db.insertBefore(grid, lastFixed.nextSibling);
+    else if(lastFixed) db.appendChild(grid);
+    else db.insertBefore(grid, db.firstChild);
+  }
   groups.forEach(function(g, i){
     var panel = document.createElement('div');
     panel.className = 'dpanel';
-    if(i !== active) panel.hidden = true;
+    if(realRoot && detailLevel !== 'content') panel.hidden = true;
+    else if(i !== active) panel.hidden = true;
     g.forEach(function(el){ panel.appendChild(el); });
     db.appendChild(panel);
   });
@@ -2392,10 +2397,10 @@ function setDetailGroup(gi, instant){
   var panels = db.querySelectorAll('.dpanel');
   if(!panels.length || gi < 0 || gi >= panels.length) return;
   var prev = -1;
-  Array.prototype.forEach.call(db.querySelectorAll('.subtab'), function(b, i){
-    if(b.classList.contains('on')) prev = i;
-    b.classList.toggle('on', i === gi);
-  });
+  Array.prototype.forEach.call(panels, function(p, i){ if(!p.hidden) prev = i; });
+  detailLevel = 'content'; /* v3.6.2: a group is open — the card list steps aside */
+  var grid = db.querySelector('.dgcards');
+  if(grid) grid.style.display = 'none';
   Array.prototype.forEach.call(panels, function(p, i){ p.hidden = i !== gi; });
   if(current) detailGroupSel[current] = gi;
   var panel = panels[gi];
@@ -2404,15 +2409,31 @@ function setDetailGroup(gi, instant){
     panel.animate([{ opacity: 0, transform: 'translateX(' + (14 * dir) + 'px)' }, { opacity: 1, transform: 'translateX(0)' }], { duration: 180, easing: 'ease-out' });
   }
   window.scrollTo(0, 0);
+  updateBackBtn();
+}
+/* v3.6.2: climb from a group's content back to the group card
+   list (the detail itself stays open) */
+function showGroupCards(){
+  var db = $('detailBody');
+  var grid = db.querySelector('.dgcards');
+  if(!grid) return false;
+  detailLevel = 'cards';
+  Array.prototype.forEach.call(db.querySelectorAll('.dpanel'), function(p){ p.hidden = true; });
+  grid.style.display = '';
+  window.scrollTo(0, 0);
+  updateBackBtn();
+  return true;
 }
 $('detailBody').addEventListener('click', function(e){
-  var b = (e.target && e.target.closest) ? e.target.closest('.subtab') : null;
+  var b = (e.target && e.target.closest) ? e.target.closest('.dgcards [data-gi]') : null;
   if(!b || !$('detailBody').contains(b)) return;
   setDetailGroup(+b.getAttribute('data-gi'));
 });
-$('detailBody').addEventListener('click', function(e){
-  var b = (e.target && e.target.closest) ? e.target.closest('.toc-row') : null;
+$('detailBody').addEventListener('keydown', function(e){
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  var b = (e.target && e.target.closest) ? e.target.closest('.dgcards [data-gi]') : null;
   if(!b || !$('detailBody').contains(b)) return;
+  e.preventDefault();
   setDetailGroup(+b.getAttribute('data-gi'));
 });
 function decorateDetail(sid){
@@ -2439,7 +2460,7 @@ function decorateDetail(sid){
    a longer term from a shorter term's match. A jump keeps a
    one-level return (section, group, scroll): the back pill
    then reads 元のページに戻る and restores all three. */
-var TERM_SKIP_SEL = 'a, button, h2, h3, h4, .subtabs, .badge, .tag, .chip, .tt, .an, .pt, .st, .stat, .pstairs, .flow, .goalpick, .gpseg, .detail-head, .sources, [data-open], [data-open-link], [data-scroll]';
+var TERM_SKIP_SEL = 'a, button, h2, h3, h4, .subtabs, .dgcards, .badge, .tag, .chip, .tt, .an, .pt, .st, .stat, .pstairs, .flow, .goalpick, .gpseg, .detail-head, .sources, [data-open], [data-open-link], [data-scroll]';
 var termReturn = null;
 var _termIdx = null, _termIdxStamp = '';
 function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
@@ -2543,7 +2564,15 @@ function linkifyTextNode(node, idx, linked){
 function updateBackBtn(){
   var b = $('backBtn');
   if(!b) return;
-  b.textContent = (termReturn && current === 'dict') ? '‹ 元のページに戻る' : '‹ 一覧に戻る';
+  if(termReturn && current === 'dict'){ b.textContent = '‹ 元のページに戻る'; return; }
+  /* v3.6.2: while a group is open, the back pill names the
+     parent screen — the section's own group card list — the
+     same manner as the business tree's back bar */
+  if(detailOpen && detailLevel === 'content' && $('detailBody').querySelector('.dgcards')){
+    b.textContent = '‹ ' + (current === HOME_ID ? 'テーマと目標' : ((sectionById(current) || {}).title || '一覧に戻る'));
+    return;
+  }
+  b.textContent = '‹ 一覧に戻る';
 }
 function jumpToTerm(key){
   if(current === 'dict') return;
@@ -2673,7 +2702,7 @@ document.addEventListener('click', function(e){
   var EDGE_W = 24;
   document.addEventListener('touchstart', function(e){
     if(!detailOpen || vtBusy || swAnim || st || e.touches.length !== 1) return;
-    if(e.target && e.target.closest && (e.target.closest('#pillnav') || e.target.closest('.subtabs'))) return; /* pill and subtab drags belong to those rails themselves */
+    if(e.target && e.target.closest && e.target.closest('#pillnav')) return; /* the pill bar keeps its own gestures */
     var t = e.touches[0];
     st = { sx: t.clientX, sy: t.clientY, dx: 0, dy: 0, engaged: false, mode: null, deadL: false, deadR: false, pane: null, curPanel: null, gFrom: -1, gTo: -1, gDir: 0, pdx: 0, lastX: t.clientX, lastT: Date.now(), vx: 0, y: window.scrollY || 0 };
   }, { passive: true });
@@ -2686,7 +2715,13 @@ document.addEventListener('click', function(e){
     if(dt > 0){ st.vx = (t.clientX - st.lastX) / dt; st.lastX = t.clientX; st.lastT = now; }
     if(!st.engaged){
       var horiz = Math.abs(st.dx) > 12 && Math.abs(st.dx) > Math.abs(st.dy) * 1.25;
-      if(horiz && st.dx > 0 && st.sx <= EDGE_W){ st.mode = 'back'; engageSwipe(); }
+      if(horiz && st.dx > 0 && st.sx <= EDGE_W){
+        /* v3.6.2: at the content level the edge drag climbs to
+           the group card list (the detail stays open); at the
+           card level it leaves the detail, as before */
+        if(detailLevel === 'content' && $('detailBody').querySelector('.dgcards')){ st.mode = 'cards'; st.engaged = true; paintCards(); }
+        else { st.mode = 'back'; engageSwipe(); }
+      }
       else if(horiz && st.dx > 0){
         if(!st.deadR){
           var gp = groupTarget(-1);
@@ -2705,7 +2740,7 @@ document.addEventListener('click', function(e){
       else return;
     }
     if(!st.engaged) return; /* an engage that declined (dead side, unbuildable target) stays a plain scroll */
-    if(st.mode === 'group') paintGroup(); else paintSwipe();
+    if(st.mode === 'group') paintGroup(); else if(st.mode === 'cards') paintCards(); else paintSwipe();
   }, { passive: true });
   /* while a group drag is engaged the page must not scroll
      vertically under the finger — the passive move handler
@@ -2741,6 +2776,38 @@ document.addEventListener('click', function(e){
     var pr = Math.min(1, Math.max(0, st.dx) / W);
     detailView.style.transform = 'translateX(' + Math.max(0, st.dx) + 'px)';
     listView.style.transform = 'translateX(' + (-26 * (1 - pr)) + '%)';
+  }
+  /* v3.6.2: the edge drag at the content level — the detail
+     itself follows the finger, and a commit swaps the level
+     to the group card list in place (no list behind to reveal) */
+  function paintCards(){
+    detailView.style.transform = 'translateX(' + Math.max(0, st.dx) + 'px)';
+  }
+  function finishCards(s, commit){
+    swAnim = true;
+    var from = Math.max(0, s.dx);
+    if(!commit){
+      var ab = detailView.animate([{ transform: 'translateX(' + from + 'px)' }, { transform: 'translateX(0px)' }], { duration: 180, easing: VT_EASE });
+      var doneB = false;
+      var tdB = function(){ if(doneB) return; doneB = true; try{ ab.cancel(); }catch(e){} detailView.style.transform = ''; swAnim = false; };
+      ab.onfinish = tdB;
+      setTimeout(tdB, 300);
+      return;
+    }
+    var W = window.innerWidth || 1;
+    var ao = detailView.animate([{ transform: 'translateX(' + from + 'px)' }, { transform: 'translateX(' + (W + 24) + 'px)' }], { duration: 200, easing: VT_EASE });
+    var done = false;
+    function td(){
+      if(done) return;
+      done = true;
+      try{ ao.cancel(); }catch(e){}
+      detailView.style.transform = '';
+      showGroupCards();
+      if(detailView.animate && !reducedMotion()) detailView.animate([{ opacity: 0, transform: 'translateX(-36px)' }, { opacity: 1, transform: 'translateX(0)' }], { duration: 180, easing: 'ease-out' });
+      swAnim = false;
+    }
+    ao.onfinish = td;
+    setTimeout(td, 320);
   }
   function engageGroup(){
     var W = window.innerWidth || 1;
@@ -2825,10 +2892,11 @@ document.addEventListener('click', function(e){
       finishGroup(s, commit);
       return;
     }
+    if(s.mode === 'cards'){ finishCards(s, s.dx > W * 0.35 || (s.dx > 56 && s.vx > 0.3)); return; }
     finishSwipe(s, s.dx > W * 0.35 || (s.dx > 56 && s.vx > 0.3));
   }, { passive: true });
   document.addEventListener('touchcancel', function(){
-    if(st && st.engaged){ var s = st; st = null; if(s.mode === 'group') finishGroup(s, false); else finishSwipe(s, false); }
+    if(st && st.engaged){ var s = st; st = null; if(s.mode === 'group') finishGroup(s, false); else if(s.mode === 'cards') finishCards(s, false); else finishSwipe(s, false); }
     else st = null;
   }, { passive: true });
   function finishSwipe(s, commit){
@@ -2998,138 +3066,14 @@ document.addEventListener('click', function(e){
   }
 })();
 
-/* tab swipe (v3.2.1: v3.1.5's tab swipe returns with the pill
-   bar): on a tab page a horizontal drag pages to the
-   neighbouring tab, both panes following the finger — the
-   chapter swipe's thresholds and shape exactly (commit past
-   35% of the width or a fast flick; the ends stop). The tab
-   order is the pill bar's order (TABS). The table of contents
-   still does not swipe, chapter pages keep the chapter swipe
-   above, details keep their group swipe — this handler engages
-   only while a tab page is the list on show. Drags starting on
-   the header, the back bar, the pill bar itself or the settings
-   block (その他 carries the relay form) belong to those
-   surfaces; a vertical-dominant drag never engages. */
-(function(){
-  var st = null, swAnimB = false;
-  function neighborFor(dir){
-    if(!currentTab) return null;
-    var j = TABS.indexOf(currentTab) + dir;
-    if(j < 0 || j >= TABS.length) return null;
-    if(tabHeld(TABS[j])) return null; /* PARTIAL HOLD (v3.4.1): 非表示タブへはスワイプでも覗かせない */
-    return TABS[j];
-  }
-  function paneFor(t){
-    var pane = document.createElement('main');
-    pane.className = 'vt-fixed';
-    pane.style.zIndex = '24';
-    var head = document.createElement('div');
-    head.className = 'chapter-head';
-    head.innerHTML = '<h2 class="ch-title">' + esc(TAB_NAMES[t]) + '</h2>';
-    pane.appendChild(head);
-    var grid = document.createElement('div');
-    grid.className = 'grid compact';
-    grid.innerHTML = gridHTMLForTab(t);
-    pane.appendChild(grid);
-    return pane;
-  }
-  document.addEventListener('touchstart', function(e){
-    if(detailOpen || notifOpen || vtBusy || swAnimB || st || e.touches.length !== 1) return;
-    if(!currentTab) return; /* only tab pages swipe between tabs */
-    if(listView.classList.contains('hidden')) return;
-    if(e.target && e.target.closest && (e.target.closest('header.top') || e.target.closest('.bizbackbar') || e.target.closest('#pillnav') || e.target.closest('#tabSettings') || e.target.closest('input, textarea, select'))) return;
-    var t = e.touches[0];
-    st = { sx: t.clientX, sy: t.clientY, dx: 0, dy: 0, engaged: false, dead: false, dir: 0, nb: null, pane: null, pdx: 0, lastX: t.clientX, lastT: Date.now(), vx: 0, y: window.scrollY || 0 };
-  }, { passive: true });
-  document.addEventListener('touchmove', function(e){
-    if(!st) return;
-    var t = e.touches[0];
-    st.dx = t.clientX - st.sx;
-    st.dy = t.clientY - st.sy;
-    var now = Date.now(), dt = now - st.lastT;
-    if(dt > 0){ st.vx = (t.clientX - st.lastX) / dt; st.lastX = t.clientX; st.lastT = now; }
-    if(!st.engaged){
-      if(Math.abs(st.dx) > 12 && Math.abs(st.dx) > Math.abs(st.dy) * 1.25){
-        if(!st.dead){
-          var dir = st.dx < 0 ? 1 : -1;
-          var nb = neighborFor(dir);
-          if(nb){ st.dir = dir; st.nb = nb; engageTabS(); }
-          else st.dead = true; /* the ends stop */
-        }
-      }
-      else if(Math.abs(st.dy) > 14 && Math.abs(st.dy) >= Math.abs(st.dx)){ st = null; return; }
-      else return;
-    }
-    if(st.engaged) paintTabS();
-  }, { passive: true });
-  function engageTabS(){
-    var H = hdrH();
-    st.pane = paneFor(st.nb);
-    st.pane.style.top = H + 'px';
-    st.pane.style.height = 'calc(100dvh - ' + H + 'px)';
-    document.body.appendChild(st.pane);
-    listView.classList.add('vt-fixed');
-    listView.style.top = (H - st.y) + 'px';
-    listView.style.height = '100dvh';
-    listView.style.zIndex = '25';
-    document.body.classList.add('vt-run');
-    st.engaged = true;
-    paintTabS();
-  }
-  function paintTabS(){
-    var W = window.innerWidth || 1;
-    var pdx = st.dir > 0 ? Math.min(0, st.dx) : Math.max(0, st.dx);
-    st.pdx = pdx;
-    listView.style.transform = 'translateX(' + pdx + 'px)';
-    if(st.pane) st.pane.style.transform = 'translateX(' + (pdx + st.dir * W) + 'px)';
-  }
-  document.addEventListener('touchend', function(){
-    if(!st) return;
-    var s = st; st = null;
-    if(!s.engaged) return;
-    suppressNextClick();
-    var W = window.innerWidth || 1;
-    var commit = s.dir > 0 ? (s.dx < -W * 0.35 || (s.dx < -56 && s.vx < -0.3))
-                           : (s.dx >  W * 0.35 || (s.dx >  56 && s.vx >  0.3));
-    finishTabS(s, commit);
-  }, { passive: true });
-  document.addEventListener('touchcancel', function(){
-    if(st && st.engaged){ var s = st; st = null; finishTabS(s, false); }
-    else st = null;
-  }, { passive: true });
-  function finishTabS(s, commit){
-    swAnimB = true;
-    var W = window.innerWidth || 1;
-    var pdx = s.pdx || 0;
-    var dur = commit ? 240 : 200;
-    var al = listView.animate([{ transform: 'translateX(' + pdx + 'px)' }, { transform: 'translateX(' + (commit ? -s.dir * (W + 24) : 0) + 'px)' }], { duration: dur, easing: VT_EASE });
-    var ap = s.pane ? s.pane.animate([{ transform: 'translateX(' + (pdx + s.dir * W) + 'px)' }, { transform: 'translateX(' + (commit ? 0 : s.dir * W) + 'px)' }], { duration: dur, easing: VT_EASE }) : null;
-    var done = false;
-    function teardown(){
-      if(done) return;
-      done = true;
-      try{ al.cancel(); }catch(e){}
-      try{ if(ap) ap.cancel(); }catch(e){}
-      if(s.pane && s.pane.parentNode) s.pane.parentNode.removeChild(s.pane);
-      listView.classList.remove('vt-fixed');
-      listView.style.top = ''; listView.style.height = ''; listView.style.zIndex = ''; listView.style.transform = '';
-      document.body.classList.remove('vt-run');
-      swAnimB = false;
-      if(commit){
-        setTab(s.nb);
-        window.scrollTo(0, 0);
-        requestAnimationFrame(function(){ window.scrollTo(0, 0); });
-        setTimeout(function(){ window.scrollTo(0, 0); }, 120);
-        ensurePillAnchor(true);
-      } else {
-        window.scrollTo(0, s.y || 0);
-      }
-    }
-    al.onfinish = teardown;
-    setTimeout(teardown, 420);
-  }
-})();
-
+/* tab swipe — 廃止（v3.6.2、本人の指示 2026-11-21 17:51）：
+   「ガタガタする。この最初の画面ではスライドは廃止しよう。
+   この画面ではピルタブの操作がメイン」——タブの一覧画面では
+   タブ間スワイプ（指に追随する横スライド）を取り除いた。タブの
+   切替は下のピルタブを押す操作だけで、スライド無しに即時に
+   切り替わる（goTab／setTab の従来の動き）。詳細画面の
+   グループスワイプと、木を潜る時の左端スワイプの戻りは対象
+   外で、下のハンドラ群に現行のまま残っている。 */
 /* biz tree edge back (v3.6.0): while the business tab is dived
    into (depth 1 or 2), a left-edge drag to the right climbs one
    level — the same gesture the detail screens use to go back.
