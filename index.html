@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.7.0">
+<meta name="app-version" content="3.8.0">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -947,7 +947,7 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.7.0';
+var APP_VERSION = '3.8.0';
 /* PARTIAL HOLD (v3.4.1〜、v3.5.0 で範囲を変更): 本人の段階指示で
    表示範囲を絞った状態。目次（ホーム/章ビュー）は廃止のまま。
    v3.5.0 の範囲：ヘッダー（Busilabo＋件数・バージョン・ベル・
@@ -976,7 +976,17 @@ var APP_VERSION = '3.7.0';
    3枚だけ）。詳細が開くビジネス系の部は appbiz と store の
    2つだけ。他5事業（affiliate／digital／story／makefun／
    note）と bizlist は、データは保持したまま表示から外した
-   （secHeld で閉じ、ディープリンクも開かない）。 */
+   （secHeld で閉じ、ディープリンクも開かない）。
+   v3.8.0 の範囲変更（本人の決定 2026-11-21 19:24–19:30：
+   本軸はアプリ事業と海外向けデジタル商品（海外ノート）の
+   2本）：ビジネスタブの最初の画面は2枚のカード（アプリ事
+   業／海外ノート）に戻し、それぞれ潜れる形にした。アプリ
+   事業を押すと v3.7.0 の3枚（始め方ステップ／図鑑アプリ／
+   ストア参入）が深さ1に出る。海外ノートは digital（海外向
+   けデジタル商品）の詳細を開く——v3.7.0 で表示から外した
+   digital を再表示し、詳細も開く。他の非表示セクション
+   （affiliate／story／makefun／note／bizlist）は引き続き
+   表示しない。木の定義と遷移は bizLevelHTML の節。 */
 var PARTIAL_HOLD = true;
 var HOLD_TABS = {};
 function tabHeld(t){ return PARTIAL_HOLD && !!HOLD_TABS[t]; }
@@ -984,8 +994,12 @@ function tabHeld(t){ return PARTIAL_HOLD && !!HOLD_TABS[t]; }
    のビジネス系の部と、マネー／アートの部は引き続き閉じている
    v3.7.0: 本丸をアプリ事業に決めたため、詳細が開くのは
    appbiz と store だけになった。他5事業の部はデータ保持の
-   まま閉じている（BIZ_LEAF から外す＝secHeld で閉じる） */
-var BIZ_LEAF = { appbiz: true, store: true };
+   まま閉じている（BIZ_LEAF から外す＝secHeld で閉じる）
+   v3.8.0: 本軸が2本（アプリ事業＋海外ノート）になったため、
+   digital（海外向けデジタル商品）の詳細も開く。他の非表示
+   セクション（affiliate／story／makefun／note／bizlist）は
+   引き続き閉じている */
+var BIZ_LEAF = { appbiz: true, store: true, digital: true };
 function secHeld(sec){
   if(!PARTIAL_HOLD) return false;
   var t = secTab(sec);
@@ -1579,12 +1593,14 @@ function chapterSections(ch){
    アートビジネスは新規の4部だけ。
    v3.7.0: ビジネスで見えるのはアプリ事業の2部（appbiz／store）
    だけになった（最初の画面のカード3枚のうち、始め方ステップ
-   は appbiz の先頭グループへの葉なので部としては2件）。 */
+   は appbiz の先頭グループへの葉なので部としては2件）。
+   v3.8.0: 本軸2本に合わせて digital も見える範囲に入り、
+   ビジネスは3件（appbiz／store／digital）。 */
 function secListVisible(sec){
   if(!PARTIAL_HOLD) return true;
   var t = secTab(sec);
   if(tabHeld(t)) return false;
-  if(t === 'business') return sec.id === 'appbiz' || sec.id === 'store';
+  if(t === 'business') return sec.id === 'appbiz' || sec.id === 'store' || sec.id === 'digital';
   if(t === 'money') return sec.id === 'literacy' || sec.id === 'assets';
   if(t === 'art') return sec.id === 'demand' || sec.id === 'narrative' || sec.id === 'workforms' || sec.id === 'artindustry';
   return true;
@@ -1787,52 +1803,88 @@ function gridHTMLForTab(t){
    6事業のカードを組み立てる関数）は v3.7.0 で廃止した。事業
    リストの解体で bizlist を描画する箇所は無くなったため。
    bizlist のデータ自体は保持している（表示から外しただけ）。 */
-/* ---------- v3.7.0: ビジネスタブはアプリ事業だけ ----------
-   v3.6.0〜v3.6.4 の「潜っていくカードの木」（事業リスト→
-   6事業→アプリ事業の下の単位）は、本人の決定（2026-11-21
-   18:53「手付かずの事業増やしっぱなしではダメ。事業リスト
-   を解体してアプリ事業だけ残そう。こいつで本気で行く」）で
-   解体した。ビジネスタブの最初の画面＝アプリ事業の中身その
-   もの。カードは旧・深さ2の3枚をそのまま、名前のみ・図鑑
-   サイズタイルで並べる：
-     始め方ステップ … appbiz の先頭グループへの直行葉
-       （data-bizgroup、openBizGroup）
-     図鑑アプリ … appbiz の詳細を開く（data-open）
-     ストア参入 … store の詳細を開く（data-open）
-   詳細・グループ内容からの戻りはこの画面に着地する（旧
-   depth への着地は無い）。他5事業（affiliate／digital／
-   story／makefun／note）と bizlist は、データは保持したま
-   ま表示とディープリンクから外した（BIZ_LEAF／secHeld／
-   secListVisible 側で閉じている）。
-   bizDepth は深さに連動していた各所（setTab／openDetail／
-   boot のディープリンク調整）の互換のため 0 固定で残す。 */
+/* ---------- v3.8.0: ビジネスタブは本軸2本のカードの木 ----------
+   v3.6.0〜v3.6.4 の「潜っていくカードの木」は v3.7.0 で解体
+   し、ビジネスタブの最初の画面＝アプリ事業の中身そのものに
+   した（本人の決定 2026-11-21 18:53）。v3.8.0 は本人の決定
+   （2026-11-21 19:24–19:30「本軸はアプリと海外ノート」）で、
+   最初の画面を2枚のカードに戻し、それぞれ潜れる形にした：
+     深さ0 … アプリ事業（潜る節、data-biznav）
+             海外ノート（digital の詳細を開く葉、data-open。
+             カードの表示名は「海外ノート」。セクション名
+             「海外向けデジタル商品」そのものは変えない）
+     深さ1 … アプリ事業の中身（v3.7.0 の最初の画面の3枚）：
+             始め方ステップ … appbiz の先頭グループへの直行葉
+               （data-bizgroup、openBizGroup）
+             図鑑アプリ … appbiz の詳細を開く（data-open）
+             ストア参入 … store の詳細を開く（data-open）
+   カードは全段とも名前のみ・図鑑サイズタイル。戻るは1段ず
+   つ：digital の詳細→深さ0、appbiz／store の詳細→深さ1、
+   深さ1→深さ0（戻るバー「‹ 戻る」／左端スワイプ）。詳細から
+   の戻り着地は openDetail／boot が bizParentDepth で深さを
+   合わせる。他の非表示セクション（affiliate／story／
+   makefun／note）と bizlist は、データは保持したまま引き続
+   き表示とディープリンクから外している（BIZ_LEAF／secHeld
+   ／secListVisible 側で閉じている）。 */
 var bizDepth = 0;
 function bizLevelHTML(){
-  return '<figure class="work" data-bizgroup="appbiz" tabindex="0" role="button" aria-label="始め方ステップ">' +
-    '<figcaption><div class="nm">始め方ステップ</div></figcaption></figure>' +
-    '<figure class="work" data-open="appbiz" tabindex="0" role="button" aria-label="図鑑アプリ">' +
-    '<figcaption><div class="nm">図鑑アプリ</div></figcaption></figure>' +
-    '<figure class="work" data-open="store" tabindex="0" role="button" aria-label="ストア参入">' +
-    '<figcaption><div class="nm">ストア参入</div></figcaption></figure>';
+  if(bizDepth === 1){
+    return '<figure class="work" data-bizgroup="appbiz" tabindex="0" role="button" aria-label="始め方ステップ">' +
+      '<figcaption><div class="nm">始め方ステップ</div></figcaption></figure>' +
+      '<figure class="work" data-open="appbiz" tabindex="0" role="button" aria-label="図鑑アプリ">' +
+      '<figcaption><div class="nm">図鑑アプリ</div></figcaption></figure>' +
+      '<figure class="work" data-open="store" tabindex="0" role="button" aria-label="ストア参入">' +
+      '<figcaption><div class="nm">ストア参入</div></figcaption></figure>';
+  }
+  return '<figure class="work" data-biznav="appbiz" tabindex="0" role="button" aria-label="アプリ事業">' +
+    '<figcaption><div class="nm">アプリ事業</div></figcaption></figure>' +
+    '<figure class="work" data-open="digital" tabindex="0" role="button" aria-label="海外ノート">' +
+    '<figcaption><div class="nm">海外ノート</div></figcaption></figure>';
 }
 /* 葉の詳細を直接開いたとき（ディープリンク・通知・popstate）
-   の戻り先。v3.7.0 では appbiz／store ともビジネスタブの最初
-   の画面が戻り先なので 0。葉でない部は -1 */
+   の戻り先の深さ。appbiz／store は深さ1、digital は深さ0。
+   葉でない部は -1 */
 function bizParentDepth(id){
-  if(id === 'appbiz' || id === 'store') return 0;
+  if(id === 'appbiz' || id === 'store') return 1;
+  if(id === 'digital') return 0;
   return -1;
 }
+/* 段の移動（潜る／上がる）。描き直したグリッドは移動方向か
+   ら軽く滑り込ませる（詳細のグループカードと同じ入り方） */
+function bizGridIn(dir){
+  var g = $('tabGrid');
+  if(!g || !g.animate || reducedMotion()) return;
+  g.animate([{ opacity: 0, transform: 'translateX(' + (dir > 0 ? 36 : -36) + 'px)' }, { opacity: 1, transform: 'translateX(0)' }], { duration: 180, easing: 'ease-out' });
+}
+function bizDive(){
+  if(bizDepth !== 0) return;
+  bizDepth = 1;
+  renderTabGrid();
+  bizGridIn(1);
+}
+function bizUp(){
+  if(bizDepth <= 0) return;
+  bizDepth = 0;
+  renderTabGrid();
+  bizGridIn(-1);
+}
 /* タブ画面の戻るバー（PARTIAL HOLD の CSS で隠している）は、
-   木を潜る段取りが無くなったのでビジネスタブでも出し直さな
-   い（他のタブと同じ扱い） */
+   木を潜っている間（ビジネスタブの深さ1）だけ出し直す。
+   ラベルは戻り先の段の名前——深さ0の画面は本軸2本の一覧で
+   単独の名前が無いため「‹ 戻る」とする */
 function renderBizBack(){
   var bar = $('tabBackBtn').parentNode;
-  bar.style.removeProperty('display');
+  if(PARTIAL_HOLD && currentTab === 'business' && bizDepth > 0){
+    $('tabBackBtn').textContent = '‹ 戻る';
+    bar.style.setProperty('display', 'flow-root', 'important');
+  } else {
+    bar.style.removeProperty('display');
+  }
 }
 function renderTabGrid(){
   if(!currentTab) return;
   if(tabHeld(currentTab)){ $('tabGrid').innerHTML = ''; renderBizBack(); return; } /* PARTIAL HOLD: 非表示タブのカードは作らない */
-  if(PARTIAL_HOLD && currentTab === 'business'){ $('tabGrid').innerHTML = bizLevelHTML(); renderBizBack(); return; } /* v3.7.0: ビジネスはアプリ事業の3枚だけを描く */
+  if(PARTIAL_HOLD && currentTab === 'business'){ $('tabGrid').innerHTML = bizLevelHTML(); renderBizBack(); return; } /* v3.8.0: ビジネスは bizDepth の段を描く（深さ0＝本軸2枚／深さ1＝アプリ事業の3枚） */
   $('tabGrid').innerHTML = gridHTMLForTab(currentTab);
   renderBizBack();
   if(currentTab === 'other') renderSettings();
@@ -1846,7 +1898,7 @@ function setTab(t){
   currentTab = t;
   currentChapter = null;
   pillSel = t;
-  if(t === 'business') bizDepth = 0; /* v3.7.0: bizDepth は 0 固定（木の解体後も互換のため残置） */
+  if(t === 'business') bizDepth = 0; /* v3.8.0: ビジネスタブに入り直したら木は深さ0（本軸2枚）に戻る */
   applyListChrome();
   renderCount();
   renderTabGrid();
@@ -1872,6 +1924,9 @@ function goTab(t){
   openTab(t);
 }
 $('tabBackBtn').addEventListener('click', function(){
+  /* v3.8.0: ビジネスタブで木を潜っている間は、バーは1段上が
+     るためのもの（renderBizBack が出し直している間だけ有効） */
+  if(PARTIAL_HOLD && currentTab === 'business' && bizDepth > 0){ bizUp(); return; }
   showTOC();
 });
 $('pillrail').addEventListener('click', function(e){
@@ -1997,9 +2052,9 @@ function openDetail(id, push){
   if(secHeld(sec)) return; /* PARTIAL HOLD: 閉じている部は開かない（マネー／アートの部、アプリ事業以外のビジネス系の部、非表示タブの部） */
   /* v3.6.0: 葉の詳細を直接開いたとき（ディープリンク・通知・
      内部リンク）は、戻り先が親の段になるよう深さを合わせて
-     から開く。v3.7.0 では bizParentDepth が 0 を返すため実質
-     無動作（戻り先は常にビジネスタブの最初の画面）。既に詳細
-     が開いている間の横移動では裏の一覧を動かさない */
+     から開く。v3.8.0 の親の段は bizParentDepth のとおり
+     （appbiz／store→深さ1、digital→深さ0）。既に詳細が開い
+     ている間の横移動では裏の一覧を動かさない */
   if(PARTIAL_HOLD && currentTab === 'business' && !detailOpen){
     var pd = bizParentDepth(id);
     if(pd >= 0 && pd !== bizDepth){ bizDepth = pd; renderTabGrid(); }
@@ -2056,14 +2111,24 @@ document.addEventListener('keydown', function(e){
   var open = e.target.closest ? e.target.closest('[data-open]') : null;
   if(open){ e.preventDefault(); openDetail(open.getAttribute('data-open'), true); }
 });
-/* v3.6.0 の data-biznav（木の節カード＝潜る）ハンドラは
-   v3.7.0 で廃止した。木の解体で潜るカード自体が無くなり、
-   data-biznav を持つ要素はもう描画されない。 */
-/* v3.6.4: グループ直開きの葉（ビジネスタブ最初の画面の先頭
+/* v3.8.0: data-biznav（木の節カード＝潜る）のハンドラを復活
+   させた（v3.7.0 で木の解体とともに外したもの）。深さ0の
+   「アプリ事業」カードだけが data-biznav を持ち、押すと
+   bizDive で深さ1（アプリ事業の中身）へ潜る */
+document.addEventListener('click', function(e){
+  var n = e.target.closest ? e.target.closest('[data-biznav]') : null;
+  if(n){ e.preventDefault(); bizDive(); }
+});
+document.addEventListener('keydown', function(e){
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  var n = e.target.closest ? e.target.closest('[data-biznav]') : null;
+  if(n){ e.preventDefault(); bizDive(); }
+});
+/* v3.6.4: グループ直開きの葉（アプリ事業の段＝深さ1の先頭
    「始め方ステップ」）。部の詳細を開いて、そのまま先頭グ
    ループの中身まで入る。戻るは通常の詳細と同じ段取り（中
-   身→グループのカード一覧→ビジネスタブの最初の画面）。対
-   象グループは常に先頭（index 0） */
+   身→グループのカード一覧→深さ1）。対象グループは常に先
+   頭（index 0） */
 function openBizGroup(id){
   openDetail(id, true);
   if(detailOpen && current === id) setDetailGroup(0, true);
@@ -3057,10 +3122,79 @@ document.addEventListener('click', function(e){
    切り替わる（goTab／setTab の従来の動き）。詳細画面の
    グループスワイプと、木を潜る時の左端スワイプの戻りは対象
    外で、下のハンドラ群に現行のまま残っている。 */
-/* biz tree edge back (v3.6.0 の左端スワイプで木を1段戻る
-   ハンドラ) は v3.7.0 で廃止した。木の解体で潜る段が無く
-   なったため。詳細画面の左端スワイプ戻りは別ハンドラで
-   従来どおり効く。 */
+/* biz tree edge back（v3.8.0 で復活。v3.6.0 の左端スワイプ
+   で木を1段戻るハンドラを、木の解体に合わせて v3.7.0 で外
+   したもの）：ビジネスタブの深さ1でのみ効く。左端（24px）
+   から右へ引くと一覧が指に追随し、詳細の端スワイプと同じ
+   閾値（幅35%か速いフリック）で1段上がる。深さ0と他タブ、
+   詳細表示中は無効で通常のスクロールになる。詳細画面の左
+   端スワイプ戻りは別ハンドラで従来どおり効く。 */
+(function(){
+  var st = null, anim = false;
+  var EDGE_W = 24;
+  function treeActive(){
+    return PARTIAL_HOLD && currentTab === 'business' && bizDepth > 0 &&
+      !detailOpen && !notifOpen && !vtBusy && !anim &&
+      !listView.classList.contains('hidden');
+  }
+  document.addEventListener('touchstart', function(e){
+    if(st || e.touches.length !== 1 || !treeActive()) return;
+    if(e.target && e.target.closest && (e.target.closest('header.top') || e.target.closest('.bizbackbar') || e.target.closest('#pillnav'))) return; /* header, the back bar and the pill bar keep their own gestures */
+    var t = e.touches[0];
+    st = { sx: t.clientX, sy: t.clientY, dx: 0, dy: 0, engaged: false, lastX: t.clientX, lastT: Date.now(), vx: 0 };
+  }, { passive: true });
+  document.addEventListener('touchmove', function(e){
+    if(!st) return;
+    var t = e.touches[0];
+    st.dx = t.clientX - st.sx;
+    st.dy = t.clientY - st.sy;
+    var now = Date.now(), dt = now - st.lastT;
+    if(dt > 0){ st.vx = (t.clientX - st.lastX) / dt; st.lastX = t.clientX; st.lastT = now; }
+    if(!st.engaged){
+      var horiz = Math.abs(st.dx) > 12 && Math.abs(st.dx) > Math.abs(st.dy) * 1.25;
+      if(horiz && st.dx > 0 && st.sx <= EDGE_W){ st.engaged = true; }
+      else if(Math.abs(st.dy) > 14 && Math.abs(st.dy) >= Math.abs(st.dx)){ st = null; return; }
+      else return;
+    }
+    listView.style.transform = 'translateX(' + Math.max(0, st.dx) + 'px)';
+  }, { passive: true });
+  function finishTree(commit){
+    var s = st; st = null;
+    if(!s || !s.engaged) return;
+    suppressNextClick(); /* the touch's own click must not land on the level it reveals */
+    anim = true;
+    var from = Math.max(0, s.dx);
+    if(!commit){
+      var ab = listView.animate([{ transform: 'translateX(' + from + 'px)' }, { transform: 'translateX(0px)' }], { duration: 180, easing: VT_EASE });
+      var doneB = false;
+      var tdB = function(){ if(doneB) return; doneB = true; try{ ab.cancel(); }catch(e){} listView.style.transform = ''; anim = false; };
+      ab.onfinish = tdB;
+      setTimeout(tdB, 300);
+      return;
+    }
+    var W = window.innerWidth || 1;
+    var ao = listView.animate([{ transform: 'translateX(' + from + 'px)' }, { transform: 'translateX(' + (W + 24) + 'px)' }], { duration: 200, easing: VT_EASE });
+    var done = false;
+    function td(){
+      if(done) return;
+      done = true;
+      try{ ao.cancel(); }catch(e){}
+      listView.style.transform = '';
+      bizDepth = 0;
+      renderTabGrid();
+      if(listView.animate && !reducedMotion()) listView.animate([{ opacity: 0, transform: 'translateX(-36px)' }, { opacity: 1, transform: 'translateX(0)' }], { duration: 180, easing: 'ease-out' });
+      anim = false;
+    }
+    ao.onfinish = td;
+    setTimeout(td, 320);
+  }
+  document.addEventListener('touchend', function(){
+    if(!st) return;
+    var W = window.innerWidth || 1;
+    finishTree(st.dx > W * 0.35 || (st.dx > 56 && st.vx > 0.3));
+  }, { passive: true });
+  document.addEventListener('touchcancel', function(){ finishTree(false); }, { passive: true });
+})();
 
 /* ============================================================
    v3.0.0: the zukan app's mechanism layer, ported wholesale —
@@ -3844,13 +3978,14 @@ var initial = (location.hash || '').match(/^#\/(\w+)$/);
 if(PARTIAL_HOLD){
   /* v3.5.0: 開いた画面はビジネスタブ＋ヘッダー＋ピルバー。
      ディープリンクで開くのは、詳細が開く部だけ。
-     v3.7.0: ビジネスタブの最初の画面はアプリ事業の3枚。 */
+     v3.8.0: ビジネスタブの最初の画面は本軸2枚（アプリ事業／
+     海外ノート）。 */
   setTab('business');
   if(initial && sectionById(initial[1]) && !secHeld(sectionById(initial[1]))){
     setTab(secTab(sectionById(initial[1])));
     /* v3.6.0: 葉へのディープリンクは、戻り先が親の段になる
-       よう深さを合わせておく。v3.7.0 では bizParentDepth が
-       0 を返すため無動作（戻り先はビジネスタブの最初の画面） */
+       よう深さを合わせておく。v3.8.0 では appbiz／store の
+       親は深さ1（digital の親は深さ0で無動作） */
     if(secTab(sectionById(initial[1])) === 'business'){
       var bpd = bizParentDepth(initial[1]);
       if(bpd > 0){ bizDepth = bpd; renderTabGrid(); }
