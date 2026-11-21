@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.4.1">
+<meta name="app-version" content="3.5.0">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -461,25 +461,17 @@ button.tocrow:active{opacity:.6;}
 #viewList{padding-bottom:104px;}
 #viewNotif{padding-bottom:104px;}
 
-/* ===== PARTIAL HOLD (v3.4.1, 2026-11-21) =====
-   本人の段階指示で表示範囲を絞った状態。v3.4.0 の RESET HOLD
-   （全表示停止）を置き換える：目次（ホーム/章ビュー）は廃止、
-   ビジネス／アートビジネス／マネーリテラシーの中身は非表示、
-   辞典とその他は従来どおり表示・利用できる。データ（Drive の
-   bizplan.json／seed／内蔵シード）と同期には触っていない。
-   ここではヘッダー等の付随要素を隠すだけに留め、main は出す
-   （中身の出し分けは JS の PARTIAL_HOLD ガードが行う）。
-   タブページの「‹ 目次」バーは、行き先の目次が廃止されたので
-   一緒に隠す。戻し方（SETUP.md にも記載）：
+/* ===== PARTIAL HOLD (v3.4.1〜、v3.5.0 で範囲を変更) =====
+   本人の段階指示で表示範囲を絞った状態。v3.5.0 ではヘッダー
+   （Busilabo＋件数・バージョン札・通知ベル・同期バー）を元に
+   戻したので、ここで隠すのはタブページの「‹ 目次」バーだけ
+   （行き先の目次が廃止されているため）。中身の出し分けは JS
+   の PARTIAL_HOLD ガードが行う。データ（Drive の bizplan.json
+   ／seed／内蔵シード）と同期には触っていない。戻し方
+   （SETUP.md にも記載）：
      1. この CSS ブロックを削除する
      2. <body class="partial-hold"> の class を外す
      3. JS の PARTIAL_HOLD を false にする（遷移ガードが外れる） */
-body.partial-hold header.top,
-body.partial-hold #toast,
-body.partial-hold #verBadge,
-body.partial-hold #veil{display:none !important;}
-body.partial-hold main{padding-top:env(safe-area-inset-top, 0px);}
-body.partial-hold .bizbackbar{top:env(safe-area-inset-top, 0px);}
 body.partial-hold #tabBody .bizbackbar{display:none !important;}
 
 /* v3.0.0: section cards carry NO image face (his call, 2026-11-19:
@@ -937,18 +929,25 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.4.1';
-/* PARTIAL HOLD (v3.4.1): 本人の段階指示で表示範囲を絞った状態。
-   目次（ホーム/章ビュー）は廃止し、HOLD_TABS の中身は出さない。
-   辞典とその他は従来どおり使える。遷移系の入口（setChapter /
-   setTab / openDetail / スワイプ）と boot の初期描画・ディープ
-   リンクがこのフラグで出し分ける。データと同期は通常どおり
-   動く。戻すときはこの値を false にし、body の partial-hold
-   class と CSS の PARTIAL HOLD ブロックを外す（SETUP.md 参照）。 */
+var APP_VERSION = '3.5.0';
+/* PARTIAL HOLD (v3.4.1〜、v3.5.0 で範囲を変更): 本人の段階指示で
+   表示範囲を絞った状態。目次（ホーム/章ビュー）は廃止のまま。
+   v3.5.0 の範囲：ヘッダー（Busilabo＋件数・バージョン・ベル・
+   同期）は元通り。ビジネスタブは事業リストのカードだけを一覧
+   として出す。マネーリテラシータブはお金の常識と資産フェーズ
+   の2つだけを一覧に出す。アートビジネスタブは新規の4部（需要
+   と供給／物語／作品形態／アートビジネス業界の仕組み）だけを
+   一覧に出す。3タブとも、部の詳細はまだ開かない（secHeld が
+   ビジネス／マネーリテラシー／アートビジネス側の部を全部閉じ
+   る）。辞典とその他は従来どおり使える（詳細も開く）。目標の
+   帯はタブ画面の上部に出し、押すとピッカー（テーマと目標）が
+   開く。データと同期は通常どおり動く。戻すときはこの値を
+   false にし、body の partial-hold class と CSS の PARTIAL
+   HOLD ブロックを外す（SETUP.md 参照）。 */
 var PARTIAL_HOLD = true;
-var HOLD_TABS = { business: true, art: true, money: true };
+var HOLD_TABS = {};
 function tabHeld(t){ return PARTIAL_HOLD && !!HOLD_TABS[t]; }
-function secHeld(sec){ return PARTIAL_HOLD && tabHeld(secTab(sec)); }
+function secHeld(sec){ return PARTIAL_HOLD && (tabHeld(secTab(sec)) || secTab(sec) === 'business' || secTab(sec) === 'money' || secTab(sec) === 'art'); }
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
@@ -992,7 +991,7 @@ var SEED = {
    },
    {
     "amt": "月83万円",
-    "what": "年換算で約1,000万円＝最終目標。拠点を東京か京都に置く選択が現実になる"
+    "what": "年換算で約1,000万円。拠点を東京か京都に置く選択が現実になる"
    }
   ],
   "chips": [
@@ -1014,13 +1013,13 @@ var SEED = {
     "label": "最終目標",
     "main": false,
     "note": "画家として活動し、金の不安がない状態",
-    "numHtml": "年1,000<small>万円</small>"
+    "numHtml": "1<small>億円</small>"
    }
   ],
   "sources": "出典：個人アートビジネス全体設計（2026-11-08）／稼ぎプロジェクト全体の流れ（2026-11-04）／将来逆算マップ（2026-11-08）／調査統合 結論まとめ（2026-11-11）／アプリ収益ノウハウ 翔万版リスト（2026-11-11）／図鑑事業と特許 決定事項（2026-11-19）／物語のある物 物販テスト 決定事項（2026-11-19）",
   "theme": "一文無しから富を築く",
   "themeSubHtml": "最初に築くのは金ではなく、金に変わる資産。順番は固定されている——<strong>労働 → 種銭 → 小さな仕組み → 仕組みの複利</strong>。いまは「労働→種銭」の段を登り切り、仕組みの設計図が引けた段階にある。",
-  "updated_at": "2026-11-21T16:44:08+09:00"
+  "updated_at": "2026-11-21T17:18:52+09:00"
  },
  "sections": [
   {
@@ -1344,9 +1343,65 @@ var SEED = {
    "themeClass": "t-dict",
    "title": "ビジネス用語辞典",
    "updated_at": "2026-11-21T16:02:27+09:00"
+  },
+  {
+   "badgeClass": "",
+   "badgeText": "",
+   "char": "需",
+   "html": "<div class=\"detail-head\"><h2>需要と供給</h2></div>",
+   "id": "demand",
+   "meta": "",
+   "num": "24",
+   "tab": "ch3",
+   "tag": "",
+   "themeClass": "t-art",
+   "title": "需要と供給",
+   "updated_at": "2026-11-21T17:21:58+09:00"
+  },
+  {
+   "badgeClass": "",
+   "badgeText": "",
+   "char": "語",
+   "html": "<div class=\"detail-head\"><h2>物語</h2></div>",
+   "id": "narrative",
+   "meta": "",
+   "num": "25",
+   "tab": "ch3",
+   "tag": "",
+   "themeClass": "t-art",
+   "title": "物語",
+   "updated_at": "2026-11-21T17:21:58+09:00"
+  },
+  {
+   "badgeClass": "",
+   "badgeText": "",
+   "char": "作",
+   "html": "<div class=\"detail-head\"><h2>作品形態</h2></div>",
+   "id": "workforms",
+   "meta": "",
+   "num": "26",
+   "tab": "ch3",
+   "tag": "",
+   "themeClass": "t-art",
+   "title": "作品形態",
+   "updated_at": "2026-11-21T17:21:58+09:00"
+  },
+  {
+   "badgeClass": "",
+   "badgeText": "",
+   "char": "界",
+   "html": "<div class=\"detail-head\"><h2>アートビジネス業界の仕組み</h2></div>",
+   "id": "artindustry",
+   "meta": "",
+   "num": "27",
+   "tab": "ch3",
+   "tag": "",
+   "themeClass": "t-art",
+   "title": "アートビジネス業界の仕組み",
+   "updated_at": "2026-11-21T17:21:58+09:00"
   }
  ],
- "updatedAt": "2026-11-21T16:44:08+09:00",
+ "updatedAt": "2026-11-21T17:21:58+09:00",
  "version": 1
 };
 
@@ -1397,8 +1452,9 @@ function renderHome(){
      checkpoint he picked in the theme detail (amount + what
      changes), defaulting to the ladder's first step; the
      年600万円 goal is a 節目 and lives in the detail. The right
-     side keeps 最終目標 年1,000万円, which is the ladder's own
-     final step. updateStripGoal() fills the left block. */
+     side keeps the 最終目標 (1億円 since 2026-11-21, his call;
+     it lives in home.goals, past the ladder's own final step).
+     updateStripGoal() fills the left block. */
   var fin = (DATA.home.goals || [])[1] || { label: '最終目標', numHtml: '' };
   $('homeGoals').innerHTML =
     '<span class="hs-goal hs-goal-g"><span class="hs-gl">目標</span>' +
@@ -1457,9 +1513,22 @@ function secChapter(sec){
 function chapterSections(ch){
   return DATA.sections.filter(function(s){ return secChapter(s) === ch; });
 }
+/* v3.5.0: 件数は「見えている範囲」だけを数える（隠している部は
+   数えない）。ビジネスで見えるのは事業リストだけ、マネーリテ
+   ラシーはお金の常識と資産フェーズだけ、アートビジネスは新規
+   の4部だけ。 */
+function secListVisible(sec){
+  if(!PARTIAL_HOLD) return true;
+  var t = secTab(sec);
+  if(tabHeld(t)) return false;
+  if(t === 'business') return sec.id === 'bizlist';
+  if(t === 'money') return sec.id === 'literacy' || sec.id === 'assets';
+  if(t === 'art') return sec.id === 'demand' || sec.id === 'narrative' || sec.id === 'workforms' || sec.id === 'artindustry';
+  return true;
+}
 function renderCount(){
-  if(currentTab){ $('topcount').textContent = '全' + DATA.sections.length + '件 ・ ' + TAB_NAMES[currentTab] + ' ' + tabSections(currentTab).length + '件'; return; }
-  if(!currentChapter){ $('topcount').textContent = '全' + DATA.sections.length + '件'; return; }
+  if(currentTab){ $('topcount').textContent = '全' + DATA.sections.filter(secListVisible).length + '件 ・ ' + TAB_NAMES[currentTab] + ' ' + tabSections(currentTab).filter(secListVisible).length + '件'; return; }
+  if(!currentChapter){ $('topcount').textContent = '全' + DATA.sections.filter(secListVisible).length + '件'; return; }
   $('topcount').textContent = '全' + DATA.sections.length + '件 ・ ' + CHAPTER_NUMS[currentChapter] + ' ' + chapterSections(currentChapter).length + '件';
 }
 function renderTOC(){
@@ -1572,7 +1641,7 @@ function applyListChrome(){
   $('tocBody').hidden = mode !== 'toc';
   $('chapterBody').hidden = mode !== 'chapter';
   $('tabBody').hidden = mode !== 'tab';
-  $('homeHead').style.display = mode === 'toc' ? '' : 'none';
+  $('homeHead').style.display = (mode === 'toc' || mode === 'tab') ? '' : 'none'; /* v3.5.0: 目標の帯はタブ画面の上部にも出す */
   $('homeSources').style.display = mode === 'toc' ? '' : 'none';
   if(mode === 'chapter'){
     $('chapterNum').textContent = CHAPTER_NUMS[currentChapter];
@@ -1635,8 +1704,8 @@ document.addEventListener('click', function(e){
    re-points the list at the section's chapter. */
 var TABS = ['business', 'art', 'money', 'dict', 'other'];
 var TAB_NAMES = { business: 'ビジネス', art: 'アートビジネス', money: 'マネーリテラシー', dict: '辞典', other: 'その他' };
-var TAB_BY_ID = { bizlist: 'business', appbiz: 'business', affiliate: 'business', digital: 'business', story: 'business', makefun: 'business', note: 'business', lifecycle: 'business', forms: 'business', business: 'business', pipeline: 'business', pioneers: 'business', rules: 'business', ideas: 'business', pending: 'business', art: 'art', artforms: 'art', literacy: 'money', money: 'money', numbers: 'money', assets: 'money', dict: 'dict', dreams: 'other' };
-var TAB_ORDER = { business: ['bizlist', 'appbiz', 'affiliate', 'digital', 'story', 'makefun', 'note', 'lifecycle', 'forms', 'business', 'pipeline', 'pioneers', 'rules', 'ideas', 'pending'], art: ['art', 'artforms'], money: ['literacy', 'money', 'numbers', 'assets'], dict: ['dict'], other: ['dreams'] };
+var TAB_BY_ID = { bizlist: 'business', appbiz: 'business', affiliate: 'business', digital: 'business', story: 'business', makefun: 'business', note: 'business', lifecycle: 'business', forms: 'business', business: 'business', pipeline: 'business', pioneers: 'business', rules: 'business', ideas: 'business', pending: 'business', art: 'art', artforms: 'art', demand: 'art', narrative: 'art', workforms: 'art', artindustry: 'art', literacy: 'money', money: 'money', numbers: 'money', assets: 'money', dict: 'dict', dreams: 'other' };
+var TAB_ORDER = { business: ['bizlist', 'appbiz', 'affiliate', 'digital', 'story', 'makefun', 'note', 'lifecycle', 'forms', 'business', 'pipeline', 'pioneers', 'rules', 'ideas', 'pending'], art: ['demand', 'narrative', 'workforms', 'artindustry', 'art', 'artforms'], money: ['literacy', 'money', 'numbers', 'assets'], dict: ['dict'], other: ['dreams'] };
 function secTab(sec){ return (sec && TAB_BY_ID[sec.id]) || 'other'; }
 function tabSections(t){
   var mine = {};
@@ -1647,11 +1716,30 @@ function tabSections(t){
   return out;
 }
 function gridHTMLForTab(t){
-  return tabSections(t).map(function(sec){ return cardHTML(sec); }).join('');
+  var secs = tabSections(t);
+  if(PARTIAL_HOLD) secs = secs.filter(secListVisible); /* v3.5.0: 見えている部だけを一覧に出す */
+  return secs.map(function(sec){ return cardHTML(sec); }).join('');
+}
+/* v3.5.0: ビジネスタブの一覧は、事業リストのカードそのもの。
+   データ（bizlist の html）から .bizcards を取り出してそのまま
+   置く。カードのリンクはこの段階では外す——詳細はまだ開かない
+   （本人の指示「だけ」）。データ自体は変えない。 */
+function bizCardsHTML(){
+  var sec = sectionById('bizlist');
+  if(!sec) return '';
+  var doc = new DOMParser().parseFromString(sec.html || '', 'text/html');
+  var bc = doc.querySelector('.bizcards');
+  if(!bc) return '';
+  Array.prototype.forEach.call(bc.querySelectorAll('a.bizcard'), function(a){
+    a.removeAttribute('href');
+    a.removeAttribute('data-open-link');
+  });
+  return '<div style="grid-column:1/-1">' + bc.outerHTML + '</div>';
 }
 function renderTabGrid(){
   if(!currentTab) return;
-  if(tabHeld(currentTab)){ $('tabGrid').innerHTML = ''; return; } /* PARTIAL HOLD (v3.4.1): 非表示タブのカードは作らない */
+  if(tabHeld(currentTab)){ $('tabGrid').innerHTML = ''; return; } /* PARTIAL HOLD: 非表示タブのカードは作らない */
+  if(PARTIAL_HOLD && currentTab === 'business'){ $('tabGrid').innerHTML = bizCardsHTML(); return; } /* v3.5.0: ビジネスは事業リストのカードだけ */
   $('tabGrid').innerHTML = gridHTMLForTab(currentTab);
   if(currentTab === 'other') renderSettings();
 }
@@ -1809,7 +1897,7 @@ function slideForward(newEl, oldEl){
 function openDetail(id, push){
   var sec = sectionById(id);
   if(!sec || vtBusy) return;
-  if(secHeld(sec)) return; /* PARTIAL HOLD (v3.4.1): 非表示タブの部は開かない */
+  if(secHeld(sec)) return; /* PARTIAL HOLD: 閉じている部は開かない（ビジネス／マネーリテラシーの部と、非表示タブの部） */
   /* v3.2.1: the list behind the detail is left exactly as it
      was — a chapter page, a tab page or the TOC — so back
      returns to the side the reader came from. (Until v3.2.0
@@ -1878,7 +1966,8 @@ function homeDetailHTML(){
   return '<div class="detail-head"><h2>テーマと目標</h2></div>' + homeCardHTML();
 }
 function openHomeDetail(push){
-  if(PARTIAL_HOLD) return; /* PARTIAL HOLD (v3.4.1): ホーム（目次）は廃止 */
+  /* v3.5.0: 帯のタップでピッカー（テーマと目標）は開く。目次
+     （章ビュー）の廃止とは別の話なので、PARTIAL HOLD でも開く */
   if(vtBusy) return;
   if(detailOpen && current === HOME_ID) return;
   current = HOME_ID;
@@ -3698,8 +3787,9 @@ refreshBell();
 fetchChangelog();
 var initial = (location.hash || '').match(/^#\/(\w+)$/);
 if(PARTIAL_HOLD){
-  /* v3.4.1: 開いた画面はビジネス（非表示なので空白）＋ピルバー。
-     辞典・その他へのディープリンクだけは従来どおり開く。 */
+  /* v3.5.0: 開いた画面はビジネスタブ（事業リストのカード）＋
+     ヘッダー＋ピルバー。ディープリンクで開くのは、詳細が開く
+     部（辞典・その他）だけ。 */
   setTab('business');
   if(initial && sectionById(initial[1]) && !secHeld(sectionById(initial[1]))){
     setTab(secTab(sectionById(initial[1])));
