@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.6.0">
+<meta name="app-version" content="3.6.1">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -929,7 +929,7 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.6.0';
+var APP_VERSION = '3.6.1';
 /* PARTIAL HOLD (v3.4.1〜、v3.5.0 で範囲を変更): 本人の段階指示で
    表示範囲を絞った状態。目次（ホーム/章ビュー）は廃止のまま。
    v3.5.0 の範囲：ヘッダー（Busilabo＋件数・バージョン・ベル・
@@ -1739,12 +1739,15 @@ function gridHTMLForTab(t){
 /* v3.5.1: ビジネスタブの一覧は、他のタブと同じ標準カード
    （figure.work）で描く。本人の指摘「カード形式になってない」
    への対応——v3.5.0 は bizlist の専用パネル（.bizcard）を横長
-   のまま縦に積んでいた。中身は従来のカードデータのまま写す：
-   名前→.nm、1行説明→.yrs、常設／テスト枠→.cbadge（常設=now、
-   テスト枠=pending）。データ自体は変えない。
+   のまま縦に積んでいた。データ自体は変えない。
    v3.6.0：このカード列は木の深さ1になった。葉の5事業は
    data-open で各部の詳細を開き、アプリ事業だけは下の単位が
-   あるため data-biznav で深さ2へ潜る。 */
+   あるため data-biznav で深さ2へ潜る。
+   v3.6.1：本人の指示「表示するのは名前だけでいい。その下に
+   色々補足とか常設とか書いてあるけど読まないし意味ない」で、
+   木のカードは名前（.nm）だけを描く。カードデータの1行説明
+   （.bc-d）と状態（.status）はデータ側に残したまま、描画で
+   だけ出さない。他タブのカード（cardHTML）は従来どおり。 */
 function bizCardsHTML(){
   var sec = sectionById('bizlist');
   if(!sec) return '';
@@ -1756,8 +1759,6 @@ function bizCardsHTML(){
   Array.prototype.forEach.call(bc.querySelectorAll('a.bizcard'), function(a){
     var id = a.getAttribute('data-open-link') || (a.getAttribute('href') || '').replace('#/', '');
     var name = clean(a.querySelector('.bc-t'));
-    var desc = clean(a.querySelector('.bc-d'));
-    var status = clean(a.querySelector('.status'));
     if(!id || !name) return;
     /* v3.6.0: アプリ事業には下の単位（図鑑アプリ）があるので、
        そのカードは詳細ではなく「潜る」（data-biznav）。他の5事
@@ -1765,8 +1766,6 @@ function bizCardsHTML(){
     var attr = (id === 'appbiz') ? 'data-biznav="appbiz"' : 'data-open="' + esc(id) + '"';
     html += '<figure class="work" ' + attr + ' tabindex="0" role="button" aria-label="' + esc(name) + '">' +
       '<figcaption><div class="nm">' + esc(name) + '</div>' +
-      '<div class="yrs">' + esc(desc) + '</div>' +
-      (status ? '<div class="badgerow"><span class="cbadge ' + (status === '常設' ? 'now' : 'pending') + '">' + esc(status) + '</span></div>' : '') +
       '</figcaption></figure>';
   });
   return html;
@@ -1792,18 +1791,17 @@ function bizLevelHTML(){
   if(bizDepth === 1) return bizCardsHTML();
   if(bizDepth === 2){
     /* 図鑑アプリ：アプリ事業の下の単位。今はこれだけ（他の
-       アプリは将来ここに増える）。文面は appbiz 部の meta 由来 */
+       アプリは将来ここに増える）。v3.6.1：木のカードは名前
+       だけ（説明・バッジは描かない） */
     return '<figure class="work" data-open="appbiz" tabindex="0" role="button" aria-label="図鑑アプリ">' +
-      '<figcaption><div class="nm">図鑑アプリ</div>' +
-      '<div class="yrs">美術分野の受託と、他ジャンルの横展開</div>' +
-      '<div class="badgerow"><span class="cbadge now">常設</span></div></figcaption></figure>';
+      '<figcaption><div class="nm">図鑑アプリ</div></figcaption></figure>';
   }
   var sec = sectionById('bizlist');
   if(!sec) return '';
+  /* v3.6.1：深さ0のカードも名前だけ（.yrs の番号・タグと
+     .sub の補足は描かない） */
   return '<figure class="work" data-biznav="bizlist" tabindex="0" role="button" aria-label="' + esc(sec.title) + '">' +
-    '<figcaption><div class="nm">' + esc(sec.title) + '</div>' +
-    '<div class="yrs">' + esc(sec.num) + ' ・ ' + esc(sec.tag) + '</div>' +
-    '<div class="sub">' + esc(sec.meta) + '</div></figcaption></figure>';
+    '<figcaption><div class="nm">' + esc(sec.title) + '</div></figcaption></figure>';
 }
 function bizDive(node){
   var to = BIZ_KIDS[node];
