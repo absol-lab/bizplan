@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.3.0">
+<meta name="app-version" content="3.4.0">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -461,6 +461,20 @@ button.tocrow:active{opacity:.6;}
 #viewList{padding-bottom:104px;}
 #viewNotif{padding-bottom:104px;}
 
+/* ===== RESET HOLD (v3.4.0, 2026-11-21) =====
+   一旦リセット：下部のピルバーだけを残し、中身の表示を全て
+   止める。データ（Drive の bizplan.json／seed／内蔵シード）と
+   同期の仕組みには一切触っていない——止めているのは表示だけ。
+   戻し方（SETUP.md にも記載）：
+     1. この CSS ブロックを削除する
+     2. <body class="reset-hold"> の class を外す
+     3. JS の RESET_HOLD を false にする（遷移ガードが外れる） */
+body.reset-hold header.top,
+body.reset-hold main,
+body.reset-hold #toast,
+body.reset-hold #verBadge,
+body.reset-hold #veil{display:none !important;}
+
 /* v3.0.0: section cards carry NO image face (his call, 2026-11-19:
    「カードに写真いらない」). The zukan app's own no-photo manner is
    the collapsed .ph.noplate strip (58px / wide 72px / compact 40px)
@@ -838,7 +852,7 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 </style>
 </head>
-<body>
+<body class="reset-hold">
 <div id="veil" aria-hidden="true"></div>
 <div id="verBadge"></div>
 <header class="top">
@@ -916,12 +930,17 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.3.0';
+var APP_VERSION = '3.4.0';
+/* RESET HOLD (v3.4.0): true の間は中身を表示しない（ピルバー
+   だけ残る）。遷移系の入口（setChapter / setTab / goTab /
+   openDetail）と boot の初期描画がこのフラグで早期リターン
+   する。データと同期は通常どおり動く。戻すときはこの値を
+   false にし、body の reset-hold class と CSS の RESET HOLD
+   ブロックを外す（SETUP.md 参照）。 */
+var RESET_HOLD = true;
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
- "version": 1,
- "updatedAt": "2026-11-21T16:02:27+09:00",
  "home": {
   "checkpoints": [
    {
@@ -966,7 +985,7 @@ var SEED = {
    }
   ],
   "chips": [
-   "匿名（実写・顔出し・実名なし）",
+   "ハンドルで活動・顔は出さない・履歴の管理",
    "スマホのみで回す",
    "再現性と持続性が最優先",
    "生活費はバイト、事業は資産形成",
@@ -990,7 +1009,7 @@ var SEED = {
   "sources": "出典：個人アートビジネス全体設計（2026-11-08）／稼ぎプロジェクト全体の流れ（2026-11-04）／将来逆算マップ（2026-11-08）／調査統合 結論まとめ（2026-11-11）／アプリ収益ノウハウ 翔万版リスト（2026-11-11）／図鑑事業と特許 決定事項（2026-11-19）／物語のある物 物販テスト 決定事項（2026-11-19）",
   "theme": "一文無しから富を築く",
   "themeSubHtml": "最初に築くのは金ではなく、金に変わる資産。順番は固定されている——<strong>労働 → 種銭 → 小さな仕組み → 仕組みの複利</strong>。いまは「労働→種銭」の段を登り切り、仕組みの設計図が引けた段階にある。",
-  "updated_at": "2026-11-20T16:15:49+09:00"
+  "updated_at": "2026-11-21T16:44:08+09:00"
  },
  "sections": [
   {
@@ -1095,7 +1114,7 @@ var SEED = {
    "badgeClass": "",
    "badgeText": "",
    "char": "図",
-   "html": "<div class=\"detail-head\"><h2>アプリ事業</h2></div>\n        <p class=\"sec-lead\">図鑑アプリを金に変える事業。美術分野の受託と、他ジャンルの横展開——2つの顔の進め方と決まりを置く。</p>\n        <h3>アプリ事業―図鑑アプリ</h3>\n        <p class=\"sec-lead\">図鑑アプリの仕組み（エンジン）は分野を選ばない。金の変え方は、分野によって2つに分けることが決まった。</p>\n        <div class=\"branch2\">\n          <div class=\"b-src\">図鑑の仕組み（エンジン）</div>\n          <div class=\"b-stem\"></div>\n          <div class=\"b-bar\"></div>\n          <div class=\"b-cols\">\n            <div class=\"b-col art\"><span class=\"b-t\">美術分野</span><span class=\"b-v\">受託</span><span class=\"b-d\">画廊・画家・美術団体から構築を受ける</span></div>\n            <div class=\"b-col other\"><span class=\"b-t\">他ジャンル</span><span class=\"b-v\">横展開</span><span class=\"b-d\">自前のネイティブアプリとしてストアに出す</span></div>\n          </div>\n        </div>\n        <div class=\"lanes\">\n          <div class=\"lane art\">\n            <h3>美術分野 ＝ 受託</h3>\n            <p>画廊・画家・美術団体などの「自分たちの図鑑が欲しいけど作れない」側から、構築を受ける。狙いは<strong>金＋美術界との縁＋実績</strong>の3つ同時。</p>\n            <ul>\n              <li><strong>客の像</strong>：自分の全作品のアーカイブが欲しい画家本人／小さい画廊・美術団体／ファンコミュニティ／専門店／小さい博物館・資料館／コレクター</li>\n              <li><strong>売る物の3段</strong>：構築一式（データ整形込み）／点数単位のデータ化／月額の運用代行</li>\n              <li><strong>条件</strong>：渡すのは完成したアプリだけ。エンジンの権利は翔万に残す。データの権利は発注側に置く</li>\n              <li><strong>始動</strong>：納期のある他人の仕事なので、本格始動は受験後</li>\n            </ul>\n          </div>\n          <div class=\"lane other\">\n            <h3>他ジャンル ＝ 横展開</h3>\n            <p>ジャンルごとの図鑑を、自前のネイティブアプリとして App Store / Google Play に出し、アプリ収入の階段に乗せる。無料で出し、サブスクや追加機能の課金で取る（本人の決定、2026-11-21）。名前のリスクがない分野で、匿名のまま展開できる。</p>\n            <ul>\n              <li><strong>実装済みの証明</strong>：音楽／映画／食材</li>\n              <li><strong>効く分野の条件</strong>：「人と作品と記録」の蓄積型で、ファンが深く調べたくて、既存の情報が散らかっている場所</li>\n              <li><strong>候補</strong>：スポーツ記録（野球選手・力士）／声優・アイドル／漫画／名車／時計／スニーカー</li>\n            </ul>\n          </div>\n        </div>\n        <h3>図鑑：受託の進め方</h3>\n        <p><strong>初歩段階のゴール：</strong>声かけの受け皿（見本アプリ＋「何を・いくらで・どのくらいで作れるか」の条件表）が公開されていて、最初の声かけ先が名指しで決まっている状態。ここまで来れば、あとは声をかけるだけで仕事が動き始める。</p>\n        <p><strong>必要なもの</strong></p>\n        <ul>\n          <li><strong>見本になるアプリ群</strong>：作家図鑑（Arcanum）と音楽・映画・食材の図鑑。既に動いている実物がそのまま見本になる（追加で作るものはない）</li>\n          <li><strong>受け皿の置き場所</strong>：条件表と見本への導線を置くページ（公開URL）。形式は開始時に決める</li>\n          <li><strong>費用</strong>：0円で始められる（既存の仕組みの上で作るため、新しい契約や道具は要らない）</li>\n        </ul>\n        <ol class=\"steps\">\n          <li data-n=\"1\"><span class=\"st\">条件表を作る</span><span class=\"sd\">売る物の3段（構築一式／点数単位のデータ化／月額の運用代行）ごとに、内容・価格・期間の目安を一枚にまとめる。価格は「安さ」ではなく「この形は他にない」で立てる。あわせて条件の線引き（渡すのは完成したアプリだけ／エンジンの権利は翔万に残す／データの権利は発注側に置く）も同じ一枚に書く</span><span class=\"done-when\">終わりの目安：3段それぞれに価格と期間が入り、そのまま相手に見せられる</span></li>\n          <li data-n=\"2\"><span class=\"st\">見本の見せ方を決める</span><span class=\"sd\">説明より先に、完成した物を触ってもらうのがこの形の売り方。見本アプリ群のうち、相手の分野に一番近い1つを最初に見せる順番を決める</span><span class=\"done-when\">終わりの目安：「まずこれを触ってください」と言える見本が1つに決まっている</span></li>\n          <li data-n=\"3\"><span class=\"st\">受け皿を公開する</span><span class=\"sd\">条件表と見本への導線を1つのページにまとめ、公開URLにする。問い合わせの受け口（連絡先）も同じページに置く</span><span class=\"done-when\">終わりの目安：受け皿ページが公開され、他人が開けるURLがある</span></li>\n          <li data-n=\"4\"><span class=\"st\">最初の声かけ先を決める</span><span class=\"sd\">客の像（自分の全作品のアーカイブが欲しい画家本人／小さい画廊・美術団体／ファンコミュニティ／専門店／小さい博物館・資料館／コレクター）の中から、縁のある順に最初の数件を名指しで決める。営業と集客の進め方そのものは本人の保留事項で、初歩段階は「誰に声をかけるか」の決定までとする</span><span class=\"done-when\">終わりの目安：声かけ先が名指しで決まっている</span></li>\n        </ol>\n        <p><strong>つまずきどころ</strong></p>\n        <ul>\n          <li><strong>価格を決めずに話し始める</strong>：条件が曖昧なまま進むと、交渉の場で条件が動く。条件表を先に作ることが、この形の要になる</li>\n          <li><strong>仕組みそのものを売りそうになる</strong>：売るのは完成したアプリだけ。エンジンのキット販売はしない（線引きの決まり）</li>\n          <li><strong>発注側の作業を増やす</strong>：構築の段では、発注側の作業は素材の提供と確認だけに寄せる。相手に手間をかけさせる形は続かない</li>\n        </ul>\n        <p>狙いは金の額だけではない。画廊・画家・美術団体との<strong>縁</strong>と、美術分野での<strong>実績</strong>が同時に手に入ることが、この形の本体。</p>\n        <p><strong>時期：</strong>受験後（2027年3月以降）に本格始動。納期のある他人の仕事なので、受験期には始めない</p>\n        <h3>図鑑：横展開の進め方</h3>\n        <p><strong>初歩段階のゴール：</strong>最初の1本がストア（App Store / Google Play）で公開され、誰でも無料でダウンロードできる状態。ビジネス計画の検証の段（段1）にそのまま乗せられる形で出す。</p>\n        <p><strong>必要なもの</strong></p>\n        <ul>\n          <li><strong>型とデータの作り方</strong>：図鑑の型（カード表示・年表・関係図・価格記録）の設計と、データの集め方・選び方は既にある。ただし出品する物はネイティブアプリなので、ビルドの手段は今のウェブ基盤とは別になる（具体的な手段は未検証）</li>\n          <li><strong>題材のデータ</strong>：最初の分野のデータを集めて選ぶ作業が、本体の手間になる</li>\n          <li><strong>開発者登録</strong>：ストアに出す前提費用として、Apple Developer が年額 $99、Google Play が登録 $25（1回）。アプリの運営費は、動く時にAIを呼ばない形ならゼロのままにできる</li>\n        </ul>\n        <ol class=\"steps\">\n          <li data-n=\"1\"><span class=\"st\">分野を1つ決める</span><span class=\"sd\">条件は3つ——「人と作品と記録」の蓄積型であること／ファンが深く調べたくなる分野であること／既存の情報が散らかっていること。候補（スポーツ記録／声優・アイドル／漫画／名車／時計／スニーカー）から、この3条件で採点して1つに絞る</span><span class=\"done-when\">終わりの目安：分野が1つに決まり、3条件で「なぜか」を言える</span></li>\n          <li data-n=\"2\"><span class=\"st\">最小のデータセットを揃える</span><span class=\"sd\">公開に足りる最小の範囲を先に決め、その範囲のデータを集めて選ぶ。データの深さと正確さ、本人の目による選定、元々の文章——この3つが堀になる。全部を揃えてから出そうとすると公開が来ないので、範囲を切るのが先</span><span class=\"done-when\">終わりの目安：決めた範囲のデータが、公開できる形で揃っている</span></li>\n          <li data-n=\"3\"><span class=\"st\">型を移植して組み立てる</span><span class=\"sd\">図鑑の型（カード表示・年表・関係図・価格記録）の設計を使い、ネイティブアプリとして組み立てる。分野に合わせてデータと見せ方を差し替える。作るコストは型で下げる</span><span class=\"done-when\">終わりの目安：アプリが手元で一通り動く</span></li>\n          <li data-n=\"4\"><span class=\"st\">ストアに出す</span><span class=\"sd\">開発者登録を済ませ、ストアの審査を通して公開する。無料で出し、課金はサブスク／追加機能の形で付ける</span><span class=\"done-when\">終わりの目安：ストアで公開され、身内以外がダウンロードできる</span></li>\n          <li data-n=\"5\"><span class=\"st\">集客の入口を1つ置く</span><span class=\"sd\">分野ごとに集客は要る。結果画面のシェアか短尺動画か、分野に合う入口を1つに絞って出す（ビジネス計画の段2＝集客テスト30日に接続する）</span><span class=\"done-when\">終わりの目安：入口が1つ公開され、利用の記録が付き始める</span></li>\n        </ol>\n        <p><strong>つまずきどころ</strong></p>\n        <ul>\n          <li><strong>データ集めで時間を溶かす</strong>：時間をかけるのはここ、と分かっていても際限がない。最小の範囲を先に決めることが回避法になる</li>\n          <li><strong>作る前に配布の形がない</strong>：出しただけでは誰にも届かない。集客の入口までを初歩段階に含めるのはそのため</li>\n          <li><strong>分野の選び間違い</strong>：3条件を満たさない分野は、ファンの深さも情報の空白もなく、型を移植しても刺さらない。段2の数字（身内以外の利用者10人）が判定になる</li>\n        </ul>\n                <p><strong>AIの置き場所——制作時と使用時</strong></p>\n        <ul>\n          <li><strong>今の形はそのまま出品できる</strong>：彼のアプリ群は、AIが働くのは制作とデータのキュレーションの時だけで、出品するアプリ自体にはAIが入っていない（データ＋閲覧の形）。更新は、彼とClaudeが新しいデータを用意して配る形になる。この形なら、ストアに出す時にAIまわりの追加の仕組みは要らない</li>\n          <li><strong>使用時にAIが要る機能は別問題</strong>：その場で生成・収集する機能を入れると、APIの鍵と利用料を誰が持つかが問題になる。選択肢は3つ——(a) サブスク収入で賄い、彼のサーバー経由でAPIを使う形（サーバー費用がかかり、ヘビーユーザーが来ると利用料が膨らむ）／(b) ユーザー自身のキーを持たせる形（使える人が限られ、摩擦が大きい）／(c) 使用時AIを入れない設計にする</li>\n          <li><strong>結論は未決定</strong>：未決・保留にも登録した。最初の1本を決める時に、その題材が制作時のAIだけで成立するかどうかを判定する</li>\n        </ul>\n        <p>出た図鑑が増えるほど、データの集計レポートや受託の見本として効く範囲が広がる。1本ごとの弱さが、束になることで強みに変わる。</p>\n        <p><strong>時期：</strong>受験後（2027年3月以降）</p>\n        <h3>図鑑：線引きの決まり</h3>\n        <ul>\n          <li><strong>エンジンのキット販売はしない</strong>。仕組みを公開することになるため。売るのは完成品であって、作り方ではない</li>\n          <li><strong>アプリは動く時にAIを呼ばない</strong>。AIが働くのは作る時とデータを揃える時だけ。だから他人が使っても自分のAIアカウントは減らず、運営費もゼロのまま渡せる</li>\n          <li><strong>唯一無二性の堀は3つ</strong>：データの深さと正確さ／本人の目による選定／元々の文章（ガイド・調査）。コードは真似できても、この3つは年月がかかる</li>\n        </ul>\n        <div class=\"note\">\n          <h3 style=\"margin-top:0\">図鑑：特許の結論</h3>\n          <p>今のアプリ群の大半は特許化が難しい。理由は3つ——進歩性の壁（既存技術の組み合わせと判断されやすい）、既に公開済み（救済は本人の公開から1年以内）、ソフトウェア単体では対象になりにくい。日記アプリのTodo（金額と写真の自動回収）も、ほしい物リスト等の先行例が大きく単体では厳しい見立て。</p>\n          <p>図鑑の独自性は仕組みの新しさではなく、データの量・編集・選定の蓄積にある。守りは著作権と「真似に同じ年月がかかる」という事実の側。特許の正しい出番は、自分の商品・仕組みを外に出す時に、<strong>公開する前に</strong>中核だけ検討すること。</p>\n          <p class=\"firststep\"><strong>最初の一歩：</strong>自分の商品・仕組みを次に外に出す時、公開前に特許の検討を1回挟む<br><strong>時期：</strong>公開の直前、その都度</p>\n        </div>\n        <p class=\"sources\">出典：図鑑事業と特許 決定事項（2026-11-19）</p>",
+   "html": "<div class=\"detail-head\"><h2>アプリ事業</h2></div>\n        <p class=\"sec-lead\">図鑑アプリを金に変える事業。美術分野の受託と、他ジャンルの横展開——2つの顔の進め方と決まりを置く。</p>\n        <h3>アプリ事業―図鑑アプリ</h3>\n        <p class=\"sec-lead\">図鑑アプリの仕組み（エンジン）は分野を選ばない。金の変え方は、分野によって2つに分けることが決まった。</p>\n        <div class=\"branch2\">\n          <div class=\"b-src\">図鑑の仕組み（エンジン）</div>\n          <div class=\"b-stem\"></div>\n          <div class=\"b-bar\"></div>\n          <div class=\"b-cols\">\n            <div class=\"b-col art\"><span class=\"b-t\">美術分野</span><span class=\"b-v\">受託</span><span class=\"b-d\">画廊・画家・美術団体から構築を受ける</span></div>\n            <div class=\"b-col other\"><span class=\"b-t\">他ジャンル</span><span class=\"b-v\">横展開</span><span class=\"b-d\">自前のネイティブアプリとしてストアに出す</span></div>\n          </div>\n        </div>\n        <div class=\"lanes\">\n          <div class=\"lane art\">\n            <h3>美術分野 ＝ 受託</h3>\n            <p>画廊・画家・美術団体などの「自分たちの図鑑が欲しいけど作れない」側から、構築を受ける。狙いは<strong>金＋美術界との縁＋実績</strong>の3つ同時。</p>\n            <ul>\n              <li><strong>客の像</strong>：自分の全作品のアーカイブが欲しい画家本人／小さい画廊・美術団体／ファンコミュニティ／専門店／小さい博物館・資料館／コレクター</li>\n              <li><strong>売る物の3段</strong>：構築一式（データ整形込み）／点数単位のデータ化／月額の運用代行</li>\n              <li><strong>条件</strong>：渡すのは完成したアプリだけ。エンジンの権利は翔万に残す。データの権利は発注側に置く</li>\n              <li><strong>始動</strong>：納期のある他人の仕事なので、本格始動は受験後</li>\n            </ul>\n          </div>\n          <div class=\"lane other\">\n            <h3>他ジャンル ＝ 横展開</h3>\n            <p>ジャンルごとの図鑑を、自前のネイティブアプリとして App Store / Google Play に出し、アプリ収入の階段に乗せる。無料で出し、サブスクや追加機能の課金で取る（本人の決定、2026-11-21）。名義については、ストアは個人登録だと本名が出る——App Store では販売元に本名（ローマ字）が表示され、Google Play では本名と国が公開され、収益化すると住所まで出る（2026-11-21、本人の実機で確認）。ただし2026-11-21の条件の組み直し（ルールの「名前と顔の条件」）で、名義はとりあえず決着した——個人登録のまま出し、本名表示は許容する。法人化は必須ではない。最終確認は最初の1本を出す時（未決・保留に登録）。</p>\n            <ul>\n              <li><strong>実装済みの証明</strong>：音楽／映画／食材</li>\n              <li><strong>効く分野の条件</strong>：「人と作品と記録」の蓄積型で、ファンが深く調べたくて、既存の情報が散らかっている場所</li>\n              <li><strong>候補</strong>：スポーツ記録（野球選手・力士）／声優・アイドル／漫画／名車／時計／スニーカー</li>\n            </ul>\n          </div>\n        </div>\n        <h3>図鑑：受託の進め方</h3>\n        <p><strong>初歩段階のゴール：</strong>声かけの受け皿（見本アプリ＋「何を・いくらで・どのくらいで作れるか」の条件表）が公開されていて、最初の声かけ先が名指しで決まっている状態。ここまで来れば、あとは声をかけるだけで仕事が動き始める。</p>\n        <p><strong>必要なもの</strong></p>\n        <ul>\n          <li><strong>見本になるアプリ群</strong>：作家図鑑（Arcanum）と音楽・映画・食材の図鑑。既に動いている実物がそのまま見本になる（追加で作るものはない）</li>\n          <li><strong>受け皿の置き場所</strong>：条件表と見本への導線を置くページ（公開URL）。形式は開始時に決める</li>\n          <li><strong>費用</strong>：0円で始められる（既存の仕組みの上で作るため、新しい契約や道具は要らない）</li>\n        </ul>\n        <ol class=\"steps\">\n          <li data-n=\"1\"><span class=\"st\">条件表を作る</span><span class=\"sd\">売る物の3段（構築一式／点数単位のデータ化／月額の運用代行）ごとに、内容・価格・期間の目安を一枚にまとめる。価格は「安さ」ではなく「この形は他にない」で立てる。あわせて条件の線引き（渡すのは完成したアプリだけ／エンジンの権利は翔万に残す／データの権利は発注側に置く）も同じ一枚に書く</span><span class=\"done-when\">終わりの目安：3段それぞれに価格と期間が入り、そのまま相手に見せられる</span></li>\n          <li data-n=\"2\"><span class=\"st\">見本の見せ方を決める</span><span class=\"sd\">説明より先に、完成した物を触ってもらうのがこの形の売り方。見本アプリ群のうち、相手の分野に一番近い1つを最初に見せる順番を決める</span><span class=\"done-when\">終わりの目安：「まずこれを触ってください」と言える見本が1つに決まっている</span></li>\n          <li data-n=\"3\"><span class=\"st\">受け皿を公開する</span><span class=\"sd\">条件表と見本への導線を1つのページにまとめ、公開URLにする。問い合わせの受け口（連絡先）も同じページに置く</span><span class=\"done-when\">終わりの目安：受け皿ページが公開され、他人が開けるURLがある</span></li>\n          <li data-n=\"4\"><span class=\"st\">最初の声かけ先を決める</span><span class=\"sd\">客の像（自分の全作品のアーカイブが欲しい画家本人／小さい画廊・美術団体／ファンコミュニティ／専門店／小さい博物館・資料館／コレクター）の中から、縁のある順に最初の数件を名指しで決める。営業と集客の進め方そのものは本人の保留事項で、初歩段階は「誰に声をかけるか」の決定までとする</span><span class=\"done-when\">終わりの目安：声かけ先が名指しで決まっている</span></li>\n        </ol>\n        <p><strong>つまずきどころ</strong></p>\n        <ul>\n          <li><strong>価格を決めずに話し始める</strong>：条件が曖昧なまま進むと、交渉の場で条件が動く。条件表を先に作ることが、この形の要になる</li>\n          <li><strong>仕組みそのものを売りそうになる</strong>：売るのは完成したアプリだけ。エンジンのキット販売はしない（線引きの決まり）</li>\n          <li><strong>発注側の作業を増やす</strong>：構築の段では、発注側の作業は素材の提供と確認だけに寄せる。相手に手間をかけさせる形は続かない</li>\n        </ul>\n        <p>狙いは金の額だけではない。画廊・画家・美術団体との<strong>縁</strong>と、美術分野での<strong>実績</strong>が同時に手に入ることが、この形の本体。</p>\n        <p><strong>時期：</strong>受験後（2027年3月以降）に本格始動。納期のある他人の仕事なので、受験期には始めない</p>\n        <h3>図鑑：横展開の進め方</h3>\n        <p><strong>初歩段階のゴール：</strong>最初の1本がストア（App Store / Google Play）で公開され、誰でも無料でダウンロードできる状態。ビジネス計画の検証の段（段1）にそのまま乗せられる形で出す。</p>\n        <p><strong>必要なもの</strong></p>\n        <ul>\n          <li><strong>型とデータの作り方</strong>：図鑑の型（カード表示・年表・関係図・価格記録）の設計と、データの集め方・選び方は既にある。ただし出品する物はネイティブアプリなので、ビルドの手段は今のウェブ基盤とは別になる（具体的な手段は未検証）</li>\n          <li><strong>題材のデータ</strong>：最初の分野のデータを集めて選ぶ作業が、本体の手間になる</li>\n          <li><strong>開発者登録</strong>：ストアに出す前提費用として、Apple Developer が年額 $99、Google Play が登録 $25（1回）。アプリの運営費は、動く時にAIを呼ばない形ならゼロのままにできる</li>\n        </ul>\n        <ol class=\"steps\">\n          <li data-n=\"1\"><span class=\"st\">分野を1つ決める</span><span class=\"sd\">条件は3つ——「人と作品と記録」の蓄積型であること／ファンが深く調べたくなる分野であること／既存の情報が散らかっていること。候補（スポーツ記録／声優・アイドル／漫画／名車／時計／スニーカー）から、この3条件で採点して1つに絞る</span><span class=\"done-when\">終わりの目安：分野が1つに決まり、3条件で「なぜか」を言える</span></li>\n          <li data-n=\"2\"><span class=\"st\">最小のデータセットを揃える</span><span class=\"sd\">公開に足りる最小の範囲を先に決め、その範囲のデータを集めて選ぶ。データの深さと正確さ、本人の目による選定、元々の文章——この3つが堀になる。全部を揃えてから出そうとすると公開が来ないので、範囲を切るのが先</span><span class=\"done-when\">終わりの目安：決めた範囲のデータが、公開できる形で揃っている</span></li>\n          <li data-n=\"3\"><span class=\"st\">型を移植して組み立てる</span><span class=\"sd\">図鑑の型（カード表示・年表・関係図・価格記録）の設計を使い、ネイティブアプリとして組み立てる。分野に合わせてデータと見せ方を差し替える。作るコストは型で下げる</span><span class=\"done-when\">終わりの目安：アプリが手元で一通り動く</span></li>\n          <li data-n=\"4\"><span class=\"st\">ストアに出す</span><span class=\"sd\">開発者登録を済ませ、ストアの審査を通して公開する。無料で出し、課金はサブスク／追加機能の形で付ける</span><span class=\"done-when\">終わりの目安：ストアで公開され、身内以外がダウンロードできる</span></li>\n          <li data-n=\"5\"><span class=\"st\">集客の入口を1つ置く</span><span class=\"sd\">分野ごとに集客は要る。結果画面のシェアか短尺動画か、分野に合う入口を1つに絞って出す（ビジネス計画の段2＝集客テスト30日に接続する）</span><span class=\"done-when\">終わりの目安：入口が1つ公開され、利用の記録が付き始める</span></li>\n        </ol>\n        <p><strong>つまずきどころ</strong></p>\n        <ul>\n          <li><strong>データ集めで時間を溶かす</strong>：時間をかけるのはここ、と分かっていても際限がない。最小の範囲を先に決めることが回避法になる</li>\n          <li><strong>作る前に配布の形がない</strong>：出しただけでは誰にも届かない。集客の入口までを初歩段階に含めるのはそのため</li>\n          <li><strong>分野の選び間違い</strong>：3条件を満たさない分野は、ファンの深さも情報の空白もなく、型を移植しても刺さらない。段2の数字（身内以外の利用者10人）が判定になる</li>\n        </ul>\n                <p><strong>AIの置き場所——制作時と使用時</strong></p>\n        <ul>\n          <li><strong>今の形はそのまま出品できる</strong>：彼のアプリ群は、AIが働くのは制作とデータのキュレーションの時だけで、出品するアプリ自体にはAIが入っていない（データ＋閲覧の形）。更新は、彼とClaudeが新しいデータを用意して配る形になる。この形なら、ストアに出す時にAIまわりの追加の仕組みは要らない</li>\n          <li><strong>使用時にAIが要る機能は別問題</strong>：その場で生成・収集する機能を入れると、APIの鍵と利用料を誰が持つかが問題になる。選択肢は3つ——(a) サブスク収入で賄い、彼のサーバー経由でAPIを使う形（サーバー費用がかかり、ヘビーユーザーが来ると利用料が膨らむ）／(b) ユーザー自身のキーを持たせる形（使える人が限られ、摩擦が大きい）／(c) 使用時AIを入れない設計にする</li>\n          <li><strong>結論は未決定</strong>：未決・保留にも登録した。最初の1本を決める時に、その題材が制作時のAIだけで成立するかどうかを判定する</li>\n        </ul>\n        <p>出た図鑑が増えるほど、データの集計レポートや受託の見本として効く範囲が広がる。1本ごとの弱さが、束になることで強みに変わる。</p>\n        <p><strong>時期：</strong>受験後（2027年3月以降）</p>\n        <h3>図鑑：線引きの決まり</h3>\n        <ul>\n          <li><strong>エンジンのキット販売はしない</strong>。仕組みを公開することになるため。売るのは完成品であって、作り方ではない</li>\n          <li><strong>アプリは動く時にAIを呼ばない</strong>。AIが働くのは作る時とデータを揃える時だけ。だから他人が使っても自分のAIアカウントは減らず、運営費もゼロのまま渡せる</li>\n          <li><strong>唯一無二性の堀は3つ</strong>：データの深さと正確さ／本人の目による選定／元々の文章（ガイド・調査）。コードは真似できても、この3つは年月がかかる</li>\n        </ul>\n        <div class=\"note\">\n          <h3 style=\"margin-top:0\">図鑑：特許の結論</h3>\n          <p>今のアプリ群の大半は特許化が難しい。理由は3つ——進歩性の壁（既存技術の組み合わせと判断されやすい）、既に公開済み（救済は本人の公開から1年以内）、ソフトウェア単体では対象になりにくい。日記アプリのTodo（金額と写真の自動回収）も、ほしい物リスト等の先行例が大きく単体では厳しい見立て。</p>\n          <p>図鑑の独自性は仕組みの新しさではなく、データの量・編集・選定の蓄積にある。守りは著作権と「真似に同じ年月がかかる」という事実の側。特許の正しい出番は、自分の商品・仕組みを外に出す時に、<strong>公開する前に</strong>中核だけ検討すること。</p>\n          <p class=\"firststep\"><strong>最初の一歩：</strong>自分の商品・仕組みを次に外に出す時、公開前に特許の検討を1回挟む<br><strong>時期：</strong>公開の直前、その都度</p>\n        </div>\n        <p class=\"sources\">出典：図鑑事業と特許 決定事項（2026-11-19）</p>",
    "id": "appbiz",
    "meta": "美術分野の受託と、他ジャンルの横展開。2つの顔それぞれの進め方、線引きの決まり、特許の結論",
    "num": "08",
@@ -1103,7 +1122,7 @@ var SEED = {
    "tag": "図鑑アプリ",
    "themeClass": "t-business",
    "title": "アプリ事業",
-   "updated_at": "2026-11-21T16:02:27+09:00"
+   "updated_at": "2026-11-21T16:44:08+09:00"
   },
   {
    "badgeClass": "",
@@ -1235,7 +1254,7 @@ var SEED = {
    "badgeClass": "",
    "badgeText": "",
    "char": "律",
-   "html": "<div class=\"detail-head\"><h2>ルール</h2></div>\n        <h3>評価の物差し（2つ）</h3>\n        <p>機会は「平均的な参加者の期待値」では測らない。上位を取る側として設計する。その上で問うのは2つ。</p>\n        <div class=\"judge\">\n          <div class=\"jq\"><span class=\"qn\">問い1</span><span><span class=\"qt\">その上位は、自分たちの実力で実際に取れる構造か</span><span class=\"qd\">参加者数と、審査が「質」か「最適化の削り合い」か</span></span></div>\n          <div class=\"jarrow\">↓</div>\n          <div class=\"jq\"><span class=\"qn\">問い2</span><span><span class=\"qt\">取った位置が、資産として残るか</span><span class=\"qd\">勝っても次の案件でゼロからなら、椅子は残らない</span></span></div>\n          <div class=\"jarrow\">↓</div>\n          <div class=\"jout\"><span class=\"jok\">2つとも通る → 上位を取りに行く</span><span class=\"jng\">1つでも欠ける → やらない</span></div>\n        </div>\n        <h3>禁止ライン（8つ）</h3>\n        <p>判定は「バレるか」ではない。<strong>revealテスト</strong>——将来、本名と顔を出して同じ売り方を説明できるか——を通らないものはやらない。</p>\n        <ul class=\"checklist\">\n          <li>裏付けのない／水増しした収入・実績・効果の数字を広告に使う</li>\n          <li>「絶対稼げる」等の断定的な表現で情報商材・スクール・コンサルを売る</li>\n          <li>ステマ（PRを隠す／広告主に隠させる）</li>\n          <li>無許可の反復継続転売、資格を偽った仕入れ、定価超チケット転売</li>\n          <li>わいせつ物の頒布・陳列にあたる成人向け販売</li>\n          <li>収益の無申告・過少申告</li>\n          <li>他人の著作物・商標・キャラ・肖像を無断で使った商品販売</li>\n          <li>買い手の不安・借金・焦りを煽る高額勧誘</li>\n        </ul>\n        <h3>やらないこと</h3>\n        <ul>\n          <li>株・FX（元手がない段階では再現性なし）</li>\n          <li>スクール事業（実績ができるまで封印）</li>\n          <li>アダルト（匿名でも最低優先。原則やらない）</li>\n          <li>生活費を事業の成果に賭けること</li>\n          <li>図鑑エンジンのキット販売（仕組みの公開になるため）</li>\n        </ul>\n        <h3>実現のルール（2026-11-20）</h3>\n        <ol class=\"rules\">\n          <li>計画には最初の一歩と時期を付ける。実現したかどうかは、文書ができたかではなく、世の中の側が変わったか（出荷・出品・応募・最初の取引）で数える</li>\n        </ol>\n        <h3>知識のルール（2026-11-20）</h3>\n        <p><strong>「知識こそ土台であり金だ」</strong>——知識そのものが土台であり、資産だ。このアプリは計画の置き場ではなく、見て動ける知識の基盤として作る。稼ぐのは本人で、Muse の仕事はその知識を備えることにある。</p>\n        <ol class=\"rules\">\n          <li><strong>ノウハウの登録基準</strong>：本体は体系的な知識（手順・判断基準・数字・注意点まで、実行できる詳しさ）で書く。「大まかな流れ」の要約だけでは、登録したことにならない</li>\n          <li><strong>数字の裏付け</strong>：数字と事実は、公式・一次の出典で裏が取れるものだけを置く。裏の取れない収益数字や、煽りの結論は入れない</li>\n          <li><strong>出典の置き場所</strong>：きっかけ・出典は一番下に補足として小さく置く。本文の主役はノウハウのほうにする</li>\n          <li><strong>更新時の棚卸し</strong>：アプリを更新する時は、中身の古さ（過ぎた日付のままの文面、後の決定で置き換わった表現、数字の不整合）も同じ便で点検する。機械的に直せるものはその場で直し、計画の実質に関わる変更は本人の判断に回す</li>\n        </ol>",
+   "html": "<div class=\"detail-head\"><h2>ルール</h2></div>\n        <h3>評価の物差し（2つ）</h3>\n        <p>機会は「平均的な参加者の期待値」では測らない。上位を取る側として設計する。その上で問うのは2つ。</p>\n        <div class=\"judge\">\n          <div class=\"jq\"><span class=\"qn\">問い1</span><span><span class=\"qt\">その上位は、自分たちの実力で実際に取れる構造か</span><span class=\"qd\">参加者数と、審査が「質」か「最適化の削り合い」か</span></span></div>\n          <div class=\"jarrow\">↓</div>\n          <div class=\"jq\"><span class=\"qn\">問い2</span><span><span class=\"qt\">取った位置が、資産として残るか</span><span class=\"qd\">勝っても次の案件でゼロからなら、椅子は残らない</span></span></div>\n          <div class=\"jarrow\">↓</div>\n          <div class=\"jout\"><span class=\"jok\">2つとも通る → 上位を取りに行く</span><span class=\"jng\">1つでも欠ける → やらない</span></div>\n        </div>\n        <h3>禁止ライン（8つ）</h3>\n        <p>判定は「バレるか」ではない。<strong>revealテスト</strong>——将来、本名と顔を出して同じ売り方を説明できるか——を通らないものはやらない。</p>\n        <ul class=\"checklist\">\n          <li>裏付けのない／水増しした収入・実績・効果の数字を広告に使う</li>\n          <li>「絶対稼げる」等の断定的な表現で情報商材・スクール・コンサルを売る</li>\n          <li>ステマ（PRを隠す／広告主に隠させる）</li>\n          <li>無許可の反復継続転売、資格を偽った仕入れ、定価超チケット転売</li>\n          <li>わいせつ物の頒布・陳列にあたる成人向け販売</li>\n          <li>収益の無申告・過少申告</li>\n          <li>他人の著作物・商標・キャラ・肖像を無断で使った商品販売</li>\n          <li>買い手の不安・借金・焦りを煽る高額勧誘</li>\n        </ul>\n        <h3>やらないこと</h3>\n        <ul>\n          <li>株・FX（元手がない段階では再現性なし）</li>\n          <li>スクール事業（実績ができるまで封印）</li>\n          <li>アダルト（名前の履歴を守るため、原則やらない）</li>\n          <li>生活費を事業の成果に賭けること</li>\n          <li>図鑑エンジンのキット販売（仕組みの公開になるため）</li>\n        </ul>\n        <h3>実現のルール（2026-11-20）</h3>\n        <ol class=\"rules\">\n          <li>計画には最初の一歩と時期を付ける。実現したかどうかは、文書ができたかではなく、世の中の側が変わったか（出荷・出品・応募・最初の取引）で数える</li>\n        </ol>\n        <h3>知識のルール（2026-11-20）</h3>\n        <p><strong>「知識こそ土台であり金だ」</strong>——知識そのものが土台であり、資産だ。このアプリは計画の置き場ではなく、見て動ける知識の基盤として作る。稼ぐのは本人で、Muse の仕事はその知識を備えることにある。</p>\n        <ol class=\"rules\">\n          <li><strong>ノウハウの登録基準</strong>：本体は体系的な知識（手順・判断基準・数字・注意点まで、実行できる詳しさ）で書く。「大まかな流れ」の要約だけでは、登録したことにならない</li>\n          <li><strong>数字の裏付け</strong>：数字と事実は、公式・一次の出典で裏が取れるものだけを置く。裏の取れない収益数字や、煽りの結論は入れない</li>\n          <li><strong>出典の置き場所</strong>：きっかけ・出典は一番下に補足として小さく置く。本文の主役はノウハウのほうにする</li>\n          <li><strong>更新時の棚卸し</strong>：アプリを更新する時は、中身の古さ（過ぎた日付のままの文面、後の決定で置き換わった表現、数字の不整合）も同じ便で点検する。機械的に直せるものはその場で直し、計画の実質に関わる変更は本人の判断に回す</li>\n        </ol>\n        <h3>名前と顔の条件（2026-11-21 組み直し）</h3>\n        <p>旧条件（実写なし・顔出しなし・実名なし＝完全匿名）を組み直した（2026-11-21、とりあえず採用）。出発点は本人の自己診断——気にしていたのは身バレそのものではなく、<strong>名前に変な履歴がつくこと</strong>だった。守る対象が名前の履歴なら、条件はこう置き直せる。</p>\n        <ol class=\"rules\">\n          <li><strong>表の顔はハンドル</strong>：活動の表の顔はハンドルにし、画家としての名前とは分けて運営する</li>\n          <li><strong>顔は出さない</strong>：名前の問題とは別軸で、生活を守るための条件として残す</li>\n          <li><strong>実名の完全遮断はやめる</strong>：ストアの販売元など、制度上出てしまう場所は許容する。名前が出ること自体は履歴ではない</li>\n          <li><strong>履歴の管理を条件にする</strong>：将来、稼ぎ活動の履歴が画家としての本名に接続されても汚点にならない内容とやり方だけをやる。誇大な煽り・グレーな手段・炎上狙いを禁止する理由は、名前を守るため（禁止ラインの reveal テストと同じ考え方）</li>\n        </ol>",
    "id": "rules",
    "meta": "評価の物差し2つ、禁止ライン8つ、やらないこと",
    "num": "18",
@@ -1243,21 +1262,21 @@ var SEED = {
    "tag": "禁止8つ",
    "themeClass": "t-rules",
    "title": "ルール",
-   "updated_at": "2026-11-21T16:02:27+09:00"
+   "updated_at": "2026-11-21T16:44:08+09:00"
   },
   {
    "badgeClass": "",
    "badgeText": "",
    "char": "未",
-   "html": "<div class=\"detail-head\"><h2>未決・保留</h2></div>\n        <p class=\"sec-lead\">ここにあるものは計画として確定していない。決まった計画のふりをして埋めていない項目の一覧。</p>\n        <ul class=\"pending-list\">\n          <li><span class=\"pt\">Cの段0——題材の一文が未確定</span><span class=\"pd\">「誰が・いつ・何に困って・今どう凌いでいるか」の一文。題材候補は作品台帳／制作ログ／画材在庫／シフトと収入の見える化。次の一歩はここ。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>題材候補（作品台帳／制作ログ／画材在庫／シフトと収入の見える化）から1つを選び、「誰が・いつ・何に困って・今どう凌いでいるか」の一文を書く<br><strong>時期：</strong>今〜共通テスト（受験前から進めてよい決定作業）</p></li>\n          <li><span class=\"pt\">営業と集客を何から始めるか</span><span class=\"pd\">本人「わからない、またその時話そう」。受託の最初の1件の取り方と、横展開アプリの集客が対象。最大の未知数はここ。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>受験後に、この保留を開いて話す場を1回持つ<br><strong>時期：</strong>受験後（2027年3月以降）。それまでは保留のまま置く</p></li>\n          <li><span class=\"pt\">受託の受け皿が未作成</span><span class=\"pd\">何を・いくらで・どのくらいで作れるかの一枚。価格は「安さ」ではなく「この形は他にない」で立てる方針だけ決まっている。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>何を・いくらで・どのくらいで作れるかを、一枚に書き出す<br><strong>時期：</strong>受験後（2027年3月以降）</p></li>\n          <li><span class=\"pt\">横展開の最初の分野が未定</span><span class=\"pd\">候補は並んでいるが、どこから始めるかは決まっていない。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>候補（スポーツ記録／声優・アイドル／漫画／名車／時計／スニーカー）から最初の1分野を選ぶ<br><strong>時期：</strong>受験後（2027年3月以降）</p></li>\n          <li><span class=\"pt\">マンダラチャート——保留中</span><span class=\"pd\">作り方が未確定で、保留中。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>マンダラチャートの作り方を決める<br><strong>時期：</strong>受験後</p></li>\n          <li><span class=\"pt\">貯金への3万円の移動が未確認</span><span class=\"pd\">臨時収入5万円の分配（貯金3万／事業資金1万／浪費枠1万）は合意済みだが、移動が済んだかの確認が取れていない。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>貯金用に分けた3万円を、実際に貯金側へ移す（済んでいたら、その確認だけ）<br><strong>時期：</strong>今すぐ（時期を選ばない小さな手続き）</p></li>\n          <li><span class=\"pt\">MacBookの復活テスト未実施</span><span class=\"pd\">型番・電源が入るか・ローン残額が未確認。復活すれば第2フェーズ（高単価の仕事）への橋になる。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>名古屋の実家にいる時に、テレビに繋いで画面が映るか試す<br><strong>時期：</strong>次に実家へ帰った時</p></li>\n          <li><span class=\"pt\">Slavik分析の問いが未回答</span><span class=\"pd\">「虚構の蓄積は証明として機能するか」。学習シリーズ②「数字の式」も未実施。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>Muse が用意する学習編「数字の式」を読む。Slavik の問いへの答えは、その時に一緒に考える<br><strong>時期：</strong>受験前から可（知識の蓄積）</p></li>\n          <li><span class=\"pt\">出品アプリでAI依存部分をどうするか</span><span class=\"pd\">彼のアプリは「AIは制作・キュレーションの時だけ働き、アプリ自体にはAIが入っていない」形で作ってきた。その形はそのままストアに出せる。ただし使用時にAIが要る機能（その場の生成・収集）を入れる場合、APIの鍵と利用料を誰が持つかが未決定——(a) サブスク収入で賄い、自前サーバー経由でAPIを使う形（サーバー費用と、ヘビーユーザーが来た時の利用料の膨らみを持つ）／(b) ユーザー自身のキーを持たせる形（摩擦が大きい）／(c) 使用時AIを入れない設計にする。アプリ事業の横展開にも、同じ論点を「AIの置き場所」として置いた。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>横展開の最初の1本を決める時に、その題材が制作時のAIだけで成立するかどうかを判定する<br><strong>時期：</strong>横展開の分野を決める時（受験後）</p></li>\n        </ul>",
+   "html": "<div class=\"detail-head\"><h2>未決・保留</h2></div>\n        <p class=\"sec-lead\">ここにあるものは計画として確定していない。決まった計画のふりをして埋めていない項目の一覧。</p>\n        <ul class=\"pending-list\">\n          <li><span class=\"pt\">Cの段0——題材の一文が未確定</span><span class=\"pd\">「誰が・いつ・何に困って・今どう凌いでいるか」の一文。題材候補は作品台帳／制作ログ／画材在庫／シフトと収入の見える化。次の一歩はここ。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>題材候補（作品台帳／制作ログ／画材在庫／シフトと収入の見える化）から1つを選び、「誰が・いつ・何に困って・今どう凌いでいるか」の一文を書く<br><strong>時期：</strong>今〜共通テスト（受験前から進めてよい決定作業）</p></li>\n          <li><span class=\"pt\">営業と集客を何から始めるか</span><span class=\"pd\">本人「わからない、またその時話そう」。受託の最初の1件の取り方と、横展開アプリの集客が対象。最大の未知数はここ。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>受験後に、この保留を開いて話す場を1回持つ<br><strong>時期：</strong>受験後（2027年3月以降）。それまでは保留のまま置く</p></li>\n          <li><span class=\"pt\">受託の受け皿が未作成</span><span class=\"pd\">何を・いくらで・どのくらいで作れるかの一枚。価格は「安さ」ではなく「この形は他にない」で立てる方針だけ決まっている。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>何を・いくらで・どのくらいで作れるかを、一枚に書き出す<br><strong>時期：</strong>受験後（2027年3月以降）</p></li>\n          <li><span class=\"pt\">横展開の最初の分野が未定</span><span class=\"pd\">候補は並んでいるが、どこから始めるかは決まっていない。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>候補（スポーツ記録／声優・アイドル／漫画／名車／時計／スニーカー）から最初の1分野を選ぶ<br><strong>時期：</strong>受験後（2027年3月以降）</p></li>\n          <li><span class=\"pt\">マンダラチャート——保留中</span><span class=\"pd\">作り方が未確定で、保留中。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>マンダラチャートの作り方を決める<br><strong>時期：</strong>受験後</p></li>\n          <li><span class=\"pt\">貯金への3万円の移動が未確認</span><span class=\"pd\">臨時収入5万円の分配（貯金3万／事業資金1万／浪費枠1万）は合意済みだが、移動が済んだかの確認が取れていない。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>貯金用に分けた3万円を、実際に貯金側へ移す（済んでいたら、その確認だけ）<br><strong>時期：</strong>今すぐ（時期を選ばない小さな手続き）</p></li>\n          <li><span class=\"pt\">MacBookの復活テスト未実施</span><span class=\"pd\">型番・電源が入るか・ローン残額が未確認。復活すれば第2フェーズ（高単価の仕事）への橋になる。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>名古屋の実家にいる時に、テレビに繋いで画面が映るか試す<br><strong>時期：</strong>次に実家へ帰った時</p></li>\n          <li><span class=\"pt\">Slavik分析の問いが未回答</span><span class=\"pd\">「虚構の蓄積は証明として機能するか」。学習シリーズ②「数字の式」も未実施。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>Muse が用意する学習編「数字の式」を読む。Slavik の問いへの答えは、その時に一緒に考える<br><strong>時期：</strong>受験前から可（知識の蓄積）</p></li>\n          <li><span class=\"pt\">出品アプリでAI依存部分をどうするか</span><span class=\"pd\">彼のアプリは「AIは制作・キュレーションの時だけ働き、アプリ自体にはAIが入っていない」形で作ってきた。その形はそのままストアに出せる。ただし使用時にAIが要る機能（その場の生成・収集）を入れる場合、APIの鍵と利用料を誰が持つかが未決定——(a) サブスク収入で賄い、自前サーバー経由でAPIを使う形（サーバー費用と、ヘビーユーザーが来た時の利用料の膨らみを持つ）／(b) ユーザー自身のキーを持たせる形（摩擦が大きい）／(c) 使用時AIを入れない設計にする。アプリ事業の横展開にも、同じ論点を「AIの置き場所」として置いた。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>横展開の最初の1本を決める時に、その題材が制作時のAIだけで成立するかどうかを判定する<br><strong>時期：</strong>横展開の分野を決める時（受験後）</p></li>\n          <li><span class=\"pt\">ストア出品の名義——匿名条件と本名表示の衝突</span><span class=\"pd\">横展開はストア（App Store / Google Play）に出す方針だが、ストアは個人登録だと本名が出る。App Store では販売元に本名（ローマ字）が表示され、Google Play では本名と国が公開され、収益化すると住所まで出る。旧条件（実名なし）とは正面からぶつかったが、2026-11-21の条件の組み直し（ルールの「名前と顔の条件」）で方向はとりあえず決着した——個人登録のまま出し、本名表示は許容する。法人化は必須ではない。表示の実例は2026-11-21に本人の実機で確認済み。最終確認は、横展開の最初の1本を出す時に行う。</span>\n<p class=\"firststep\"><strong>最初の一歩：</strong>横展開の最初の1本を出す時に、名義の最終確認をする（個人登録のまま・本名表示は許容、がとりあえずの決着。後から変えるにはアプリの登録し直しが要るため、出品の直前に必ず確認する）<br><strong>時期：</strong>横展開の最初の1本を出す時（受験後）</p></li>\n        </ul>\n",
    "id": "pending",
    "meta": "Cの段0、営業と集客、受託の受け皿など、まだ決まっていない項目の一覧",
    "num": "19",
    "tab": "ch6",
-   "tag": "9件",
+   "tag": "10件",
    "themeClass": "t-pending",
    "title": "未決・保留",
-   "updated_at": "2026-11-21T16:02:27+09:00"
+   "updated_at": "2026-11-21T16:44:08+09:00"
   },
   {
    "badgeClass": "",
@@ -1315,7 +1334,9 @@ var SEED = {
    "title": "ビジネス用語辞典",
    "updated_at": "2026-11-21T16:02:27+09:00"
   }
- ]
+ ],
+ "updatedAt": "2026-11-21T16:44:08+09:00",
+ "version": 1
 };
 
 var LS_CACHE = 'bizplan.cache.v1', LS_SET = 'bizplan.settings.v1', LS_CONN = 'bizplan.connected';
@@ -1550,6 +1571,7 @@ function applyListChrome(){
   }
 }
 function setChapter(ch){
+  if(RESET_HOLD) return; /* RESET HOLD (v3.4.0) */
   if(ch && CHAPTERS.indexOf(ch) < 0) ch = null;
   currentChapter = ch;
   currentTab = null;
@@ -1625,6 +1647,7 @@ function updatePillSel(){
   });
 }
 function setTab(t){
+  if(RESET_HOLD) return; /* RESET HOLD (v3.4.0) */
   currentTab = t;
   currentChapter = null;
   pillSel = t;
@@ -1639,6 +1662,7 @@ function openTab(t){
   goTop();
 }
 function goTab(t){
+  if(RESET_HOLD) return; /* RESET HOLD (v3.4.0): ピルをタップしても中身は出ない */
   if(TABS.indexOf(t) < 0) return;
   if(notifOpen) closeNotif();
   if(detailOpen){
@@ -1771,6 +1795,7 @@ function slideForward(newEl, oldEl){
   setTimeout(finish, 480);
 }
 function openDetail(id, push){
+  if(RESET_HOLD) return; /* RESET HOLD (v3.4.0) */
   var sec = sectionById(id);
   if(!sec || vtBusy) return;
   /* v3.2.1: the list behind the detail is left exactly as it
@@ -3652,12 +3677,12 @@ requestAnimationFrame(fitHdr);
 if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ fitHdr(); });
 if(window.visualViewport) visualViewport.addEventListener('resize', fitHdr);
 var vb = $('verBadge'); if(vb) vb.textContent = 'v' + APP_VERSION;
-renderHome();
+if(!RESET_HOLD) renderHome(); /* RESET HOLD (v3.4.0): 初期描画を止める。同期は下で通常どおり起動する */
 renderSyncStatus();
 refreshBell();
 fetchChangelog();
 var initial = (location.hash || '').match(/^#\/(\w+)$/);
-if(initial && sectionById(initial[1])){
+if(!RESET_HOLD && initial && sectionById(initial[1])){
   setChapter(secChapter(sectionById(initial[1])));
   $('detailBody').innerHTML = sectionById(initial[1]).html;
   decorateDetail(initial[1]);
