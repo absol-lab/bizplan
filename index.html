@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.1.5">
+<meta name="app-version" content="3.1.6">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -682,6 +682,17 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 .subtab{flex:none; font-family:var(--sans); font-size:12.5px; font-weight:700; letter-spacing:.03em; color:var(--muted); background:var(--card2); border:1px solid var(--line); border-radius:999px; padding:6px 13px; cursor:pointer; white-space:nowrap;}
 .subtab.on{color:var(--bg); background:var(--accent); border-color:var(--accent);}
 .dpanel[hidden]{display:none;}
+/* table of contents (v3.1.6): a detail with many groups opens
+   with a TOC group — every group one tappable row away, so a
+   long pill rail never has to be scrolled end to end. Rows are
+   buttons, which also keeps their labels out of term-linking.
+   A row that opens a block (a candidate card, by its テスト枠
+   badge) reads as a head; the rows under it indent. */
+.toc{display:flex; flex-direction:column;}
+.toc-row{display:flex; align-items:baseline; gap:10px; width:100%; text-align:left; font-family:var(--sans); font-size:14.5px; line-height:1.45; color:var(--text); background:none; border:none; border-bottom:1px solid var(--line); padding:11px 4px; cursor:pointer;}
+.toc-row .toc-n{flex:none; min-width:22px; font-size:12px; font-weight:700; color:var(--muted); text-align:right;}
+.toc-row.head{font-weight:800; font-size:15.5px; padding-top:17px;}
+.toc-row.sub{padding-left:24px;}
 /* dictionary （用語辞典）: framed groups, one framed row per
    term — name, plain definition, and where it sits in this
    plan when that applies */
@@ -850,7 +861,7 @@ body.notifopen #pillnav{opacity:0; pointer-events:none;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.1.5';
+var APP_VERSION = '3.1.6';
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
@@ -1784,6 +1795,70 @@ function subtabLabel(els, sid, isFirst){
   if(s.length > 11) s = s.slice(0, 11).replace(/[。・：、（(]$/, '');
   return s || t;
 }
+/* ---------- detail table of contents (v3.1.6) ----------
+   His call: the business plan's pill rail runs to 43 groups —
+   scrolling it end to end just to see the whole page is the
+   friction. A detail with TOC_MIN_GROUPS or more groups gets
+   a 目次 group in front: every group listed as one tappable
+   row, in order, jumping straight there. The TOC is a group
+   like any other (first in the pills, first in the swipe
+   order), built here at render time like the grouping
+   itself — the data never changes. Indices stay in the one
+   currency everything else already uses (panel index, the
+   TOC itself included), so the remembered group and the
+   term-jump return keep agreeing with the screen. A group
+   whose heading carries a テスト枠 badge (the business
+   plan's candidate cards) opens a block: its TOC row reads
+   as a head and the rows under it indent. */
+var TOC_MIN_GROUPS = 8;
+function subtabHeadingEl(els){
+  var h3 = null;
+  els.forEach(function(el){
+    if(h3) return;
+    if(el.tagName === 'H3') h3 = el;
+    else if((el.classList.contains('card') || el.classList.contains('note')) && el.querySelector) h3 = el.querySelector('h3');
+  });
+  return h3;
+}
+function subtabFullLabel(els, sid, isFirst){
+  var dg = null;
+  els.forEach(function(el){ if(!dg && el.classList && el.classList.contains('dgroup')) dg = el; });
+  if(dg){ var dh = dg.querySelector('.dgroup-h'); if(dh) return dh.textContent.replace(/\s+/g, ' ').trim(); }
+  var t = subtabHeadingText(subtabHeadingEl(els));
+  return t || subtabLabel(els, sid, isFirst);
+}
+function subtabOpensBlock(els){
+  var h3 = subtabHeadingEl(els);
+  if(!h3) return false;
+  var hit = false;
+  Array.prototype.forEach.call(h3.querySelectorAll('.badge'), function(b){
+    if(b.textContent.indexOf('テスト枠') >= 0) hit = true;
+  });
+  return hit;
+}
+function buildTocPanel(groups, sid){
+  var wrap = document.createElement('div');
+  wrap.className = 'toc';
+  var inBlock = false;
+  groups.forEach(function(g, i){
+    var head = subtabOpensBlock(g);
+    if(head) inBlock = true;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'toc-row' + (head ? ' head' : (inBlock ? ' sub' : ''));
+    b.setAttribute('data-gi', i + 1); /* +1: the TOC itself takes index 0 */
+    var num = document.createElement('span');
+    num.className = 'toc-n';
+    num.textContent = i + 1;
+    var lb = document.createElement('span');
+    lb.className = 'toc-t';
+    lb.textContent = subtabFullLabel(g, sid, i === 0);
+    b.appendChild(num);
+    b.appendChild(lb);
+    wrap.appendChild(b);
+  });
+  return wrap;
+}
 function groupDetail(sid, root){
   var db = root || $('detailBody');
   if(!db || db.querySelector('.subtabs')) return;
@@ -1797,6 +1872,11 @@ function groupDetail(sid, root){
     cur.push(el);
   });
   if(groups.length < 2) return;
+  var labels = groups.map(function(g, i){ return subtabLabel(g, sid, i === 0); });
+  if(groups.length >= TOC_MIN_GROUPS){
+    groups.unshift([buildTocPanel(groups, sid)]);
+    labels.unshift('目次');
+  }
   var active = detailGroupSel[sid] || 0;
   if(active >= groups.length) active = 0;
   var bar = document.createElement('div');
@@ -1806,7 +1886,7 @@ function groupDetail(sid, root){
     b.type = 'button';
     b.className = 'subtab' + (i === active ? ' on' : '');
     b.setAttribute('data-gi', i);
-    b.textContent = subtabLabel(g, sid, i === 0);
+    b.textContent = labels[i];
     bar.appendChild(b);
   });
   if(lastFixed && lastFixed.nextSibling) db.insertBefore(bar, lastFixed.nextSibling);
@@ -1820,7 +1900,7 @@ function groupDetail(sid, root){
     db.appendChild(panel);
   });
 }
-function setDetailGroup(gi){
+function setDetailGroup(gi, instant){
   var db = $('detailBody');
   var panels = db.querySelectorAll('.dpanel');
   if(!panels.length || gi < 0 || gi >= panels.length) return;
@@ -1832,7 +1912,7 @@ function setDetailGroup(gi){
   Array.prototype.forEach.call(panels, function(p, i){ p.hidden = i !== gi; });
   if(current) detailGroupSel[current] = gi;
   var panel = panels[gi];
-  if(panel && !reducedMotion() && panel.animate){
+  if(panel && !instant && !reducedMotion() && panel.animate){
     var dir = prev >= 0 && gi < prev ? -1 : 1;
     panel.animate([{ opacity: 0, transform: 'translateX(' + (14 * dir) + 'px)' }, { opacity: 1, transform: 'translateX(0)' }], { duration: 180, easing: 'ease-out' });
   }
@@ -1840,6 +1920,11 @@ function setDetailGroup(gi){
 }
 $('detailBody').addEventListener('click', function(e){
   var b = (e.target && e.target.closest) ? e.target.closest('.subtab') : null;
+  if(!b || !$('detailBody').contains(b)) return;
+  setDetailGroup(+b.getAttribute('data-gi'));
+});
+$('detailBody').addEventListener('click', function(e){
+  var b = (e.target && e.target.closest) ? e.target.closest('.toc-row') : null;
   if(!b || !$('detailBody').contains(b)) return;
   setDetailGroup(+b.getAttribute('data-gi'));
 });
@@ -2066,23 +2151,38 @@ document.addEventListener('click', function(e){
   e.preventDefault(); e.stopPropagation();
 }, true);
 
-/* swipe-back (zukan thresholds): engage on a right-dominant drag,
-   the detail follows the finger, the list parallaxes underneath.
-   v3.1.5 adds the mirror gesture: a left-dominant drag pages to
-   the NEXT section of the same tab, finger-followed — the open
-   detail slides out as it stands while the next section, built
-   on a separate pane, slides in under the finger. Right stays
-   back, exactly as shipped; there is deliberately no swipe
-   for "previous section", so one direction never means two
-   things. At a tab's last section the left drag never engages
-   and stays a scroll. */
+/* detail-page swipes (v3.1.6, reworked at his correction):
+   a horizontal drag on a detail pages between its own subtab
+   groups — left for the next group, right for the previous
+   one, finger-followed, the pill bar following the commit.
+   "Back" is the left-edge swipe only: a right drag that
+   starts within the edge strip (24px). Anywhere else a right
+   drag means "previous group", so one direction never
+   carries two meanings. (v3.1.5's left-swipe "next section"
+   is gone for the same reason; the list screens' tab swipe
+   below is untouched.) A detail with fewer than two groups
+   never engages the group page, and at the first / last
+   group the drag toward the missing side never engages
+   either — both stay plain scrolls. The group page mirrors
+   the retired next-section build: the open detail pins
+   exactly as it stands — its DOM is never touched
+   mid-gesture, so the touch keeps its target and every move
+   keeps arriving — and the target group is built (grouped,
+   TOC included, term-linked) on a separate pane parked one
+   screen over. Commit hands over to setDetailGroup, so what
+   the finger revealed is what stays; cancel simply unpins,
+   with group and scroll untouched. The remembered group
+   (detailGroupSel) and the term-jump return both already
+   speak in panel indices, and this build keeps that
+   currency, so neither needed re-denominating. */
 (function(){
   var st = null, swAnim = false;
+  var EDGE_W = 24;
   document.addEventListener('touchstart', function(e){
     if(!detailOpen || vtBusy || swAnim || st || e.touches.length !== 1) return;
     if(e.target && e.target.closest && (e.target.closest('#pillnav') || e.target.closest('.subtabs'))) return; /* pill and subtab drags belong to those rails themselves */
     var t = e.touches[0];
-    st = { sx: t.clientX, sy: t.clientY, dx: 0, dy: 0, engaged: false, mode: null, dead: false, pane: null, nextId: null, pdx: 0, lastX: t.clientX, lastT: Date.now(), vx: 0, y: window.scrollY || 0 };
+    st = { sx: t.clientX, sy: t.clientY, dx: 0, dy: 0, engaged: false, mode: null, deadL: false, deadR: false, pane: null, gFrom: -1, gTo: -1, gDir: 0, pdx: 0, lastX: t.clientX, lastT: Date.now(), vx: 0, y: window.scrollY || 0 };
   }, { passive: true });
   document.addEventListener('touchmove', function(e){
     if(!st) return;
@@ -2092,26 +2192,36 @@ document.addEventListener('click', function(e){
     var now = Date.now(), dt = now - st.lastT;
     if(dt > 0){ st.vx = (t.clientX - st.lastX) / dt; st.lastX = t.clientX; st.lastT = now; }
     if(!st.engaged){
-      if(st.dx > 12 && Math.abs(st.dx) > Math.abs(st.dy) * 1.25){ st.mode = 'back'; engageSwipe(); }
-      else if(st.dx < -12 && Math.abs(st.dx) > Math.abs(st.dy) * 1.25){
-        if(!st.dead){
-          var nid = nextSectionId();
-          if(nid){ st.mode = 'next'; st.nextId = nid; engageNext(); }
-          else st.dead = true; /* no next section in this tab: the drag stays a scroll */
+      var horiz = Math.abs(st.dx) > 12 && Math.abs(st.dx) > Math.abs(st.dy) * 1.25;
+      if(horiz && st.dx > 0 && st.sx <= EDGE_W){ st.mode = 'back'; engageSwipe(); }
+      else if(horiz && st.dx > 0){
+        if(!st.deadR){
+          var gp = groupTarget(-1);
+          if(gp){ st.mode = 'group'; st.gDir = -1; st.gFrom = gp.from; st.gTo = gp.to; engageGroup(); }
+          else st.deadR = true; /* first group (or no groups): the drag stays a scroll */
+        }
+      }
+      else if(horiz && st.dx < 0){
+        if(!st.deadL){
+          var gn = groupTarget(1);
+          if(gn){ st.mode = 'group'; st.gDir = 1; st.gFrom = gn.from; st.gTo = gn.to; engageGroup(); }
+          else st.deadL = true; /* last group (or no groups): the drag stays a scroll */
         }
       }
       else if(Math.abs(st.dy) > 14 && Math.abs(st.dy) >= Math.abs(st.dx)){ st = null; return; }
       else return;
     }
-    if(st.mode === 'next') paintNext(); else paintSwipe();
+    if(st.mode === 'group') paintGroup(); else paintSwipe();
   }, { passive: true });
-  function nextSectionId(){
-    if(!current || current === HOME_ID) return null;
-    var secs = tabSections();
-    for(var i = 0; i < secs.length; i++){
-      if(secs[i].id === current) return (i + 1 < secs.length) ? secs[i + 1].id : null;
-    }
-    return null;
+  function groupTarget(dir){
+    var panels = $('detailBody').querySelectorAll('.dpanel');
+    if(panels.length < 2) return null;
+    var cur = -1;
+    Array.prototype.forEach.call(panels, function(p, i){ if(!p.hidden) cur = i; });
+    if(cur < 0) return null;
+    var to = cur + dir;
+    if(to < 0 || to >= panels.length) return null;
+    return { from: cur, to: to };
   }
   function engageSwipe(){
     var H = hdrH();
@@ -2132,19 +2242,10 @@ document.addEventListener('click', function(e){
     detailView.style.transform = 'translateX(' + Math.max(0, st.dx) + 'px)';
     listView.style.transform = 'translateX(' + (-26 * (1 - pr)) + '%)';
   }
-  /* next-section page: the open detail is pinned exactly as
-     it stands — its DOM is never touched mid-gesture, so the
-     touch keeps its target and every move keeps arriving —
-     and the next section is built (grouped, term-linked) on a
-     separate pane parked one screen to the right. Both follow
-     the finger. Commit swaps the real view's contents for the
-     next section in the same synchronous teardown that drops
-     the pane, so what the finger revealed is what stays;
-     cancel simply unpins, with group and scroll untouched. */
-  function engageNext(){
+  function engageGroup(){
     var H = hdrH(), W = window.innerWidth || 1;
-    var nx = sectionById(st.nextId);
-    if(!nx){ st.mode = null; st.dead = true; return; }
+    var html = (current === HOME_ID) ? homeDetailHTML() : (sectionById(current) || {}).html;
+    if(!html){ st.mode = null; st.deadL = st.deadR = true; return; }
     detailView.classList.add('vt-fixed');
     detailView.style.top = (H - st.y) + 'px';
     detailView.style.height = '100dvh';
@@ -2155,32 +2256,40 @@ document.addEventListener('click', function(e){
     pane.style.top = H + 'px';
     pane.style.height = 'calc(100dvh - ' + H + 'px)';
     pane.style.zIndex = '25';
-    pane.innerHTML = '<div class="bizbackbar"><button type="button" class="backbtn">‹ 一覧に戻る</button></div><article class="detail"></article>';
+    var bb = $('backBtn');
+    pane.innerHTML = '<div class="bizbackbar"><button type="button" class="backbtn">' + (bb ? bb.textContent : '‹ 一覧に戻る') + '</button></div><article class="detail"></article>';
     var art = pane.querySelector('article.detail');
-    art.innerHTML = nx.html;
+    art.innerHTML = html;
     document.body.appendChild(pane);
-    groupDetail(st.nextId, art);
-    linkifyTerms(st.nextId, art);
-    pane.style.transform = 'translateX(' + W + 'px)';
+    /* build the pane on the target group, then hand the
+       remembered group straight back — the real page only
+       learns about the move if the gesture commits */
+    var had = Object.prototype.hasOwnProperty.call(detailGroupSel, current);
+    var keep = detailGroupSel[current];
+    detailGroupSel[current] = st.gTo;
+    groupDetail(current, art);
+    if(had) detailGroupSel[current] = keep; else delete detailGroupSel[current];
+    linkifyTerms(current, art);
+    pane.style.transform = 'translateX(' + (st.gDir * W) + 'px)';
     st.pane = pane;
     document.body.classList.add('vt-run');
     st.engaged = true;
-    paintNext();
+    paintGroup();
   }
-  function paintNext(){
+  function paintGroup(){
     var W = window.innerWidth || 1;
-    var pdx = Math.min(0, st.dx);
+    var pdx = st.gDir > 0 ? Math.min(0, st.dx) : Math.max(0, st.dx);
     st.pdx = pdx;
     detailView.style.transform = 'translateX(' + pdx + 'px)';
-    if(st.pane) st.pane.style.transform = 'translateX(' + (W + pdx) + 'px)';
+    if(st.pane) st.pane.style.transform = 'translateX(' + (st.gDir * W + pdx) + 'px)';
   }
-  function finishNext(s, commit){
+  function finishGroup(s, commit){
     swAnim = true;
     var W = window.innerWidth || 1;
-    var pdx = (typeof s.pdx === 'number') ? s.pdx : Math.min(0, s.dx);
+    var pdx = (typeof s.pdx === 'number') ? s.pdx : (s.gDir > 0 ? Math.min(0, s.dx) : Math.max(0, s.dx));
     var dur = commit ? 240 : 200;
-    var ad = detailView.animate([{ transform: 'translateX(' + pdx + 'px)' }, { transform: 'translateX(' + (commit ? -(W + 24) : 0) + 'px)' }], { duration: dur, easing: VT_EASE });
-    var ap = s.pane ? s.pane.animate([{ transform: 'translateX(' + (W + pdx) + 'px)' }, { transform: 'translateX(' + (commit ? 0 : W) + 'px)' }], { duration: dur, easing: VT_EASE }) : null;
+    var ad = detailView.animate([{ transform: 'translateX(' + pdx + 'px)' }, { transform: 'translateX(' + (commit ? -s.gDir * (W + 24) : 0) + 'px)' }], { duration: dur, easing: VT_EASE });
+    var ap = s.pane ? s.pane.animate([{ transform: 'translateX(' + (s.gDir * W + pdx) + 'px)' }, { transform: 'translateX(' + (commit ? 0 : s.gDir * W) + 'px)' }], { duration: dur, easing: VT_EASE }) : null;
     var done = false;
     function teardown(){
       if(done) return;
@@ -2192,16 +2301,8 @@ document.addEventListener('click', function(e){
       detailView.style.top = ''; detailView.style.height = ''; detailView.style.zIndex = ''; detailView.style.transform = '';
       document.body.classList.remove('vt-run');
       swAnim = false;
-      if(commit){
-        current = s.nextId;
-        var nx = sectionById(s.nextId);
-        if(nx){ $('detailBody').innerHTML = nx.html; decorateDetail(); }
-        window.scrollTo(0, 0);
-        try{ history.pushState({ view: s.nextId }, '', '#/' + s.nextId); }catch(e){}
-        ensurePillAnchor(true);
-      } else {
-        window.scrollTo(0, s.y || 0);
-      }
+      if(commit) setDetailGroup(s.gTo, true);
+      else window.scrollTo(0, s.y || 0);
     }
     ad.onfinish = teardown;
     setTimeout(teardown, 420);
@@ -2212,11 +2313,16 @@ document.addEventListener('click', function(e){
     if(!s.engaged) return;
     suppressNextClick(); /* armed now, not at teardown: the touch's own click can land before the finish animation ends */
     var W = window.innerWidth || 1;
-    if(s.mode === 'next'){ finishNext(s, s.dx < -W * 0.35 || (s.dx < -56 && s.vx < -0.3)); return; }
+    if(s.mode === 'group'){
+      var commit = s.gDir > 0 ? (s.dx < -W * 0.35 || (s.dx < -56 && s.vx < -0.3))
+                              : (s.dx >  W * 0.35 || (s.dx >  56 && s.vx >  0.3));
+      finishGroup(s, commit);
+      return;
+    }
     finishSwipe(s, s.dx > W * 0.35 || (s.dx > 56 && s.vx > 0.3));
   }, { passive: true });
   document.addEventListener('touchcancel', function(){
-    if(st && st.engaged){ var s = st; st = null; if(s.mode === 'next') finishNext(s, false); else finishSwipe(s, false); }
+    if(st && st.engaged){ var s = st; st = null; if(s.mode === 'group') finishGroup(s, false); else finishSwipe(s, false); }
     else st = null;
   }, { passive: true });
   function finishSwipe(s, commit){
