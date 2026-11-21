@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.1.9">
+<meta name="app-version" content="3.1.10">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -493,6 +493,20 @@ figure.work figcaption{padding:0;}
    vertical rhythm tighten one notch across every block below;
    headings keep their size gap so the hierarchy still reads. */
 .detail{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:15px 14px 9px; margin-bottom:14px; font-size:14.5px; line-height:1.68;}
+/* v3.1.10: the detail article is the positioning home for the
+   group-swipe pane, and its h4s head the framed blocks inside
+   a group (an h3 there would split the group) */
+#detailBody{position:relative;}
+.detail h4{font-size:15.5px; font-weight:700; margin:0 0 9px;}
+/* v3.1.10: a group swipe slides only the group panels; the
+   incoming panel is absolutely placed exactly over the current
+   one, inside the same article, so the head, lead and pill bar
+   never move and can never double up */
+.gpanel{position:absolute; z-index:6; background:var(--card); margin:0;}
+/* v3.1.10 (his recording): the last lines of a detail slid
+   under the fixed bottom pill bar — give every detail a deep
+   bottom margin so the final line always clears the bar */
+#viewDetail{padding-bottom:176px;}
 .detail .card, .detail .lane, .detail .note, .detail .stat, .detail .asset, .detail .idea, .detail .pending-list li{background:var(--card2);}
 .detail .groupcard{background:var(--bg2); border:1px solid var(--line); margin-bottom:0;}
 .detail-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:2px 0 6px;}
@@ -861,7 +875,7 @@ body.notifopen #pillnav{opacity:0; pointer-events:none;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.1.9';
+var APP_VERSION = '3.1.10';
 var CLIENT_ID = '386087008053-de53ufnkvcnbjslkuhmq2l2pm9fj4c2t.apps.googleusercontent.com';
 var FILE_NAME = 'bizplan.json';
 var SEED = {
@@ -1094,7 +1108,7 @@ var SEED = {
    "badgeClass": "",
    "badgeText": "",
    "char": "金",
-   "html": "<div class=\"detail-head\"><h2>お金とは何か</h2></div>\n        <p class=\"sec-lead\">お金は、モノじゃない。記録だ。</p>\n        <h3>お金の流れ</h3>\n        <div class=\"flow\"><span>価値を渡す</span><i>→</i><span>認められる</span><i>→</i><span>記録が増える</span></div>\n        <p>お金そのものに価値はない。お金は「誰かに価値を渡した」という記録だ。渡した価値が認められたときだけ、記録が増える。</p>\n        <h3>2つの形</h3>\n        <div class=\"lanes\">\n          <div class=\"lane other\">\n            <h3>バイト（労働）</h3>\n            <p>時間を1回売って、1回分の記録をもらう形。確実だが、記録の量は「時間×時給」で頭打ちになる。</p>\n          </div>\n          <div class=\"lane art\">\n            <h3>仕組み</h3>\n            <p>一度作ったものが、何度も記録を生む形。動画1本、商品1点が、寝ている間も記録を生み得る。だから天井が違う。</p>\n          </div>\n        </div>\n        <div class=\"note\">\n          <p>逆に、誰の「欲しい」にも当たらなければ記録は0のまま。努力と記録が比例しないのが、この世界のいちばんきついところだ。</p>\n        </div>\n        <h3>翔万の数字で見ると</h3>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">年600<small>万円</small></div><div class=\"k\">「月50万円分の記録を生み続ける状態」と言い換えられる</div></div>\n          <div class=\"stat\"><div class=\"v\">年1,000<small>万円</small></div><div class=\"k\">月83万円分の記録を生み続ける状態</div></div>\n        </div>\n        <p>問いは「頑張れるか」じゃなく「何が、誰の欲しいに当たって、記録を繰り返し生むか」になる。</p>\n        <h3>次のレッスン</h3>\n        <p>全部を先に学ばない。「今のステージで必要なものだけ」を学ぶ。使わない知識は腐るし、勉強が「動けない」の隠れ蓑になる。大きな流れは固定されている。</p>\n        <div class=\"flow\"><span>作る</span><i>→</i><span>守る</span><i>→</i><span>増やす（再投資）</span><i>→</i><span>運用する（投資）</span></div>\n        <ul>\n          <li><strong>① お金とは何か</strong>（済み）：この回。お金＝価値交換と信用の記録。渇きが止まった時に金が動く</li>\n          <li><strong>ビジネスの管</strong>（済み）：集客 → 興味・信頼 → 販売 → 継続。金は管のどこかで落ちる</li>\n          <li><strong>② 数字の式</strong>（次の学習）：売上＝単価×客数×リピート、利益＝売上−経費、粗利、損益分岐点、手数料の読み方。同じタブの「数字の式」に用意してある</li>\n          <li><strong>集客と販売の実務</strong>：渇きの種類、オファー（提案の形）、価格の決め方、ファネルの指標の読み方。今の主戦場と直結</li>\n          <li><strong>テストと改善</strong>：仮説→小さく試す→数字で判定→当たった型だけ残す。30本検証の考え方そのもの</li>\n          <li><strong>守りの実務</strong>：開業届・青色申告・確定申告／著作権／ステマ規制（PR表記）／特商法。最初の収益が出たら</li>\n          <li><strong>仕組みの拡大</strong>：ストック化、外注（お金で手を買う）、ライセンス、蛇口の複数化。月10万円が見えたら</li>\n          <li><strong>投資・資産運用</strong>：インデックス投資の基本、リスクと複利、詐欺の見分け方。最後（余剰資金ができてから）。制度の知識は「お金の常識」（投資の常識）に先に置いてある</li>\n        </ul>\n        <div class=\"note\">\n          <p><strong>なぜ投資が最後なのか</strong>：投資のリターンは「元本×利率」。元本10万円を年5%で運用しても年5,000円。同じ労力で「月1万円稼ぐ仕組み」を作れば年12万円で、しかも仕組みは育つ。だから順番は「仕組みで元本を作る → 税金と管理で守る → 仕組みに再投資して増やす → 余った分だけ運用する」。例外として今すぐ要るのは「守り」の見分け方だけ——元本保証＋高利回りの話は詐欺、FX・仮想通貨のレバレッジは初心者の入口ではない（詳しくは「お金の常識」の詐欺の見分け方）。</p>\n        </div>\n        <p><strong>今は学ばなくていいもの</strong>：簿記の細部と法人設立の手続き論（売上が立ってからで間に合う）／株のチャート分析・短期売買（今のステージでは再現性がない）／節税テクニック（守るべき利益が出てから）／広告運用の詳細（集客の型が当たってから）。</p>\n        <p>アフィリエイトの仕組み（誰が誰に、何の対価を払っているのか）は、この順番の外の実地編として学習済みで、テスト候補4の中に体系として置いてある。</p>\n        <p class=\"sources\">出典・前提：翔万本人の言葉（2026-11-05）と、同日出た50方法マップの分布。数字の細部はマップ側に譲る</p>",
+   "html": "<div class=\"detail-head\"><h2>お金とは何か</h2></div>\n        <p class=\"sec-lead\">お金は、モノじゃない。記録だ。</p>\n        <h3>お金の流れ</h3>\n        <div class=\"flow\"><span>価値を渡す</span><i>→</i><span>認められる</span><i>→</i><span>記録が増える</span></div>\n        <p>お金そのものに価値はない。お金は「誰かに価値を渡した」という記録だ。渡した価値が認められたときだけ、記録が増える。</p>\n        <h3>2つの形</h3>\n        <div class=\"lanes\">\n          <div class=\"lane other\">\n            <h3>バイト（労働）</h3>\n            <p>時間を1回売って、1回分の記録をもらう形。確実だが、記録の量は「時間×時給」で頭打ちになる。</p>\n          </div>\n          <div class=\"lane art\">\n            <h3>仕組み</h3>\n            <p>一度作ったものが、何度も記録を生む形。動画1本、商品1点が、寝ている間も記録を生み得る。だから天井が違う。</p>\n          </div>\n        </div>\n        <div class=\"note\">\n          <p>逆に、誰の「欲しい」にも当たらなければ記録は0のまま。努力と記録が比例しないのが、この世界のいちばんきついところだ。</p>\n        </div>\n        <h3>翔万の数字で見ると</h3>\n        <div class=\"stats\">\n          <div class=\"stat\"><div class=\"v\">年600<small>万円</small></div><div class=\"k\">「月50万円分の記録を生み続ける状態」と言い換えられる</div></div>\n          <div class=\"stat\"><div class=\"v\">年1,000<small>万円</small></div><div class=\"k\">月83万円分の記録を生み続ける状態</div></div>\n        </div>\n        <p>問いは「頑張れるか」じゃなく「何が、誰の欲しいに当たって、記録を繰り返し生むか」になる。</p>\n        <h3>次のレッスン</h3>\n        <p>全部を先に学ばない。「今のステージで必要なものだけ」を学ぶ。使わない知識は腐るし、勉強が「動けない」の隠れ蓑になる。大きな流れは固定されている。</p>\n        <div class=\"card\">\n          <h4>大きな流れ</h4>\n          <div class=\"flow\"><span>作る</span><i>→</i><span>守る</span><i>→</i><span>増やす（再投資）</span><i>→</i><span>運用する（投資）</span></div>\n        </div>\n        <div class=\"card\">\n          <h4>学ぶ順番</h4>\n          <ol class=\"steps\">\n            <li data-n=\"1\"><span class=\"st\">お金とは何か <span class=\"badge decided\">済み</span></span><span class=\"sd\">この回。お金＝価値交換と信用の記録。渇きが止まった時に金が動く</span></li>\n            <li data-n=\"2\"><span class=\"st\">ビジネスの管 <span class=\"badge decided\">済み</span></span><span class=\"sd\">集客 → 興味・信頼 → 販売 → 継続。金は管のどこかで落ちる</span></li>\n            <li data-n=\"3\"><span class=\"st\">数字の式 <span class=\"badge now\">次の学習</span></span><span class=\"sd\">売上＝単価×客数×リピート、利益＝売上−経費、粗利、損益分岐点、手数料の読み方。同じタブの「数字の式」に用意してある</span></li>\n            <li data-n=\"4\"><span class=\"st\">集客と販売の実務</span><span class=\"sd\">渇きの種類、オファー（提案の形）、価格の決め方、ファネルの指標の読み方。今の主戦場と直結</span></li>\n            <li data-n=\"5\"><span class=\"st\">テストと改善</span><span class=\"sd\">仮説→小さく試す→数字で判定→当たった型だけ残す。30本検証の考え方そのもの</span></li>\n            <li data-n=\"6\"><span class=\"st\">守りの実務</span><span class=\"sd\">開業届・青色申告・確定申告／著作権／ステマ規制（PR表記）／特商法。最初の収益が出たら</span></li>\n            <li data-n=\"7\"><span class=\"st\">仕組みの拡大</span><span class=\"sd\">ストック化、外注（お金で手を買う）、ライセンス、蛇口の複数化。月10万円が見えたら</span></li>\n            <li data-n=\"8\"><span class=\"st\">投資・資産運用</span><span class=\"sd\">インデックス投資の基本、リスクと複利、詐欺の見分け方。最後（余剰資金ができてから）。制度の知識は「お金の常識」（投資の常識）に先に置いてある</span></li>\n          </ol>\n        </div>\n        <div class=\"card\">\n          <h4>なぜ投資が最後なのか</h4>\n          <p>投資のリターンは「元本×利率」。</p>\n          <div class=\"stats\">\n            <div class=\"stat\"><div class=\"v\">年5,000<small>円</small></div><div class=\"k\">元本10万円を年5%で運用しても、これだけ</div></div>\n            <div class=\"stat\"><div class=\"v\">年12<small>万円</small></div><div class=\"k\">同じ労力で「月1万円稼ぐ仕組み」を作れば。しかも仕組みは育つ</div></div>\n          </div>\n          <p>だから順番は「仕組みで元本を作る → 税金と管理で守る → 仕組みに再投資して増やす → 余った分だけ運用する」。例外として今すぐ要るのは「守り」の見分け方だけ——元本保証＋高利回りの話は詐欺、FX・仮想通貨のレバレッジは初心者の入口ではない（詳しくは「お金の常識」の詐欺の見分け方）。</p>\n        </div>\n        <div class=\"card\">\n          <h4>今は学ばなくていいもの</h4>\n          <ul class=\"checklist\">\n            <li>簿記の細部と法人設立の手続き論（売上が立ってからで間に合う）</li>\n            <li>株のチャート分析・短期売買（今のステージでは再現性がない）</li>\n            <li>節税テクニック（守るべき利益が出てから）</li>\n            <li>広告運用の詳細（集客の型が当たってから）</li>\n          </ul>\n        </div>\n        <p>アフィリエイトの仕組み（誰が誰に、何の対価を払っているのか）は、この順番の外の実地編として学習済みで、テスト候補4の中に体系として置いてある。</p>\n        <p class=\"sources\">出典・前提：翔万本人の言葉（2026-11-05）と、同日出た50方法マップの分布。数字の細部はマップ側に譲る</p>",
    "id": "money",
    "meta": "お金は「誰かに価値を渡した」という記録。労働と仕組みで天井が違う理由",
    "num": "12",
@@ -1102,7 +1116,7 @@ var SEED = {
    "tag": "学習シリーズ ①",
    "themeClass": "t-money",
    "title": "お金とは何か",
-   "updated_at": "2026-11-21T14:08:28+09:00"
+   "updated_at": "2026-11-21T14:40:54+09:00"
   },
   {
    "badgeClass": "",
@@ -1161,7 +1175,7 @@ var SEED = {
    "updated_at": "2026-11-21T14:08:28+09:00"
   }
  ],
- "updatedAt": "2026-11-21T14:08:28+09:00",
+ "updatedAt": "2026-11-21T14:40:54+09:00",
  "version": 1
 };
 
@@ -2170,18 +2184,24 @@ document.addEventListener('click', function(e){
    below is untouched.) A detail with fewer than two groups
    never engages the group page, and at the first / last
    group the drag toward the missing side never engages
-   either — both stay plain scrolls. The group page mirrors
-   the retired next-section build: the open detail pins
-   exactly as it stands — its DOM is never touched
-   mid-gesture, so the touch keeps its target and every move
-   keeps arriving — and the target group is built (grouped,
-   TOC included, term-linked) on a separate pane parked one
-   screen over. Commit hands over to setDetailGroup, so what
-   the finger revealed is what stays; cancel simply unpins,
-   with group and scroll untouched. The remembered group
-   (detailGroupSel) and the term-jump return both already
-   speak in panel indices, and this build keeps that
-   currency, so neither needed re-denominating. */
+   either — both stay plain scrolls. v3.1.10 (his recording:
+   the sliding pane carried its own copy of the head, lead and
+   pill bar, so mid-swipe the headings doubled up over the
+   text): only the group panels slide now. The head, the lead
+   and the pill bar stay exactly where they are — the bar's
+   selection flips at commit — and the incoming group is built
+   (grouped, TOC included, term-linked) on a detached copy,
+   then its panel is laid absolutely over the current panel
+   inside the same article, so both panels share one vertical
+   position whatever the scroll. The real page's DOM is never
+   touched mid-gesture, so the touch keeps its target and
+   every move keeps arriving. Commit hands over to
+   setDetailGroup, so what the finger revealed is what stays;
+   cancel just takes the overlay panel away, with group and
+   scroll untouched. The remembered group (detailGroupSel)
+   and the term-jump return both already speak in panel
+   indices, and this build keeps that currency, so neither
+   needed re-denominating. */
 (function(){
   var st = null, swAnim = false;
   var EDGE_W = 24;
@@ -2189,7 +2209,7 @@ document.addEventListener('click', function(e){
     if(!detailOpen || vtBusy || swAnim || st || e.touches.length !== 1) return;
     if(e.target && e.target.closest && (e.target.closest('#pillnav') || e.target.closest('.subtabs'))) return; /* pill and subtab drags belong to those rails themselves */
     var t = e.touches[0];
-    st = { sx: t.clientX, sy: t.clientY, dx: 0, dy: 0, engaged: false, mode: null, deadL: false, deadR: false, pane: null, gFrom: -1, gTo: -1, gDir: 0, pdx: 0, lastX: t.clientX, lastT: Date.now(), vx: 0, y: window.scrollY || 0 };
+    st = { sx: t.clientX, sy: t.clientY, dx: 0, dy: 0, engaged: false, mode: null, deadL: false, deadR: false, pane: null, curPanel: null, gFrom: -1, gTo: -1, gDir: 0, pdx: 0, lastX: t.clientX, lastT: Date.now(), vx: 0, y: window.scrollY || 0 };
   }, { passive: true });
   document.addEventListener('touchmove', function(e){
     if(!st) return;
@@ -2218,8 +2238,15 @@ document.addEventListener('click', function(e){
       else if(Math.abs(st.dy) > 14 && Math.abs(st.dy) >= Math.abs(st.dx)){ st = null; return; }
       else return;
     }
+    if(!st.engaged) return; /* an engage that declined (dead side, unbuildable target) stays a plain scroll */
     if(st.mode === 'group') paintGroup(); else paintSwipe();
   }, { passive: true });
+  /* while a group drag is engaged the page must not scroll
+     vertically under the finger — the passive move handler
+     above cannot preventDefault, so this twin can */
+  document.addEventListener('touchmove', function(e){
+    if(st && st.engaged && st.mode === 'group') e.preventDefault();
+  }, { passive: false });
   function groupTarget(dir){
     var panels = $('detailBody').querySelectorAll('.dpanel');
     if(panels.length < 2) return null;
@@ -2250,35 +2277,40 @@ document.addEventListener('click', function(e){
     listView.style.transform = 'translateX(' + (-26 * (1 - pr)) + '%)';
   }
   function engageGroup(){
-    var H = hdrH(), W = window.innerWidth || 1;
+    var W = window.innerWidth || 1;
     var html = (current === HOME_ID) ? homeDetailHTML() : (sectionById(current) || {}).html;
     if(!html){ st.mode = null; st.deadL = st.deadR = true; return; }
-    detailView.classList.add('vt-fixed');
-    detailView.style.top = (H - st.y) + 'px';
-    detailView.style.height = '100dvh';
-    detailView.style.zIndex = '26';
-    detailView.style.transform = 'translateX(0px)';
-    var pane = document.createElement('main');
-    pane.className = 'vt-fixed';
-    pane.style.top = H + 'px';
-    pane.style.height = 'calc(100dvh - ' + H + 'px)';
-    pane.style.zIndex = '25';
-    var bb = $('backBtn');
-    pane.innerHTML = '<div class="bizbackbar"><button type="button" class="backbtn">' + (bb ? bb.textContent : '‹ 一覧に戻る') + '</button></div><article class="detail"></article>';
-    var art = pane.querySelector('article.detail');
-    art.innerHTML = html;
-    document.body.appendChild(pane);
-    /* build the pane on the target group, then hand the
-       remembered group straight back — the real page only
-       learns about the move if the gesture commits */
+    var db = $('detailBody');
+    var curPanel = db.querySelectorAll('.dpanel')[st.gFrom];
+    if(!curPanel){ st.mode = null; st.deadL = st.deadR = true; return; }
+    /* build the target group on a detached copy of the
+       article, then hand the remembered group straight back —
+       the real page only learns about the move if the gesture
+       commits */
+    var tmp = document.createElement('article');
+    tmp.className = 'detail';
+    tmp.innerHTML = html;
     var had = Object.prototype.hasOwnProperty.call(detailGroupSel, current);
     var keep = detailGroupSel[current];
     detailGroupSel[current] = st.gTo;
-    groupDetail(current, art);
+    groupDetail(current, tmp);
     if(had) detailGroupSel[current] = keep; else delete detailGroupSel[current];
-    linkifyTerms(current, art);
-    pane.style.transform = 'translateX(' + (st.gDir * W) + 'px)';
-    st.pane = pane;
+    linkifyTerms(current, tmp);
+    var tp = tmp.querySelectorAll('.dpanel')[st.gTo];
+    if(!tp){ st.mode = null; st.deadL = st.deadR = true; return; }
+    /* lay the target panel exactly over the current one,
+       inside the same article: the head, the lead and the
+       pill bar are not part of either panel, so they stay
+       put and nothing can double up mid-drag */
+    tp.hidden = false;
+    tp.classList.add('gpanel');
+    tp.style.top = curPanel.offsetTop + 'px';
+    tp.style.left = curPanel.offsetLeft + 'px';
+    tp.style.width = curPanel.offsetWidth + 'px';
+    tp.style.transform = 'translateX(' + (st.gDir * W) + 'px)';
+    db.appendChild(tp);
+    st.pane = tp;
+    st.curPanel = curPanel;
     document.body.classList.add('vt-run');
     st.engaged = true;
     paintGroup();
@@ -2287,7 +2319,7 @@ document.addEventListener('click', function(e){
     var W = window.innerWidth || 1;
     var pdx = st.gDir > 0 ? Math.min(0, st.dx) : Math.max(0, st.dx);
     st.pdx = pdx;
-    detailView.style.transform = 'translateX(' + pdx + 'px)';
+    if(st.curPanel) st.curPanel.style.transform = 'translateX(' + pdx + 'px)';
     if(st.pane) st.pane.style.transform = 'translateX(' + (st.gDir * W + pdx) + 'px)';
   }
   function finishGroup(s, commit){
@@ -2295,23 +2327,24 @@ document.addEventListener('click', function(e){
     var W = window.innerWidth || 1;
     var pdx = (typeof s.pdx === 'number') ? s.pdx : (s.gDir > 0 ? Math.min(0, s.dx) : Math.max(0, s.dx));
     var dur = commit ? 240 : 200;
-    var ad = detailView.animate([{ transform: 'translateX(' + pdx + 'px)' }, { transform: 'translateX(' + (commit ? -s.gDir * (W + 24) : 0) + 'px)' }], { duration: dur, easing: VT_EASE });
+    var ac = s.curPanel ? s.curPanel.animate([{ transform: 'translateX(' + pdx + 'px)' }, { transform: 'translateX(' + (commit ? -s.gDir * (W + 24) : 0) + 'px)' }], { duration: dur, easing: VT_EASE }) : null;
     var ap = s.pane ? s.pane.animate([{ transform: 'translateX(' + (s.gDir * W + pdx) + 'px)' }, { transform: 'translateX(' + (commit ? 0 : s.gDir * W) + 'px)' }], { duration: dur, easing: VT_EASE }) : null;
     var done = false;
     function teardown(){
       if(done) return;
       done = true;
-      try{ ad.cancel(); }catch(e){}
+      try{ if(ac) ac.cancel(); }catch(e){}
       try{ if(ap) ap.cancel(); }catch(e){}
       if(s.pane && s.pane.parentNode) s.pane.parentNode.removeChild(s.pane);
-      detailView.classList.remove('vt-fixed');
-      detailView.style.top = ''; detailView.style.height = ''; detailView.style.zIndex = ''; detailView.style.transform = '';
+      if(s.curPanel) s.curPanel.style.transform = '';
       document.body.classList.remove('vt-run');
       swAnim = false;
       if(commit) setDetailGroup(s.gTo, true);
-      else window.scrollTo(0, s.y || 0);
+      /* on cancel nothing moves: the page never left its
+         scroll position, and the current panel is back at 0 */
     }
-    ad.onfinish = teardown;
+    if(ac) ac.onfinish = teardown;
+    if(!ac && ap) ap.onfinish = teardown;
     setTimeout(teardown, 420);
   }
   document.addEventListener('touchend', function(){
