@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.6.4">
+<meta name="app-version" content="3.7.0">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -947,7 +947,7 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.6.4';
+var APP_VERSION = '3.7.0';
 /* PARTIAL HOLD (v3.4.1〜、v3.5.0 で範囲を変更): 本人の段階指示で
    表示範囲を絞った状態。目次（ホーム/章ビュー）は廃止のまま。
    v3.5.0 の範囲：ヘッダー（Busilabo＋件数・バージョン・ベル・
@@ -968,13 +968,24 @@ var APP_VERSION = '3.6.4';
    外れ、詳細が開く。それ以外のビジネス系の部（ビジネス計画
    ・AIパイプライン・先駆者の型・ルール等）は一覧にも詳細
    にも出ないまま。マネー／アートの部は引き続き詳細が開か
-   ない。木の定義と遷移は BIZ_KIDS／bizLevelHTML の節。 */
+   ない。木の定義と遷移は BIZ_KIDS／bizLevelHTML の節。
+   v3.7.0 の範囲変更（本人の決定 2026-11-21 18:53「事業リスト
+   を解体してアプリ事業だけ残そう。こいつで本気で行く」）：
+   木は解体し、ビジネスタブの最初の画面がアプリ事業の中身そ
+   のものになった（始め方ステップ／図鑑アプリ／ストア参入の
+   3枚だけ）。詳細が開くビジネス系の部は appbiz と store の
+   2つだけ。他5事業（affiliate／digital／story／makefun／
+   note）と bizlist は、データは保持したまま表示から外した
+   （secHeld で閉じ、ディープリンクも開かない）。 */
 var PARTIAL_HOLD = true;
 var HOLD_TABS = {};
 function tabHeld(t){ return PARTIAL_HOLD && !!HOLD_TABS[t]; }
 /* v3.6.0: ビジネスの木の葉（6事業の部）は詳細が開く。それ以外
-   のビジネス系の部と、マネー／アートの部は引き続き閉じている */
-var BIZ_LEAF = { appbiz: true, affiliate: true, digital: true, story: true, makefun: true, note: true, store: true };
+   のビジネス系の部と、マネー／アートの部は引き続き閉じている
+   v3.7.0: 本丸をアプリ事業に決めたため、詳細が開くのは
+   appbiz と store だけになった。他5事業の部はデータ保持の
+   まま閉じている（BIZ_LEAF から外す＝secHeld で閉じる） */
+var BIZ_LEAF = { appbiz: true, store: true };
 function secHeld(sec){
   if(!PARTIAL_HOLD) return false;
   var t = secTab(sec);
@@ -1564,14 +1575,16 @@ function chapterSections(ch){
   return DATA.sections.filter(function(s){ return secChapter(s) === ch; });
 }
 /* v3.5.0: 件数は「見えている範囲」だけを数える（隠している部は
-   数えない）。ビジネスで見えるのは事業リストだけ、マネーリテ
-   ラシーはお金の常識と資産フェーズだけ、アートビジネスは新規
-   の4部だけ。 */
+   数えない）。マネーリテラシーはお金の常識と資産フェーズだけ、
+   アートビジネスは新規の4部だけ。
+   v3.7.0: ビジネスで見えるのはアプリ事業の2部（appbiz／store）
+   だけになった（最初の画面のカード3枚のうち、始め方ステップ
+   は appbiz の先頭グループへの葉なので部としては2件）。 */
 function secListVisible(sec){
   if(!PARTIAL_HOLD) return true;
   var t = secTab(sec);
   if(tabHeld(t)) return false;
-  if(t === 'business') return sec.id === 'bizlist';
+  if(t === 'business') return sec.id === 'appbiz' || sec.id === 'store';
   if(t === 'money') return sec.id === 'literacy' || sec.id === 'assets';
   if(t === 'art') return sec.id === 'demand' || sec.id === 'narrative' || sec.id === 'workforms' || sec.id === 'artindustry';
   return true;
@@ -1770,125 +1783,56 @@ function gridHTMLForTab(t){
   if(PARTIAL_HOLD) secs = secs.filter(secListVisible); /* v3.5.0: 見えている部だけを一覧に出す */
   return secs.map(function(sec){ return cardHTML(sec); }).join('');
 }
-/* v3.5.1: ビジネスタブの一覧は、他のタブと同じ標準カード
-   （figure.work）で描く。本人の指摘「カード形式になってない」
-   への対応——v3.5.0 は bizlist の専用パネル（.bizcard）を横長
-   のまま縦に積んでいた。データ自体は変えない。
-   v3.6.0：このカード列は木の深さ1になった。葉の5事業は
-   data-open で各部の詳細を開き、アプリ事業だけは下の単位が
-   あるため data-biznav で深さ2へ潜る。
-   v3.6.1：本人の指示「表示するのは名前だけでいい。その下に
-   色々補足とか常設とか書いてあるけど読まないし意味ない」で、
-   木のカードは名前（.nm）だけを描く。カードデータの1行説明
-   （.bc-d）と状態（.status）はデータ側に残したまま、描画で
-   だけ出さない。他タブのカード（cardHTML）は従来どおり。 */
-function bizCardsHTML(){
-  var sec = sectionById('bizlist');
-  if(!sec) return '';
-  var doc = new DOMParser().parseFromString(sec.html || '', 'text/html');
-  var bc = doc.querySelector('.bizcards');
-  if(!bc) return '';
-  var clean = function(el){ return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; };
-  var html = '';
-  Array.prototype.forEach.call(bc.querySelectorAll('a.bizcard'), function(a){
-    var id = a.getAttribute('data-open-link') || (a.getAttribute('href') || '').replace('#/', '');
-    var name = clean(a.querySelector('.bc-t'));
-    if(!id || !name) return;
-    /* v3.6.0: アプリ事業には下の単位（図鑑アプリ）があるので、
-       そのカードは詳細ではなく「潜る」（data-biznav）。他の5事
-       業は下の単位が無く、カードがそのまま葉＝詳細を開く */
-    var attr = (id === 'appbiz') ? 'data-biznav="appbiz"' : 'data-open="' + esc(id) + '"';
-    html += '<figure class="work" ' + attr + ' tabindex="0" role="button" aria-label="' + esc(name) + '">' +
-      '<figcaption><div class="nm">' + esc(name) + '</div>' +
-      '</figcaption></figure>';
-  });
-  return html;
-}
-/* ---------- v3.6.0: ビジネスタブの木（潜っていくカード） ----------
-   本人の設計（2026-11-21 17:32）：「中にどんどん潜っていく感
-   じ。一番最初の画面は事業リスト、中に入るとまたアプリ事業、
-   アフィリエイトなどがカード形式で並んでいて、例えばアプリ
-   事業のカードを押すとまた図鑑アプリのように並んでいる」。
-   木の定義はコード側に持つ（データには触らない）：
-     深さ0 … カード「事業リスト」1枚だけ
-     深さ1 … 6事業のカード（bizCardsHTML、v3.5.1 の標準カード）
-     深さ2 … アプリ事業の下の単位のカード（始め方ステップ／
-       図鑑アプリ／ストア参入。v3.6.4 で先頭に始め方ステップ
-       を追加）
-   潜るカードには data-biznav、葉のカードには data-open を付け
-   る。グループ直開きの葉（深さ2の始め方ステップ）には
-   data-bizgroup を付け、部の先頭グループの中身まで直接開く。
-   葉の先は各部の詳細（従来のグループ表示）。戻るはピル型
-   ボタン（タブ画面の戻るバーをこの木専用に出し直す）と左端
-   スワイプで1段ずつ。広げ方：下の単位を増やすときは
-   BIZ_KIDS に「潜れる節→深さ」を足し、その深さのカード列を
-   bizLevelHTML に足す。葉が増えたら BIZ_LEAF にも足す。 */
-var BIZ_KIDS = { bizlist: 1, appbiz: 2 }; /* 潜れる節 → 潜った先の深さ */
+/* v3.5.1〜v3.6.1 の bizCardsHTML（bizlist のカードデータから
+   6事業のカードを組み立てる関数）は v3.7.0 で廃止した。事業
+   リストの解体で bizlist を描画する箇所は無くなったため。
+   bizlist のデータ自体は保持している（表示から外しただけ）。 */
+/* ---------- v3.7.0: ビジネスタブはアプリ事業だけ ----------
+   v3.6.0〜v3.6.4 の「潜っていくカードの木」（事業リスト→
+   6事業→アプリ事業の下の単位）は、本人の決定（2026-11-21
+   18:53「手付かずの事業増やしっぱなしではダメ。事業リスト
+   を解体してアプリ事業だけ残そう。こいつで本気で行く」）で
+   解体した。ビジネスタブの最初の画面＝アプリ事業の中身その
+   もの。カードは旧・深さ2の3枚をそのまま、名前のみ・図鑑
+   サイズタイルで並べる：
+     始め方ステップ … appbiz の先頭グループへの直行葉
+       （data-bizgroup、openBizGroup）
+     図鑑アプリ … appbiz の詳細を開く（data-open）
+     ストア参入 … store の詳細を開く（data-open）
+   詳細・グループ内容からの戻りはこの画面に着地する（旧
+   depth への着地は無い）。他5事業（affiliate／digital／
+   story／makefun／note）と bizlist は、データは保持したま
+   ま表示とディープリンクから外した（BIZ_LEAF／secHeld／
+   secListVisible 側で閉じている）。
+   bizDepth は深さに連動していた各所（setTab／openDetail／
+   boot のディープリンク調整）の互換のため 0 固定で残す。 */
 var bizDepth = 0;
 function bizLevelHTML(){
-  if(bizDepth === 1) return bizCardsHTML();
-  if(bizDepth === 2){
-    /* アプリ事業の下の単位：図鑑アプリとストア参入（v3.6.2で
-       追加。本人の指示「図鑑アプリの横に、appストアでの販売の
-       仕方に関することをまとめたタブを作りたい。タイトルは
-       ストア参入で」）。v3.6.1：木のカードは名前だけ（説明・
-       バッジは描かない）
-       v3.6.4：先頭に「始め方ステップ」を足した（本人の指示
-       「事業リストの各事業の中の一番最初に、具体的なステップ
-       のカードを作って欲しい」）。このカードは appbiz の詳細
-       を開いて、その先頭グループ（始め方ステップ）の中身ま
-       で直接入る、グループ直開きの葉（data-bizgroup）。並び
-       は [始め方ステップ／図鑑アプリ／ストア参入] */
-    return '<figure class="work" data-bizgroup="appbiz" tabindex="0" role="button" aria-label="始め方ステップ">' +
-      '<figcaption><div class="nm">始め方ステップ</div></figcaption></figure>' +
-      '<figure class="work" data-open="appbiz" tabindex="0" role="button" aria-label="図鑑アプリ">' +
-      '<figcaption><div class="nm">図鑑アプリ</div></figcaption></figure>' +
-      '<figure class="work" data-open="store" tabindex="0" role="button" aria-label="ストア参入">' +
-      '<figcaption><div class="nm">ストア参入</div></figcaption></figure>';
-  }
-  var sec = sectionById('bizlist');
-  if(!sec) return '';
-  /* v3.6.1：深さ0のカードも名前だけ（.yrs の番号・タグと
-     .sub の補足は描かない） */
-  return '<figure class="work" data-biznav="bizlist" tabindex="0" role="button" aria-label="' + esc(sec.title) + '">' +
-    '<figcaption><div class="nm">' + esc(sec.title) + '</div></figcaption></figure>';
+  return '<figure class="work" data-bizgroup="appbiz" tabindex="0" role="button" aria-label="始め方ステップ">' +
+    '<figcaption><div class="nm">始め方ステップ</div></figcaption></figure>' +
+    '<figure class="work" data-open="appbiz" tabindex="0" role="button" aria-label="図鑑アプリ">' +
+    '<figcaption><div class="nm">図鑑アプリ</div></figcaption></figure>' +
+    '<figure class="work" data-open="store" tabindex="0" role="button" aria-label="ストア参入">' +
+    '<figcaption><div class="nm">ストア参入</div></figcaption></figure>';
 }
-function bizDive(node){
-  var to = BIZ_KIDS[node];
-  if(!to || currentTab !== 'business') return;
-  bizDepth = to;
-  renderTabGrid();
-  goTop();
-}
-function bizUp(){
-  if(currentTab !== 'business' || bizDepth === 0) return false;
-  bizDepth -= 1;
-  renderTabGrid();
-  goTop();
-  return true;
-}
-/* 葉の詳細を直接開いたとき（ディープリンク・通知・popstate）、
-   戻り先になる親の深さ。葉でない部は -1 */
+/* 葉の詳細を直接開いたとき（ディープリンク・通知・popstate）
+   の戻り先。v3.7.0 では appbiz／store ともビジネスタブの最初
+   の画面が戻り先なので 0。葉でない部は -1 */
 function bizParentDepth(id){
-  if(id === 'appbiz' || id === 'store') return 2;
-  if(BIZ_LEAF[id]) return 1;
+  if(id === 'appbiz' || id === 'store') return 0;
   return -1;
 }
-/* タブ画面の戻るバー（PARTIAL HOLD の CSS で隠している）を、
-   木を潜っている間だけ出し直す。ラベルは親の段の名前 */
+/* タブ画面の戻るバー（PARTIAL HOLD の CSS で隠している）は、
+   木を潜る段取りが無くなったのでビジネスタブでも出し直さな
+   い（他のタブと同じ扱い） */
 function renderBizBack(){
   var bar = $('tabBackBtn').parentNode;
-  if(PARTIAL_HOLD && currentTab === 'business' && bizDepth > 0){
-    $('tabBackBtn').textContent = bizDepth === 2 ? '‹ アプリ事業' : '‹ 事業リスト';
-    bar.style.setProperty('display', 'block', 'important');
-  } else {
-    bar.style.removeProperty('display');
-  }
+  bar.style.removeProperty('display');
 }
 function renderTabGrid(){
   if(!currentTab) return;
   if(tabHeld(currentTab)){ $('tabGrid').innerHTML = ''; renderBizBack(); return; } /* PARTIAL HOLD: 非表示タブのカードは作らない */
-  if(PARTIAL_HOLD && currentTab === 'business'){ $('tabGrid').innerHTML = bizLevelHTML(); renderBizBack(); return; } /* v3.6.0: ビジネスは木の現在地の段を描く */
+  if(PARTIAL_HOLD && currentTab === 'business'){ $('tabGrid').innerHTML = bizLevelHTML(); renderBizBack(); return; } /* v3.7.0: ビジネスはアプリ事業の3枚だけを描く */
   $('tabGrid').innerHTML = gridHTMLForTab(currentTab);
   renderBizBack();
   if(currentTab === 'other') renderSettings();
@@ -1902,7 +1846,7 @@ function setTab(t){
   currentTab = t;
   currentChapter = null;
   pillSel = t;
-  if(t === 'business') bizDepth = 0; /* v3.6.0: ビジネスタブに入り直したら最初の画面（事業リスト）から */
+  if(t === 'business') bizDepth = 0; /* v3.7.0: bizDepth は 0 固定（木の解体後も互換のため残置） */
   applyListChrome();
   renderCount();
   renderTabGrid();
@@ -1928,7 +1872,6 @@ function goTab(t){
   openTab(t);
 }
 $('tabBackBtn').addEventListener('click', function(){
-  if(PARTIAL_HOLD && currentTab === 'business' && bizDepth > 0){ bizUp(); return; } /* v3.6.0: 木の中では1段戻る */
   showTOC();
 });
 $('pillrail').addEventListener('click', function(e){
@@ -2051,11 +1994,12 @@ function slideForward(newEl, oldEl){
 function openDetail(id, push){
   var sec = sectionById(id);
   if(!sec || vtBusy) return;
-  if(secHeld(sec)) return; /* PARTIAL HOLD: 閉じている部は開かない（マネー／アートの部、木の葉でないビジネス系の部、非表示タブの部） */
-  /* v3.6.0: 木の葉の詳細を直接開いたとき（ディープリンク・
-     通知・内部リンク）は、戻り先が親の段になるよう深さを
-     合わせてから開く。既に詳細が開いている間の横移動では
-     裏の一覧を動かさない */
+  if(secHeld(sec)) return; /* PARTIAL HOLD: 閉じている部は開かない（マネー／アートの部、アプリ事業以外のビジネス系の部、非表示タブの部） */
+  /* v3.6.0: 葉の詳細を直接開いたとき（ディープリンク・通知・
+     内部リンク）は、戻り先が親の段になるよう深さを合わせて
+     から開く。v3.7.0 では bizParentDepth が 0 を返すため実質
+     無動作（戻り先は常にビジネスタブの最初の画面）。既に詳細
+     が開いている間の横移動では裏の一覧を動かさない */
   if(PARTIAL_HOLD && currentTab === 'business' && !detailOpen){
     var pd = bizParentDepth(id);
     if(pd >= 0 && pd !== bizDepth){ bizDepth = pd; renderTabGrid(); }
@@ -2112,21 +2056,14 @@ document.addEventListener('keydown', function(e){
   var open = e.target.closest ? e.target.closest('[data-open]') : null;
   if(open){ e.preventDefault(); openDetail(open.getAttribute('data-open'), true); }
 });
-/* v3.6.0: 木の節カード（潜る）のタップ。葉（data-open）とは
-   別の属性なので、上の [data-open] ハンドラとは競合しない */
-document.addEventListener('click', function(e){
-  var nav = e.target.closest ? e.target.closest('[data-biznav]') : null;
-  if(nav){ e.preventDefault(); bizDive(nav.getAttribute('data-biznav')); }
-});
-document.addEventListener('keydown', function(e){
-  if(e.key !== 'Enter' && e.key !== ' ') return;
-  var nav = e.target.closest ? e.target.closest('[data-biznav]') : null;
-  if(nav){ e.preventDefault(); bizDive(nav.getAttribute('data-biznav')); }
-});
-/* v3.6.4: グループ直開きの葉（木の深さ2の先頭「始め方ステッ
-   プ」）。部の詳細を開いて、そのまま先頭グループの中身まで
-   入る。戻るは通常の詳細と同じ段取り（中身→グループのカー
-   ド一覧→木の深さ2）。対象グループは常に先頭（index 0） */
+/* v3.6.0 の data-biznav（木の節カード＝潜る）ハンドラは
+   v3.7.0 で廃止した。木の解体で潜るカード自体が無くなり、
+   data-biznav を持つ要素はもう描画されない。 */
+/* v3.6.4: グループ直開きの葉（ビジネスタブ最初の画面の先頭
+   「始め方ステップ」）。部の詳細を開いて、そのまま先頭グ
+   ループの中身まで入る。戻るは通常の詳細と同じ段取り（中
+   身→グループのカード一覧→ビジネスタブの最初の画面）。対
+   象グループは常に先頭（index 0） */
 function openBizGroup(id){
   openDetail(id, true);
   if(detailOpen && current === id) setDetailGroup(0, true);
@@ -3120,58 +3057,10 @@ document.addEventListener('click', function(e){
    切り替わる（goTab／setTab の従来の動き）。詳細画面の
    グループスワイプと、木を潜る時の左端スワイプの戻りは対象
    外で、下のハンドラ群に現行のまま残っている。 */
-/* biz tree edge back (v3.6.0): while the business tab is dived
-   into (depth 1 or 2), a left-edge drag to the right climbs one
-   level — the same gesture the detail screens use to go back.
-   The list follows the finger and the climb commits past the
-   detail edge back's thresholds (35% of the width, or a fast
-   flick). The tab swipe can never engage rightward on ビジネス
-   (it is the first tab, so it has no rightward neighbour), and
-   the chapter swipe needs a chapter page, so this handler is
-   the only one that can claim an edge drag here. At the root
-   level (depth 0) and on every other tab the drag is left
-   alone and stays a scroll. */
-(function(){
-  var st = null;
-  var EDGE_W = 24;
-  document.addEventListener('touchstart', function(e){
-    if(st || e.touches.length !== 1) return;
-    if(detailOpen || notifOpen || vtBusy) return;
-    if(currentTab !== 'business' || bizDepth === 0) return;
-    if(listView.classList.contains('hidden')) return;
-    if(e.target && e.target.closest && (e.target.closest('header.top') || e.target.closest('.bizbackbar') || e.target.closest('#pillnav') || e.target.closest('.chips') || e.target.closest('#homeStrip'))) return;
-    var t = e.touches[0];
-    if(t.clientX > EDGE_W) return;
-    st = { sx: t.clientX, sy: t.clientY, dx: 0, dy: 0, engaged: false, lastX: t.clientX, lastT: Date.now(), vx: 0 };
-  }, { passive: true });
-  document.addEventListener('touchmove', function(e){
-    if(!st) return;
-    var t = e.touches[0];
-    st.dx = t.clientX - st.sx;
-    st.dy = t.clientY - st.sy;
-    var now = Date.now(), dt = now - st.lastT;
-    if(dt > 0){ st.vx = (t.clientX - st.lastX) / dt; st.lastX = t.clientX; st.lastT = now; }
-    if(!st.engaged){
-      if(st.dx > 12 && Math.abs(st.dx) > Math.abs(st.dy) * 1.25) st.engaged = true;
-      else if(Math.abs(st.dy) > 14 && Math.abs(st.dy) >= Math.abs(st.dx)){ st = null; return; }
-      else return;
-    }
-    listView.style.transform = 'translateX(' + Math.max(0, st.dx) + 'px)';
-  }, { passive: true });
-  document.addEventListener('touchend', function(){
-    if(!st) return;
-    var s = st; st = null;
-    listView.style.transform = '';
-    if(!s.engaged) return;
-    var W = window.innerWidth || 1;
-    if(s.dx > W * 0.35 || (s.dx > 56 && s.vx > 0.3)){ suppressNextClick(); bizUp(); }
-  }, { passive: true });
-  document.addEventListener('touchcancel', function(){
-    if(!st) return;
-    st = null;
-    listView.style.transform = '';
-  }, { passive: true });
-})();
+/* biz tree edge back (v3.6.0 の左端スワイプで木を1段戻る
+   ハンドラ) は v3.7.0 で廃止した。木の解体で潜る段が無く
+   なったため。詳細画面の左端スワイプ戻りは別ハンドラで
+   従来どおり効く。 */
 
 /* ============================================================
    v3.0.0: the zukan app's mechanism layer, ported wholesale —
@@ -3953,14 +3842,15 @@ refreshBell();
 fetchChangelog();
 var initial = (location.hash || '').match(/^#\/(\w+)$/);
 if(PARTIAL_HOLD){
-  /* v3.5.0: 開いた画面はビジネスタブ（事業リストのカード）＋
-     ヘッダー＋ピルバー。ディープリンクで開くのは、詳細が開く
-     部（辞典・その他）だけ。 */
+  /* v3.5.0: 開いた画面はビジネスタブ＋ヘッダー＋ピルバー。
+     ディープリンクで開くのは、詳細が開く部だけ。
+     v3.7.0: ビジネスタブの最初の画面はアプリ事業の3枚。 */
   setTab('business');
   if(initial && sectionById(initial[1]) && !secHeld(sectionById(initial[1]))){
     setTab(secTab(sectionById(initial[1])));
-    /* v3.6.0: 木の葉へのディープリンクは、戻り先が親の段に
-       なるよう深さを合わせておく */
+    /* v3.6.0: 葉へのディープリンクは、戻り先が親の段になる
+       よう深さを合わせておく。v3.7.0 では bizParentDepth が
+       0 を返すため無動作（戻り先はビジネスタブの最初の画面） */
     if(secTab(sectionById(initial[1])) === 'business'){
       var bpd = bizParentDepth(initial[1]);
       if(bpd > 0){ bizDepth = bpd; renderTabGrid(); }
