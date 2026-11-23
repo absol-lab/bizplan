@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.8.9">
+<meta name="app-version" content="3.8.10">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -947,7 +947,7 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.8.9';
+var APP_VERSION = '3.8.10';
 /* PARTIAL HOLD (v3.4.1〜、v3.5.0 で範囲を変更): 本人の段階指示で
    表示範囲を絞った状態。目次（ホーム/章ビュー）は廃止のまま。
    v3.5.0 の範囲：ヘッダー（Busilabo＋件数・バージョン・ベル・
@@ -1010,7 +1010,10 @@ function tabHeld(t){ return PARTIAL_HOLD && !!HOLD_TABS[t]; }
    v3.8.7: affiliate の表示を再開したため、詳細が開くのは
    appbiz／store／digital／affiliate の4部になった
    v3.8.9: 集客（traffic）を新設し表示を再開。詳細が開くのは
-   5部になり、ビジネスタブ深さ0のカードは4枚になった */
+   5部になり、ビジネスタブ深さ0のカードは4枚になった
+   v3.8.10: 本人の決定で、ビジネスタブのカード表示名『海外ノート』
+   を『noteとgumroad』に改名。セクション digital（海外向けデジ
+   タル商品）の中身は不変 */
 var BIZ_LEAF = { appbiz: true, store: true, digital: true, affiliate: true, traffic: true };
 function secHeld(sec){
   if(!PARTIAL_HOLD) return false;
@@ -1870,8 +1873,8 @@ function bizLevelHTML(){
   }
   return '<figure class="work" data-biznav="appbiz" tabindex="0" role="button" aria-label="アプリ事業">' +
     '<figcaption><div class="nm">アプリ事業</div></figcaption></figure>' +
-    '<figure class="work" data-open="digital" tabindex="0" role="button" aria-label="海外ノート">' +
-    '<figcaption><div class="nm">海外ノート</div></figcaption></figure>' +
+    '<figure class="work" data-open="digital" tabindex="0" role="button" aria-label="noteとgumroad">' +
+    '<figcaption><div class="nm">noteとgumroad</div></figcaption></figure>' +
     '<figure class="work" data-open="affiliate" tabindex="0" role="button" aria-label="アフィリエイト">' +
     '<figcaption><div class="nm">アフィリエイト</div></figcaption></figure>' +
     '<figure class="work" data-open="traffic" tabindex="0" role="button" aria-label="集客">' +
