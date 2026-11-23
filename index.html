@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.8.8">
+<meta name="app-version" content="3.8.9">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -947,7 +947,7 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.8.8';
+var APP_VERSION = '3.8.9';
 /* PARTIAL HOLD (v3.4.1〜、v3.5.0 で範囲を変更): 本人の段階指示で
    表示範囲を絞った状態。目次（ホーム/章ビュー）は廃止のまま。
    v3.5.0 の範囲：ヘッダー（Busilabo＋件数・バージョン・ベル・
@@ -1008,8 +1008,10 @@ function tabHeld(t){ return PARTIAL_HOLD && !!HOLD_TABS[t]; }
    セクション（affiliate／story／makefun／note／bizlist）は
    引き続き閉じている
    v3.8.7: affiliate の表示を再開したため、詳細が開くのは
-   appbiz／store／digital／affiliate の4部になった */
-var BIZ_LEAF = { appbiz: true, store: true, digital: true, affiliate: true };
+   appbiz／store／digital／affiliate の4部になった
+   v3.8.9: 集客（traffic）を新設し表示を再開。詳細が開くのは
+   5部になり、ビジネスタブ深さ0のカードは4枚になった */
+var BIZ_LEAF = { appbiz: true, store: true, digital: true, affiliate: true, traffic: true };
 function secHeld(sec){
   if(!PARTIAL_HOLD) return false;
   var t = secTab(sec);
@@ -1482,9 +1484,23 @@ var SEED = {
    "themeClass": "t-business",
    "title": "ストア参入",
    "updated_at": "2026-11-22T01:28:21+09:00"
+  },
+  {
+   "badgeClass": "",
+   "badgeText": "",
+   "char": "集",
+   "html": "<div class=\"detail-head\"><h2>集客</h2></div>\n        <p class=\"sec-lead\">集客が命。物が良くても、見つけてもらえなければ存在しないのと同じになる。売る物が違っても、人を集める技術は共通で、入口の作り方はこの章に固定する。</p>\n        <div class=\"card\">\n          <h3>全体像</h3>\n          <p>集客の本命は Google 検索。理由は単純で、検索から来る人は「困って探している」状態で来るし、記事は置いた後も働き続ける資産になる。SNS（エス・エヌ・エス）は補助で、役割は検索と商品へ人を流すこと。</p>\n          <div class=\"flow\"><span>検索（資産）</span><i>→</i><span>記事・商品ページ</span><i>→</i><span>購入</span></div>\n          <div class=\"flow\"><span>SNS（補助）</span><i>→</i><span>信用と認知</span><i>→</i><span>検索・商品へ流す</span></div>\n          <ul>\n            <li><strong>フォロワーは借り物</strong>：アカウントが止まれば客も止まる。フォロワー数そのものは資産に数えない</li>\n            <li><strong>残るものが資産</strong>：検索に載る記事、Pinterest のピン、商品ページ。投稿が流れても、この3つは残る</li>\n            <li><strong>全事業共通</strong>：アフィリエイト、アプリ事業、海外ノート、Gumroad。売る物ごとに集客を考え直さない</li>\n            <li><strong>検索の理論側</strong>：検索意図の温度と E-E-A-T（イー・イー・エー・ティー）の話は、アフィリエイト章の「集客（検索意図の温度とE-E-A-T）」のカードに置いてある。この章は媒体ごとの実践側</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>X</h3>\n          <p>X は「信用を作る場所」。アカウントごとにテーマを1つに固定する。混ぜると、読者にもアルゴリズムにも「何のアカウントか」が伝わらなくなる。</p>\n          <div class=\"lanes\">\n            <div class=\"lane art\">\n              <h3>@absol_lab（英語・事業）</h3>\n              <p>一人事業の結果と判断を出す場所。アフィリエイトの告知もここ。審査担当が見る看板でもある</p>\n            </div>\n            <div class=\"lane other\">\n              <h3>@462sukiroku（日本語・万数寄録）</h3>\n              <p>選ぶ目と実践録。note の告知はここ。英語の事業告知は混ぜない</p>\n            </div>\n          </div>\n          <ul>\n            <li><strong>本投稿は少なく濃く</strong>：週に1〜2本。薄い投稿の連投はアカウントの魅力を削る</li>\n            <li><strong>量が効くのは返信</strong>：自分の投稿への返信は最初の1時間のうちに全部返す。他人の投稿への良い返信も接点になる</li>\n            <li><strong>固定投稿に証拠を置く</strong>：完成品・実績・判断を1本にまとめて固定する。初めて来た人はまずそこを見る</li>\n            <li><strong>数字の順番</strong>：表示→プロフィール訪問→フォロー→リンクのクリック。どこで落ちているかで直す場所が違う（詳しくは「数字の読み方」）</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>Pinterest</h3>\n          <p>Pinterest（ピンタレスト）は Gumroad の告知専用。X と違って「流れて終わり」が前提の媒体で、ピンは検索にも載り、置いた後も長く働く。SNS の中では資産側に近い。</p>\n          <ul>\n            <li><strong>ピンは接点の量が効く</strong>：本投稿の量産が逆効果な X と違い、ここは定期的にピンを足す方が効く。質の線は「写真が主体で、タイトルに判断が入っていること」</li>\n            <li><strong>ボードはテーマごとに分ける</strong>：行き先（商品・記事）ごとにボードを分け、来た人が迷わない形にする</li>\n            <li><strong>告知の対応は固定</strong>：Gumroad は Pinterest、note は X。この対応を崩さない</li>\n            <li><strong>数字の順番</strong>：インプレッション（表示）→アウトバウンドクリック（外への移動）→Gumroad の閲覧→購入</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>Instagram</h3>\n          <p>結論：運営としては今いらない。名前だけ押さえる。</p>\n          <ul>\n            <li><strong>今の稼ぎの経路に入っていない</strong>：お金になる流れは「検索→比較記事」と「Pinterest→Gumroad」で、Instagram（インスタグラム）はどちらにも入っていない。リンクがプロフィールにしか置けず、検索で困って探している人も来ない</li>\n            <li><strong>名前だけ確保する</strong>：余っているアカウント2つを改名して押さえる。絵と選ぶ目の世界観がある方（thestoryofaman2004）を万数寄録に、まっさらな方（armadillo.62541453）を absol lab にする。改名は数分で終わる保険で、取られてからでは遅い</li>\n            <li><strong>万数寄録だけ将来の本命候補</strong>：選ぶ目は写真が本体だから、Instagram との相性自体は本物。note の文章に対する「棚の写真」の置き場になる。始めるのは X と Pinterest が回ってからで、投稿は note と Pinterest の素材の流用だけにする</li>\n            <li><strong>実名アカウントには混ぜない</strong>：@shomaohno はアート用。事業とアフィリエイトは入れない</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>アカウントの魅力</h3>\n          <p>ただ無機質に情報を並べるアカウントは、保存はされてもフォローされない。人は情報には戻ってこないが、「この人」には戻ってくる。</p>\n          <ul>\n            <li><strong>魅力の中身</strong>：場面があること、判断があること、好みが偏っていること、ちょっと笑えること、この人だと分かる声があること</li>\n            <li><strong>信頼と魅力は別々に作る</strong>：信頼は正確さと実績で作る。魅力は場面と判断と声で作る。片方だけでは人は集まっても残らない、残っても買わない</li>\n            <li><strong>投稿の型</strong>：情報＋自分の場面＋なぜこれを選んだかという判断＋一言の味。この4つが揃った投稿だけを出す</li>\n            <li><strong>@absol_lab の人柄の手がかりは3つ</strong>：日本から一人でやっている／AI がチームで、決めるのは自分／オフィスは iPhone（全部スマホで回している）。この具体が入ると、量産アカウントに見えなくなる</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>投稿の型と量</h3>\n          <p>「たくさん投稿すればいい」は半分だけ正しい。量が効く場所と、逆効果な場所を分ける。</p>\n          <ul>\n            <li><strong>量が効く</strong>：X の返信、Pinterest のピン、人に触れる回数。接点の数は正直に効く</li>\n            <li><strong>量が逆効果</strong>：X の本投稿と検索記事。薄いものを増やすと、アカウントの魅力と記事の評価が下がる</li>\n            <li><strong>本投稿は3つの型だけ</strong>：完成品の記録／結果の報告（数字つき）／判断の断定。この3型以外は出さない</li>\n            <li><strong>制作過程は見せない</strong>：出すのは完成品・結果・判断のみ。「見せない」と公言もしない。隠すなら黙って隠す</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>数字の読み方</h3>\n          <p>数字は「どこで詰まっているか」を当てるために見る。詰まりは4段しかない。</p>\n          <ul>\n            <li><strong>見られていない</strong>：入口の問題。出す場所・タイトル・ピンの枚数を直す</li>\n            <li><strong>見られるが先へ進まない</strong>：看板の問題。プロフィールと固定投稿を直す</li>\n            <li><strong>クリックされるが買われない</strong>：商品ページの問題。集客ではなくページを直す</li>\n            <li><strong>買われる</strong>：その型を繰り返す。新しい型を探すのはその後</li>\n          </ul>\n          <p>見るのは週に1回でいい。日々の上下に振り回されると、型が固まる前に全部変えてしまう。</p>\n        </div>\n        <div class=\"card\">\n          <h3>守る線引き</h3>\n          <ul>\n            <li><strong>テーマを混ぜない</strong>：アカウントごとに1テーマ。英語と日本語、事業と選ぶ目も混ぜない</li>\n            <li><strong>数字と実績を盛らない</strong>：小さい数字でも本物を出す。小さい本物は、大きい嘘より信用になる</li>\n            <li><strong>開示はする</strong>：アフィリエイトリンクには開示文を置く（アフィリエイト章の「守るルール（開示と規約）」と共通）</li>\n            <li><strong>実名を汚さない</strong>：実名のアカウントと事業の顔は分ける。名前は一度汚れると戻らない</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>自分の布陣（2026-11-23現在）</h3>\n          <ul>\n            <li><strong>X @absol_lab</strong>：プロフィール完成、初投稿済み。自己紹介の差し替え案（Japan／iPhone の具体入り）と固定投稿の案まで準備済み</li>\n            <li><strong>X @462sukiroku</strong>：万数寄録。note の告知用として運用中</li>\n            <li><strong>Pinterest</strong>：Gumroad『Tokyo Art Guide』のボードとピン3件を投稿済み。残り9件はテキスト完成・未登録</li>\n            <li><strong>Instagram</strong>：余りアカウント2つを万数寄録と absol lab に改名して名前だけ確保する方針。運営はしない</li>\n            <li><strong>Gumroad</strong>：『Tokyo Art Guide — Museums &amp; Galleries Without the Guesswork』$9.99 を販売中</li>\n            <li><strong>Google 検索</strong>：最初の比較記事を準備中。承認が来たら公開し、X と検索で人を流す</li>\n          </ul>\n        </div>",
+   "id": "traffic",
+   "meta": "人を集める共通技術。本命は検索、SNSは補助。X・Pinterest・Instagramの使い分け、アカウントの魅力、数字の読み方",
+   "num": "29",
+   "tab": "ch4",
+   "tag": "X／Pinterest／検索",
+   "themeClass": "t-business",
+   "title": "集客",
+   "updated_at": "2026-11-23T12:04:32+09:00"
   }
  ],
- "updatedAt": "2026-11-23T12:01:07+09:00",
+ "updatedAt": "2026-11-23T12:04:32+09:00",
  "version": 1
 };
 
@@ -1612,7 +1628,7 @@ function secListVisible(sec){
   if(!PARTIAL_HOLD) return true;
   var t = secTab(sec);
   if(tabHeld(t)) return false;
-  if(t === 'business') return sec.id === 'appbiz' || sec.id === 'store' || sec.id === 'digital' || sec.id === 'affiliate';
+  if(t === 'business') return sec.id === 'appbiz' || sec.id === 'store' || sec.id === 'digital' || sec.id === 'affiliate' || sec.id === 'traffic';
   if(t === 'money') return sec.id === 'literacy' || sec.id === 'assets';
   if(t === 'art') return sec.id === 'demand' || sec.id === 'narrative' || sec.id === 'workforms' || sec.id === 'artindustry';
   return true;
@@ -1795,8 +1811,8 @@ document.addEventListener('click', function(e){
    re-points the list at the section's chapter. */
 var TABS = ['business', 'art', 'money', 'dict', 'other'];
 var TAB_NAMES = { business: 'ビジネス', art: 'アートビジネス', money: 'マネーリテラシー', dict: '辞典', other: 'その他' };
-var TAB_BY_ID = { bizlist: 'business', appbiz: 'business', store: 'business', affiliate: 'business', digital: 'business', story: 'business', makefun: 'business', note: 'business', lifecycle: 'business', forms: 'business', business: 'business', pipeline: 'business', pioneers: 'business', rules: 'business', ideas: 'business', pending: 'business', art: 'art', artforms: 'art', demand: 'art', narrative: 'art', workforms: 'art', artindustry: 'art', literacy: 'money', money: 'money', numbers: 'money', assets: 'money', dict: 'dict', dreams: 'other' };
-var TAB_ORDER = { business: ['bizlist', 'appbiz', 'store', 'affiliate', 'digital', 'story', 'makefun', 'note', 'lifecycle', 'forms', 'business', 'pipeline', 'pioneers', 'rules', 'ideas', 'pending'], art: ['demand', 'narrative', 'workforms', 'artindustry', 'art', 'artforms'], money: ['literacy', 'money', 'numbers', 'assets'], dict: ['dict'], other: ['dreams'] };
+var TAB_BY_ID = { bizlist: 'business', appbiz: 'business', store: 'business', affiliate: 'business', traffic: 'business', digital: 'business', story: 'business', makefun: 'business', note: 'business', lifecycle: 'business', forms: 'business', business: 'business', pipeline: 'business', pioneers: 'business', rules: 'business', ideas: 'business', pending: 'business', art: 'art', artforms: 'art', demand: 'art', narrative: 'art', workforms: 'art', artindustry: 'art', literacy: 'money', money: 'money', numbers: 'money', assets: 'money', dict: 'dict', dreams: 'other' };
+var TAB_ORDER = { business: ['bizlist', 'appbiz', 'store', 'affiliate', 'traffic', 'digital', 'story', 'makefun', 'note', 'lifecycle', 'forms', 'business', 'pipeline', 'pioneers', 'rules', 'ideas', 'pending'], art: ['demand', 'narrative', 'workforms', 'artindustry', 'art', 'artforms'], money: ['literacy', 'money', 'numbers', 'assets'], dict: ['dict'], other: ['dreams'] };
 function secTab(sec){ return (sec && TAB_BY_ID[sec.id]) || 'other'; }
 function tabSections(t){
   var mine = {};
@@ -1857,14 +1873,16 @@ function bizLevelHTML(){
     '<figure class="work" data-open="digital" tabindex="0" role="button" aria-label="海外ノート">' +
     '<figcaption><div class="nm">海外ノート</div></figcaption></figure>' +
     '<figure class="work" data-open="affiliate" tabindex="0" role="button" aria-label="アフィリエイト">' +
-    '<figcaption><div class="nm">アフィリエイト</div></figcaption></figure>';
+    '<figcaption><div class="nm">アフィリエイト</div></figcaption></figure>' +
+    '<figure class="work" data-open="traffic" tabindex="0" role="button" aria-label="集客">' +
+    '<figcaption><div class="nm">集客</div></figcaption></figure>';
 }
 /* 葉の詳細を直接開いたとき（ディープリンク・通知・popstate）
    の戻り先の深さ。appbiz／store は深さ1、digital と
    affiliate（v3.8.7 で表示再開）は深さ0。葉でない部は -1 */
 function bizParentDepth(id){
   if(id === 'appbiz' || id === 'store') return 1;
-  if(id === 'digital' || id === 'affiliate') return 0;
+  if(id === 'digital' || id === 'affiliate' || id === 'traffic') return 0;
   return -1;
 }
 /* 段の移動（潜る／上がる）。描き直したグリッドは移動方向か
