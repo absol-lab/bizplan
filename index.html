@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="app-version" content="3.8.12">
+<meta name="app-version" content="3.8.13">
 <title>Busilabo</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -947,7 +947,7 @@ table.plan td.price{font-weight:700; white-space:nowrap;}
 
 <script>
 'use strict';
-var APP_VERSION = '3.8.12';
+var APP_VERSION = '3.8.13';
 /* PARTIAL HOLD (v3.4.1〜、v3.5.0 で範囲を変更): 本人の段階指示で
    表示範囲を絞った状態。目次（ホーム/章ビュー）は廃止のまま。
    v3.5.0 の範囲：ヘッダー（Busilabo＋件数・バージョン・ベル・
@@ -1016,7 +1016,7 @@ function tabHeld(t){ return PARTIAL_HOLD && !!HOLD_TABS[t]; }
    タル商品）の中身は不変
    v3.8.11: ビジネスモデル（model）を新設し表示に追加。詳細が
    開くのは6部になり、深さ0のカードは5枚になった */
-var BIZ_LEAF = { appbiz: true, store: true, digital: true, affiliate: true, traffic: true, model: true, notecraft: true };
+var BIZ_LEAF = { appbiz: true, store: true, digital: true, affiliate: true, traffic: true, model: true, notecraft: true, gumroadcraft: true };
 function secHeld(sec){
   if(!PARTIAL_HOLD) return false;
   var t = secTab(sec);
@@ -1096,6 +1096,11 @@ var SEED = {
   "theme": "一文無しから富を築く",
   "themeSubHtml": "最初に築くのは金ではなく、金に変わる資産。順番は固定されている——<strong>労働 → 種銭 → 小さな仕組み → 仕組みの複利</strong>。いまは「労働→種銭」の段を登り切り、仕組みの設計図が引けた段階にある。",
   "updated_at": "2026-11-21T17:18:52+09:00"
+ },
+ "retrieved_at": {
+  "user_local": "2026-11-24T10:44:51.009+09:00",
+  "user_timezone": "Asia/Tokyo",
+  "utc": "2026-11-24T01:44:51.009Z"
  },
  "sections": [
   {
@@ -1522,7 +1527,7 @@ var SEED = {
    "badgeClass": "",
    "badgeText": "",
    "char": "極",
-   "html": "<div class=\"detail-head\"><h2>noteの極意</h2></div>\n        <p class=\"sec-lead\">商売道具の知識だけを貯める場所。売れる中身の作り方——何を売り、どう名付け、どうタイトルを付け、どう断言するか。税や決済のような事務の知識はここには入れない（2026-11-24 本人決定）。極意は会話で生まれた端から、都度ここへ足していく。</p>\n        <div class=\"card\">\n          <h3>売るものの正体</h3>\n          <div class=\"flow\"><span>内省</span><i>→</i><span>判断の体系</span><i>→</i><span>各場面への適用</span></div>\n          <ul>\n            <li><strong>判断型ノウハウ</strong>：手順を教える「手順型」とは別物。売るのは、彼の内省から出た判断基準と行動の型——読み物の顔をした処方箋</li>\n            <li><strong>売るものは知的財産</strong>：彼の判断の体系そのものが商品。在庫も仕入れもない</li>\n            <li><strong>形はメンバーシップが中心</strong>：単品は入口として置き、中心の物差しは「メンバー数 × 月額」。note が月50万円を背負う本体で、Gumroad はその英語版の受け皿、アフィリエイトは上振れ枠</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>タイトルの合格基準</h3>\n          <ul>\n            <li><strong>入口は切実な悩み</strong>：実際に検索される悩みの言葉から入る。入口を美術・受験にしない</li>\n            <li><strong>タイトルだけで中身が気になる</strong>：先や中身への好奇心が立つこと</li>\n            <li><strong>雑学型は失格</strong>：「へえ」で終わるもの、自分で調べれば届くものは作らない。300本超を一括量産した在庫の大半はこの基準で失格になった</li>\n            <li><strong>価値基準</strong>：読者が自分で調べても、少し考えても届かない判断であること——彼の経験・体系・命名した概念からしか出ないもの。常識の言い換えは失格</li>\n            <li><strong>弱い側の人間に向ける</strong>：負けている・できない・劣等感のある側の本音が入口になる</li>\n            <li><strong>断定は本文の仕事</strong>：タイトルは好奇心の形が基本。断言は中身でする（信用が積めば断定タイトルも効く——内向哲学の実測）</li>\n            <li><strong>「〜だ」で終わらない</strong>：体言止めにする。ぶっきらぼうな断定調は印象が悪い</li>\n            <li><strong>生産は10本ずつ</strong>：作っては本人が判定し、精度を上げる。一括量産はしない</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>断言の快感（読者心理）</h3>\n          <div class=\"flow\"><span>読者の疑い</span><i>→</i><span>書き手の断言</span><i>→</i><span>「やっと答えが出た」</span></div>\n          <ul>\n            <li><strong>価値には2つの型がある</strong>：（1）確信型——読者は「思ってはいるが確信を持てない」考えを抱えていて、結論を突き出すように断言すると「やっぱりそうなのか」という快感が生まれる。（2）発見型——読者は答え自体を知らず、彼にしか出せない新しい答え（見方・判断）を提示すると「そんな見方があったのか」となる</li>\n            <li><strong>テーマは身近でいい</strong>：落ちるのは、答えまで読者が一人で届いてしまうもの。届かなさの正体は、結論への確信のこともあれば、答えそのもののこともある</li>\n            <li><strong>分担</strong>：タイトル＝読者の疑いを言語化して「気になる」を作る／本文＝断言で結論を突き出して「やっと答えが出た」を作る</li>\n            <li><strong>断言を正当化するのは経験と立場</strong>：誰でも言える断言は安い。彼の経験の蓄積から出た断言だけが効く</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>内向哲学の実測（型の見本）</h3>\n          <ul>\n            <li><strong>タイトルの付け方</strong>（note 120本を実測、2026-11-24）：平均20.2字／「」で概念を切り取る形が43%／人物断定（〜な人・〜ほど）が24%／疑問形は1%だけ／数字入りは15%で、使うのは実績か型の数だけ</li>\n            <li><strong>有料でも付け方は同じ</strong>：価格はタイトルに出さない。無料と有料で顔を変えない</li>\n            <li><strong>推移</strong>：初期は「属性 × 悩み」、伸びてからは「書き手・稼ぎ方」のノウハウへ移行。短い断定・概念提示の比率が上がっていく</li>\n            <li><strong>規模</strong>：メンバー1,286人、X フォロワー約10.3万人（どちらも外部計測、2026-11）。ただし冷たいスタートではなく、既存のアカウントと note の土台の上での伸び</li>\n            <li><strong>伸びの形</strong>：直線では伸びない。低空飛行の期間 → 需要の大きい場所で型を1つ当てる → 当たり投稿の集中 → プロフィールでフォローに転換</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>名前の設計</h3>\n          <ul>\n            <li><strong>名前の条件</strong>：一度見たら忘れられない／読める／口で伝えられる（聞いて打てる）／中身が想像できる</li>\n            <li><strong>看板は大きく、入口はタイトルが担う</strong>：内向哲学のような「世界観の格」の名前がメンバーシップと合う。名前が中身の全部を背負う必要はない</li>\n            <li><strong>万（よろず）は残す</strong>：数字の462で書けてアイコンになる。本名「翔万」に万が入っている。万数寄録が潰れた原因は後半の「数寄録」（読めない・意味が伝わらない）であって、万ではない</li>\n            <li><strong>現在の最終候補（未確定）</strong>：よろずの物差し／462哲学／462の美学。「よろずの物差し」で一度決めたが、大きさの観点で再検討中。物差し・目利きは、中身の言葉として残る</li>\n            <li><strong>「美学を語るな」への耐性</strong>：「〜の美学」は日常語でもあり（こだわりの体系の意味）、作り手は語る側の本職に近い。中身が学問の解説ではなく実践の判断である限り、批判は的外れになる</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>価格の物差し</h3>\n          <ul>\n            <li><strong>実用ノウハウは読み物より高い</strong>：売上上位の有料記事の平均は、実用ノウハウ約1,842円／読み物約983円（note 社の分析、Cue 調査 2026-11-23）。記事の長さと売上に相関はほぼない</li>\n            <li><strong>価格の仮説レンジ</strong>：入口 300〜500円／本命 1,000〜1,800円／年版 2,500〜3,300円</li>\n            <li><strong>月50万円の現実ライン</strong>：メンバーシップ 500円なら、手数料を引くと約1,100人で月50万円。転換率2〜5%で、必要な読者の母数は2万〜5万人</li>\n          </ul>\n          <p class=\"sources\">出典：本人の決定と基準（2026-11-23〜24）／内向哲学タイトル実測（note API で120本、2026-11-24）／note 社の有料記事分析と価格帯（Cue 調査、2026-11-23）</p>\n        </div>",
+   "html": "<div class=\"detail-head\"><h2>noteの極意</h2></div>\n        <p class=\"sec-lead\">商売道具の知識だけを貯める場所。売れる中身の作り方——何を売り、どう名付け、どうタイトルを付け、どう断言するか。税や決済のような事務の知識はここには入れない（2026-11-24 本人決定）。極意は会話で生まれた端から、都度ここへ足していく。</p>\n        <div class=\"card\">\n          <h3>売るものの正体</h3>\n          <div class=\"flow\"><span>内省</span><i>→</i><span>判断の体系</span><i>→</i><span>各場面への適用</span></div>\n          <ul>\n            <li><strong>判断型ノウハウ</strong>：手順を教える「手順型」とは別物。売るのは、彼の内省から出た判断基準と行動の型——読み物の顔をした処方箋</li>\n            <li><strong>売るものは知的財産</strong>：彼の判断の体系そのものが商品。在庫も仕入れもない</li>\n            <li><strong>形はメンバーシップが中心</strong>：単品は入口として置き、中心の物差しは「メンバー数 × 月額」。note が月50万円を背負う本体で、Gumroad は道具化した変換版の受け皿（極意は「Gumroadの極意」の章）、アフィリエイトは上振れ枠</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>タイトルの合格基準</h3>\n          <ul>\n            <li><strong>入口は切実な悩み</strong>：実際に検索される悩みの言葉から入る。入口を美術・受験にしない</li>\n            <li><strong>タイトルだけで中身が気になる</strong>：先や中身への好奇心が立つこと</li>\n            <li><strong>雑学型は失格</strong>：「へえ」で終わるもの、自分で調べれば届くものは作らない。300本超を一括量産した在庫の大半はこの基準で失格になった</li>\n            <li><strong>価値基準</strong>：読者が自分で調べても、少し考えても届かない判断であること——彼の経験・体系・命名した概念からしか出ないもの。常識の言い換えは失格</li>\n            <li><strong>弱い側の人間に向ける</strong>：負けている・できない・劣等感のある側の本音が入口になる</li>\n            <li><strong>断定は本文の仕事</strong>：タイトルは好奇心の形が基本。断言は中身でする（信用が積めば断定タイトルも効く——内向哲学の実測）</li>\n            <li><strong>「〜だ」で終わらない</strong>：体言止めにする。ぶっきらぼうな断定調は印象が悪い</li>\n            <li><strong>生産は10本ずつ</strong>：作っては本人が判定し、精度を上げる。一括量産はしない</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>断言の快感（読者心理）</h3>\n          <div class=\"flow\"><span>読者の疑い</span><i>→</i><span>書き手の断言</span><i>→</i><span>「やっと答えが出た」</span></div>\n          <ul>\n            <li><strong>価値には2つの型がある</strong>：（1）確信型——読者は「思ってはいるが確信を持てない」考えを抱えていて、結論を突き出すように断言すると「やっぱりそうなのか」という快感が生まれる。（2）発見型——読者は答え自体を知らず、彼にしか出せない新しい答え（見方・判断）を提示すると「そんな見方があったのか」となる</li>\n            <li><strong>テーマは身近でいい</strong>：落ちるのは、答えまで読者が一人で届いてしまうもの。届かなさの正体は、結論への確信のこともあれば、答えそのもののこともある</li>\n            <li><strong>分担</strong>：タイトル＝読者の疑いを言語化して「気になる」を作る／本文＝断言で結論を突き出して「やっと答えが出た」を作る</li>\n            <li><strong>断言を正当化するのは経験と立場</strong>：誰でも言える断言は安い。彼の経験の蓄積から出た断言だけが効く</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>内向哲学の実測（型の見本）</h3>\n          <ul>\n            <li><strong>タイトルの付け方</strong>（note 120本を実測、2026-11-24）：平均20.2字／「」で概念を切り取る形が43%／人物断定（〜な人・〜ほど）が24%／疑問形は1%だけ／数字入りは15%で、使うのは実績か型の数だけ</li>\n            <li><strong>有料でも付け方は同じ</strong>：価格はタイトルに出さない。無料と有料で顔を変えない</li>\n            <li><strong>推移</strong>：初期は「属性 × 悩み」、伸びてからは「書き手・稼ぎ方」のノウハウへ移行。短い断定・概念提示の比率が上がっていく</li>\n            <li><strong>規模</strong>：メンバー1,286人、X フォロワー約10.3万人（どちらも外部計測、2026-11）。ただし冷たいスタートではなく、既存のアカウントと note の土台の上での伸び</li>\n            <li><strong>伸びの形</strong>：直線では伸びない。低空飛行の期間 → 需要の大きい場所で型を1つ当てる → 当たり投稿の集中 → プロフィールでフォローに転換</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>名前の設計</h3>\n          <ul>\n            <li><strong>名前の条件</strong>：一度見たら忘れられない／読める／口で伝えられる（聞いて打てる）／中身が想像できる</li>\n            <li><strong>看板は大きく、入口はタイトルが担う</strong>：内向哲学のような「世界観の格」の名前がメンバーシップと合う。名前が中身の全部を背負う必要はない</li>\n            <li><strong>万（よろず）は残す</strong>：数字の462で書けてアイコンになる。本名「翔万」に万が入っている。万数寄録が潰れた原因は後半の「数寄録」（読めない・意味が伝わらない）であって、万ではない</li>\n            <li><strong>現在の最終候補（未確定）</strong>：よろずの物差し／462哲学／462の美学。「よろずの物差し」で一度決めたが、大きさの観点で再検討中。物差し・目利きは、中身の言葉として残る</li>\n            <li><strong>「美学を語るな」への耐性</strong>：「〜の美学」は日常語でもあり（こだわりの体系の意味）、作り手は語る側の本職に近い。中身が学問の解説ではなく実践の判断である限り、批判は的外れになる</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>価格の物差し</h3>\n          <ul>\n            <li><strong>実用ノウハウは読み物より高い</strong>：売上上位の有料記事の平均は、実用ノウハウ約1,842円／読み物約983円（note 社の分析、Cue 調査 2026-11-23）。記事の長さと売上に相関はほぼない</li>\n            <li><strong>価格の仮説レンジ</strong>：入口 300〜500円／本命 1,000〜1,800円／年版 2,500〜3,300円</li>\n            <li><strong>月50万円の現実ライン</strong>：メンバーシップ 500円なら、手数料を引くと約1,100人で月50万円。転換率2〜5%で、必要な読者の母数は2万〜5万人</li>\n          </ul>\n          <p class=\"sources\">出典：本人の決定と基準（2026-11-23〜24）／内向哲学タイトル実測（note API で120本、2026-11-24）／note 社の有料記事分析と価格帯（Cue 調査、2026-11-23）</p>\n        </div>",
    "id": "notecraft",
    "meta": "商売道具の知識——判断型ノウハウの設計／タイトルの合格基準／断言の快感／内向哲学の実測／名前の設計／価格の物差し",
    "num": "31",
@@ -1530,10 +1535,24 @@ var SEED = {
    "tag": "商売道具の知識",
    "themeClass": "t-business",
    "title": "noteの極意",
-   "updated_at": "2026-11-24T10:21:24+09:00"
+   "updated_at": "2026-11-24T10:44:49+09:00"
+  },
+  {
+   "badgeClass": "",
+   "badgeText": "",
+   "char": "販",
+   "id": "gumroadcraft",
+   "meta": "商売道具の知識——売れる形は道具／売り手の実像／届け方の変換／集客の主路／サムネ／価格と本数",
+   "num": "32",
+   "tab": "ch4",
+   "tag": "商売道具の知識",
+   "themeClass": "t-business",
+   "title": "Gumroadの極意",
+   "updated_at": "2026-11-24T10:44:49+09:00",
+   "html": "<div class=\"detail-head\"><h2>Gumroadの極意</h2></div>\n        <p class=\"sec-lead\">商売道具の知識だけを貯める場所（海外の売り場編）。2026-11-24 の調査と本人の方針から。note の極意と対で読む。</p>\n        <div class=\"card\">\n          <h3>方針</h3>\n          <div class=\"flow\"><span>売れ線（実績のある形）</span><i>×</i><span>差別化（画家の目・現地の一次情報）</span></div>\n          <ul>\n            <li><strong>ガチガチに売れ線を狙う</strong>：形は実績のあるものに寄せる。その中で、彼にしか出せない材料（画家の目、東京の一次情報、選ぶ目）で差別化する（2026-11-24 本人方針）</li>\n            <li><strong>位置づけ</strong>：Gumroad は上振れ枠。月50万円の計画の数字には入れない。本体は note</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>売れる形——道具だけが売れる</h3>\n          <div class=\"flow\"><span>判断・一次情報</span><i>→</i><span>道具化</span><i>→</i><span>商品</span></div>\n          <ul>\n            <li><strong>売れるのは実用品</strong>：プラグイン、テンプレート、ワークブック、練習シート、プロンプトパック——学習・制作・仕事で「即使える」もの</li>\n            <li><strong>読み物は弱い</strong>：エッセイや読み物を買いに来る場所ではない。日本ですら読み物の単価は実用ノウハウの半分（note 社データ）</li>\n            <li><strong>「日本文化の紹介」自体は売れない</strong>：ikigai（イキガイ）コースや 5S のような日本テーマ商品は存在するが、売上の裏付けが弱く、売り手が日本人とは限らない（海外の売り手が「日本」をパッケージしている例が多い）</li>\n            <li><strong>現地の一次情報を道具化したものは売れる側</strong>：A1『Tokyo Art Guide』がこの形——文化の紹介ではなく、旅行で即使える道具</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>売り手の実像（日本の売り手）</h3>\n          <ul>\n            <li><strong>数字が確認できる日本の売り手は、日本を売りにしていない</strong>：電子楽器プラグインの個人開発者は累計売上3,000ドル超。AI ノウハウの販売者は月約5万円（本人申告）。どちらも国籍と無関係な実用品で、英語圏の競合と同じ土俵で勝負している</li>\n            <li><strong>テーマは1本に絞る</strong>：実績のある売り手は例外なく専門家型。「何でも出す」型に数字は付いてこない</li>\n            <li><strong>「日本人であること自体が強み」は、数字では裏付けられていない</strong>：売り文句として使わない</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>届け方の変換（note との違い）</h3>\n          <ul>\n            <li><strong>note では文章のまま売れる</strong>：判断型ノウハウは「読む」形で成立する。書き手への信用と、メンバーシップの関係性がセットで効く</li>\n            <li><strong>Gumroad では道具の形に変換する</strong>：無名の売り手の「判断」は、買う前に価値を確かめられないから買われない。道具は中身を見て買える。例：物差し → 判断チェックリスト／選ぶ目 → 選択のワークブック</li>\n            <li><strong>note の英訳をそのまま置くのは弱い</strong>：Gumroad は「英訳置き場」ではなく「変換版の受け皿」</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>集客は外から連れてくる</h3>\n          <ul>\n            <li><strong>Gumroad 自体に集客力はほぼ無い</strong>：Discover（ガムロード内の紹介枠）は、初回売上が10ドルを超えて審査を通った後でないと載らない。売れている人全員が外から客を連れてきている</li>\n            <li><strong>X（英語）</strong>：Gumroad 文化の中心。完成品・結果・数字の投稿が買いに直結する。変換率の目安 0.5〜2%</li>\n            <li><strong>Google 検索（SEO＝エス・イー・オー）</strong>：商品ページ自体が Google に載る。ブログや Medium の記事からも流す。月5万円の日本人の主軸はこれで、効くまで約6週間かかったという証言がある。遅いが積み上がる</li>\n            <li><strong>Reddit（レディット）</strong>：ニッチな悩み系に即効性がある。直リンクは禁止対象で、質問に答える参加の仕方が定石</li>\n            <li><strong>YouTube／TikTok の短い動画</strong>：使い方の実演や before/after が見せられる商品向き</li>\n            <li><strong>メールリスト</strong>：変換率は一番高い（2〜5%）。ただしリスト自体を先に育てる必要がある</li>\n            <li><strong>Product Hunt（プロダクトハント）</strong>：ツール系の発売日に一発当てる用</li>\n            <li><strong>Pinterest（ピンタレスト）</strong>：視覚系の商品の主路。彼の A1 はここで告知済み（役割分担：Gumroad は Pinterest、note は X）</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>サムネが第一の売り場</h3>\n          <ul>\n            <li><strong>画像で判定される</strong>：Discover でも Pinterest でも、最初に目に入るのはサムネイルだけ。タイトルすら読まれる前に決まる</li>\n            <li><strong>中身のチラ見せを入れる</strong>：売れているページは、目次・中身の広がり・before/after をサムネに入れている。中身が見えない商品だから、サムネが「何が手に入るか」の説明を全部背負う</li>\n            <li><strong>無名でも勝負できる場所</strong>：文章の上手さは買った後にしか分からないが、サムネの上手さは買う前に分かる。信用のない売り手が信用なしで勝負できる数少ない場所</li>\n          </ul>\n        </div>\n        <div class=\"card\">\n          <h3>価格と本数の物差し</h3>\n          <ul>\n            <li><strong>入口は 4.99〜9.99 ドル</strong>：売れたら 14.99 ドルへ上げる。29.99 ドル以上は、レビューが溜まってからでないと売れない</li>\n            <li><strong>単品では売れない</strong>：最低3本。シリーズの縦展開（入口 → 中級 → バンドル）で客単価を上げる</li>\n            <li><strong>実例</strong>：月5万円に届いた日本人の最初の45日は、1商品だけ置いて4件・39.96ドルだった。商品を揃えてから伸びた</li>\n            <li><strong>手数料</strong>：売上の10%＋決済手数料。100ドル売れると手元は87〜88ドルほど</li>\n          </ul>\n          <p class=\"sources\">出典：本人の方針（2026-11-24）／Gumroad の日本の売り手の実測と証言（2026-11-24 調査：売上報告のある販売者の記事、Gumroad 集客ガイド各誌、Discover の掲載条件は Gumroad ヘルプ）</p>\n        </div>"
   }
  ],
- "updatedAt": "2026-11-24T10:21:24+09:00",
+ "updatedAt": "2026-11-24T10:44:49+09:00",
  "version": 1
 };
 
@@ -1915,14 +1934,16 @@ function bizLevelHTML(){
     '<figure class="work" data-open="model" tabindex="0" role="button" aria-label="ビジネスモデル">' +
     '<figcaption><div class="nm">ビジネスモデル</div></figcaption></figure>' +
     '<figure class="work" data-open="notecraft" tabindex="0" role="button" aria-label="noteの極意">' +
-    '<figcaption><div class="nm">noteの極意</div></figcaption></figure>';
+    '<figcaption><div class="nm">noteの極意</div></figcaption></figure>' +
+    '<figure class="work" data-open="gumroadcraft" tabindex="0" role="button" aria-label="Gumroadの極意">' +
+    '<figcaption><div class="nm">Gumroadの極意</div></figcaption></figure>';
 }
 /* 葉の詳細を直接開いたとき（ディープリンク・通知・popstate）
    の戻り先の深さ。appbiz／store は深さ1、digital と
    affiliate（v3.8.7 で表示再開）は深さ0。葉でない部は -1 */
 function bizParentDepth(id){
   if(id === 'appbiz' || id === 'store') return 1;
-  if(id === 'digital' || id === 'affiliate' || id === 'traffic' || id === 'model' || id === 'notecraft') return 0;
+  if(id === 'digital' || id === 'affiliate' || id === 'traffic' || id === 'model' || id === 'notecraft' || id === 'gumroadcraft') return 0;
   return -1;
 }
 /* 段の移動（潜る／上がる）。描き直したグリッドは移動方向か
